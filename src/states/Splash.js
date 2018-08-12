@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { centerGameObjects } from '../utils';
+import mushroom from '../assets/img/mushroom2.png';
 
 export default class extends Phaser.State {
   preload() {
@@ -11,7 +12,7 @@ export default class extends Phaser.State {
     //
     // load your assets
     //
-    this.load.image('mushroom', 'assets/images/mushroom2.png');
+    this.load.image('mushroom', mushroom);
   }
 
   create() {
