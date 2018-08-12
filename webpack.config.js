@@ -17,7 +17,6 @@ const definePlugin = new webpack.DefinePlugin({
 module.exports = {
   entry: {
     app: [
-      'babel-polyfill',
       path.resolve(__dirname, 'src/main.ts'),
     ],
     vendor: ['pixi', 'p2', 'phaser', 'webfontloader'],
@@ -46,8 +45,11 @@ module.exports = {
   ],
   module: {
     rules: [
-      { test: /\.js$/, use: ['babel-loader'], include: path.join(__dirname, 'src') },
-      { test: /\.ts?$/, use: 'ts-loader', exclude: /node_modules/ },
+      // { test: /\.js$/, use: ['babel-loader'], include: path.join(__dirname, 'src') },
+      {
+        test: /\.ts$/,
+        use: ['awesome-typescript-loader'],
+      },
       { test: /pixi\.js/, use: ['expose-loader?PIXI'] },
       { test: /phaser-split\.js$/, use: ['expose-loader?Phaser'] },
       { test: /p2\.js/, use: ['expose-loader?p2'] },
@@ -73,10 +75,13 @@ module.exports = {
     tls: 'empty',
   },
   resolve: {
+    extensions: ['.ts', '.js'],
+    modules: ['node_modules', 'src'],
     alias: {
       phaser,
       pixi,
       p2,
+      src: path.resolve('./src'),
     },
   },
 };

@@ -1,13 +1,16 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
-    "sourceMap": true,
-    "noImplicitAny": true,
+    "target": "es5",
     "module": "commonjs",
-    "target": "es6",
-    "allowJs": true
-  },
-  "includes": [
-    "**/*.ts"
-  ]
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "es2015",
+      "dom"
+    ],
+    "noImplicitAny": false,
+    "suppressImplicitAnyIndexErrors": true
+  }
 }
