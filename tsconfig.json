@@ -1,12 +1,10 @@
 {
-	"compilerOptions": {
-			"target": "es5",
-			"module": "commonjs",
-			"sourceMap": true
-	},
-	
-	"files": [
-		"src/phaser.d.ts",
-		"src/main.ts"
-	]
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "target": "es6",
+    "allowJs": true
+  }
 }

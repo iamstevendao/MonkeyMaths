@@ -1,28 +1,29 @@
 var path = require('path')
 var webpack = require('webpack')
-var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 // Phaser webpack config
-var phaserModule = path.join(__dirname, '/node_modules/phaser/')
-var phaser = path.join(phaserModule, 'src/phaser.js')
+var phaserModule = path.join(__dirname, '/node_modules/phaser-ce/')
+var phaser = path.join(phaserModule, 'build/custom/phaser-split.js')
+var pixi = path.join(phaserModule, 'build/custom/pixi.js')
+var p2 = path.join(phaserModule, 'build/custom/p2.js')
 
 var definePlugin = new webpack.DefinePlugin({
-  __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'false')),
-  WEBGL_RENDERER: true, 
-  CANVAS_RENDERER: true 
+  __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'false'))
 })
 
 module.exports = {
   entry: {
     app: [
+      'babel-polyfill',
       path.resolve(__dirname, 'src/main.ts')
     ],
-    vendor: ['phaser']
+    vendor: ['pixi', 'p2', 'phaser', 'webfontloader']
+
   },
   output: {
-    path: path.resolve(__dirname, 'build'),
-    publicPath: './',
-    filename: 'js/bundle.js'
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: './dist/',
+    filename: 'bundle.js'
   },
   plugins: [
     definePlugin,
@@ -34,36 +35,15 @@ module.exports = {
         comments: false
       }
     }),
-    new webpack.optimize.CommonsChunkPlugin({ name: 'vendor' /* chunkName= */, filename: 'js/vendor.bundle.js' /* filename= */ }),
-    new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: './src/index.html',
-      chunks: ['vendor', 'app'],
-      chunksSortMode: 'manual',
-      minify: {
-        removeAttributeQuotes: true,
-        collapseWhitespace: true,
-        html5: true,
-        minifyCSS: true,
-        minifyJS: true,
-        minifyURLs: true,
-        removeComments: true,
-        removeEmptyAttributes: true
-      },
-      hash: true
-    })
+    new webpack.optimize.CommonsChunkPlugin({ name: 'vendor'/* chunkName= */, filename: 'vendor.bundle.js'/* filename= */})
   ],
   module: {
     rules: [
-      {
-        test: /\.ts$/,
-        loaders: ['babel-loader', 'awesome-typescript-loader'],
-        include: path.join(__dirname, 'src'),
-      },
-      { 
-        test: [/\.vert$/, /\.frag$/], 
-        use: 'raw-loader' 
-      }
+      { test: /\.js$/, use: ['babel-loader'], include: path.join(__dirname, 'src') },
+      { test: /\.ts?$/, use: 'ts-loader', exclude: /node_modules/ },
+      { test: /pixi\.js/, use: ['expose-loader?PIXI'] },
+      { test: /phaser-split\.js$/, use: ['expose-loader?Phaser'] },
+      { test: /p2\.js/, use: ['expose-loader?p2'] }
     ]
   },
   node: {
@@ -72,9 +52,10 @@ module.exports = {
     tls: 'empty'
   },
   resolve: {
-    extensions: ['.ts', '.js'],
     alias: {
-      'phaser': phaser
+      'phaser': phaser,
+      'pixi': pixi,
+      'p2': p2
     }
   }
 }
