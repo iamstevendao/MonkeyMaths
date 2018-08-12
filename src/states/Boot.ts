@@ -15,12 +15,12 @@ export class BootState extends Phaser.State {
   public preload(): void {
     WebFont.load({
       google: {
-        families: [ 'Bangers' ],
+        families: ['Bangers'],
       },
       active: this.fontsLoaded,
     });
 
-    let text = this.add.text(
+    const text = this.add.text(
       this.world.centerX,
       this.world.centerY,
       'loading fonts',

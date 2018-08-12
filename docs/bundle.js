@@ -105635,16 +105635,23 @@ PIXI.canUseNewCanvasBlendModes = function () {
 
 "use strict";
 
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
     return function (d, b) {
         extendStatics(d, b);
-        function __() { this.constructor = d; }
+        function __() {
+            this.constructor = d;
+        }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
-})();
+}();
 Object.defineProperty(exports, "__esModule", { value: true });
 __webpack_require__(/*! pixi */ 2);
 __webpack_require__(/*! p2 */ 3);
@@ -105653,7 +105660,7 @@ var Boot_1 = __webpack_require__(/*! ./states/Boot */ 10);
 var Splash_1 = __webpack_require__(/*! ./states/Splash */ 12);
 var Game_1 = __webpack_require__(/*! ./states/Game */ 11);
 var config_1 = __webpack_require__(/*! ./config */ 8);
-var Game = (function (_super) {
+var Game = function (_super) {
     __extends(Game, _super);
     function Game() {
         var _this = this;
@@ -105669,9 +105676,8 @@ var Game = (function (_super) {
         return _this;
     }
     return Game;
-}(Phaser.Game));
+}(Phaser.Game);
 window.game = new Game();
-
 
 /***/ }),
 /* 7 */,
@@ -105685,8 +105691,9 @@ window.game = new Game();
 
 "use strict";
 
+
 Object.defineProperty(exports, "__esModule", { value: true });
-var Config = (function () {
+var Config = function () {
     function Config() {
         this.gameWidth = this.getWindowSize();
         this.gameHeight = this.getWindowSize();
@@ -105699,9 +105706,8 @@ var Config = (function () {
         return w > h ? h - 150 : w - 150;
     };
     return Config;
-}());
+}();
 exports.Config = Config;
-
 
 /***/ }),
 /* 9 */
@@ -105714,19 +105720,26 @@ exports.Config = Config;
 
 "use strict";
 
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
     return function (d, b) {
         extendStatics(d, b);
-        function __() { this.constructor = d; }
+        function __() {
+            this.constructor = d;
+        }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
-})();
+}();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Phaser = __webpack_require__(/*! phaser-ce */ 0);
-var Mushroom = (function (_super) {
+var Mushroom = function (_super) {
     __extends(Mushroom, _super);
     function Mushroom(game, x, y, key) {
         var _this = _super.call(this, game, x, y, key) || this;
@@ -105742,9 +105755,8 @@ var Mushroom = (function (_super) {
         this.angle++;
     };
     return Mushroom;
-}(Phaser.Sprite));
+}(Phaser.Sprite);
 exports.Mushroom = Mushroom;
-
 
 /***/ }),
 /* 10 */
@@ -105757,22 +105769,29 @@ exports.Mushroom = Mushroom;
 
 "use strict";
 
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
     return function (d, b) {
         extendStatics(d, b);
-        function __() { this.constructor = d; }
+        function __() {
+            this.constructor = d;
+        }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
-})();
+}();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Phaser = __webpack_require__(/*! phaser-ce */ 0);
 var WebFont = __webpack_require__(/*! webfontloader */ 4);
 var LoaderBackground = __webpack_require__(/*! ../assets/img/loader-bg.png */ 14);
 var LoaderBar = __webpack_require__(/*! ../assets/img/loader-bar.png */ 13);
-var BootState = (function (_super) {
+var BootState = function (_super) {
     __extends(BootState, _super);
     function BootState() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -105785,9 +105804,9 @@ var BootState = (function (_super) {
     BootState.prototype.preload = function () {
         WebFont.load({
             google: {
-                families: ['Bangers'],
+                families: ['Bangers']
             },
-            active: this.fontsLoaded,
+            active: this.fontsLoaded
         });
         var text = this.add.text(this.world.centerX, this.world.centerY, 'loading fonts', { font: '16px Arial', fill: '#dddddd', align: 'center' });
         text.anchor.setTo(0.5, 0.5);
@@ -105803,9 +105822,8 @@ var BootState = (function (_super) {
         this.fontsReady = true;
     };
     return BootState;
-}(Phaser.State));
+}(Phaser.State);
 exports.BootState = BootState;
-
 
 /***/ }),
 /* 11 */
@@ -105818,27 +105836,34 @@ exports.BootState = BootState;
 
 "use strict";
 
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
     return function (d, b) {
         extendStatics(d, b);
-        function __() { this.constructor = d; }
+        function __() {
+            this.constructor = d;
+        }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
-})();
+}();
 Object.defineProperty(exports, "__esModule", { value: true });
 /* globals __DEV__ */
 var Phaser = __webpack_require__(/*! phaser-ce */ 0);
 var Mushroom_1 = __webpack_require__(/*! ../sprites/Mushroom */ 9);
-var GameState = (function (_super) {
+var GameState = function (_super) {
     __extends(GameState, _super);
     function GameState() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    GameState.prototype.init = function () { };
-    GameState.prototype.preload = function () { };
+    GameState.prototype.init = function () {};
+    GameState.prototype.preload = function () {};
     GameState.prototype.create = function () {
         var bannerText = 'Phaser + ES6 + Webpack';
         var banner = this.add.text(this.world.centerX, this.game.height - 80, bannerText, null);
@@ -105857,9 +105882,8 @@ var GameState = (function (_super) {
         }
     };
     return GameState;
-}(Phaser.State));
+}(Phaser.State);
 exports.GameState = GameState;
-
 
 /***/ }),
 /* 12 */
@@ -105872,25 +105896,32 @@ exports.GameState = GameState;
 
 "use strict";
 
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
     return function (d, b) {
         extendStatics(d, b);
-        function __() { this.constructor = d; }
+        function __() {
+            this.constructor = d;
+        }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
-})();
+}();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Phaser = __webpack_require__(/*! phaser-ce */ 0);
-var ImageMushroom = __webpack_require__(/*! ../assets/img/mushroom.png */ 20);
-var SplashState = (function (_super) {
+var ImageMushroom = __webpack_require__(/*! ../assets/img/mushroom.png */ 15);
+var SplashState = function (_super) {
     __extends(SplashState, _super);
     function SplashState() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    SplashState.prototype.init = function () { };
+    SplashState.prototype.init = function () {};
     SplashState.prototype.preload = function () {
         this.loaderBg = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBg');
         this.loaderBar = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBar');
@@ -105910,9 +105941,8 @@ var SplashState = (function (_super) {
         });
     };
     return SplashState;
-}(Phaser.State));
+}(Phaser.State);
 exports.SplashState = SplashState;
-
 
 /***/ }),
 /* 13 */
@@ -105937,10 +105967,21 @@ module.exports = "assets/img/loader-bar.png";
 module.exports = "assets/img/loader-bg.png";
 
 /***/ }),
-/* 15 */,
+/* 15 */
+/* no static exports found */
+/* all exports used */
+/*!*************************************!*\
+  !*** ./src/assets/img/mushroom.png ***!
+  \*************************************/
+/***/ (function(module, exports) {
+
+module.exports = "assets/img/mushroom.png";
+
+/***/ }),
 /* 16 */,
 /* 17 */,
-/* 18 */
+/* 18 */,
+/* 19 */
 /* no static exports found */
 /* all exports used */
 /*!***************************!*\
@@ -105951,18 +105992,6 @@ module.exports = "assets/img/loader-bg.png";
 module.exports = __webpack_require__(/*! /Users/stevend/coding/phaser/MonkeyMaths/src/main.ts */6);
 
 
-/***/ }),
-/* 19 */,
-/* 20 */
-/* no static exports found */
-/* all exports used */
-/*!*************************************!*\
-  !*** ./src/assets/img/mushroom.png ***!
-  \*************************************/
-/***/ (function(module, exports) {
-
-module.exports = "assets/img/mushroom.png";
-
 /***/ })
-],[18]);
+],[19]);
 //# sourceMappingURL=bundle.js.map

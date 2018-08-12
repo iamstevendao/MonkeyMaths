@@ -45,10 +45,15 @@ module.exports = {
   ],
   module: {
     rules: [
-      // { test: /\.js$/, use: ['babel-loader'], include: path.join(__dirname, 'src') },
       {
         test: /\.ts$/,
-        use: ['awesome-typescript-loader'],
+        use: [{
+          loader: 'awesome-typescript-loader',
+          options: {
+            useBabel: true,
+            useCache: true,
+          },
+        }],
       },
       { test: /pixi\.js/, use: ['expose-loader?PIXI'] },
       { test: /phaser-split\.js$/, use: ['expose-loader?Phaser'] },

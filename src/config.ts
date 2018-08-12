@@ -3,7 +3,6 @@ export class Config {
   gameHeight = this.getWindowSize();
   localStorageName: string = 'MonkeyMaths';
 
-
   getWindowSize() {
     // get the smaller dimension
     const w = window.innerWidth;

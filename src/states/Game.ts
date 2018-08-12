@@ -8,12 +8,12 @@ export class GameState extends Phaser.State {
 
   public mushroom: Mushroom;
 
-  public init(): void {}
-  public preload(): void {}
+  public init(): void { }
+  public preload(): void { }
 
-  public create (): void {
+  public create(): void {
     const bannerText = 'Phaser + ES6 + Webpack';
-    let banner = this.add.text(this.world.centerX, this.game.height - 80, bannerText, null);
+    const banner = this.add.text(this.world.centerX, this.game.height - 80, bannerText, null);
     banner.font = 'Bangers';
     banner.padding.set(10, 16);
     banner.fontSize = 40;
