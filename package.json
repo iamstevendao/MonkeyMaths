@@ -20,7 +20,7 @@
     "browser-sync": "^2.18.12",
     "browser-sync-webpack-plugin": "^1.1.4",
     "eslint": "^3.19.0",
-    "eslint-config-standard": "^10.2.1",
+    "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-node": "^4.2.2",
     "eslint-plugin-promise": "^3.5.0",
