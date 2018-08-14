@@ -105656,9 +105656,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __webpack_require__(/*! pixi */ 2);
 __webpack_require__(/*! p2 */ 3);
 var Phaser = __webpack_require__(/*! phaser-ce */ 0);
-var Boot_1 = __webpack_require__(/*! ./states/Boot */ 10);
-var Splash_1 = __webpack_require__(/*! ./states/Splash */ 12);
-var Game_1 = __webpack_require__(/*! ./states/Game */ 11);
+var Boot_1 = __webpack_require__(/*! ./states/Boot */ 11);
+var Splash_1 = __webpack_require__(/*! ./states/Splash */ 13);
+var Game_1 = __webpack_require__(/*! ./states/Game */ 12);
 var config_1 = __webpack_require__(/*! ./config */ 8);
 var Game = function (_super) {
     __extends(Game, _super);
@@ -105714,6 +105714,70 @@ exports.Config = Config;
 /* 9 */
 /* no static exports found */
 /* all exports used */
+/*!*********************************!*\
+  !*** ./src/sprites/Obstacle.ts ***!
+  \*********************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Phaser = __webpack_require__(/*! phaser-ce */ 0);
+var Question_1 = __webpack_require__(/*! ../utils/Question */ 14);
+var Obstacle = function (_super) {
+    __extends(Obstacle, _super);
+    function Obstacle(game, x, y, text) {
+        if (text === void 0) {
+            text = 'hello';
+        }
+        var _this = _super.call(this, game, x, y, text, { font: '65px Arial', fill: '#ff0044', align: 'center' }) || this;
+        _this.game = game;
+        _this.x = x;
+        _this.y = y;
+        _this.text = text;
+        _this.y1 = _this.game.world.centerY / 4;
+        _this.y2 = _this.game.world.centerY;
+        _this.y = _this.y1;
+        game.physics.arcade.enable(_this);
+        _this.question = new Question_1.Question();
+        _this.text = _this.question.getText();
+        return _this;
+    }
+    Obstacle.prototype.setPath = function (path) {
+        if (path === 1) {
+            this.y = this.y1;
+        } else {
+            this.y = this.y2;
+        }
+    };
+    Obstacle.prototype.getAnswer = function () {
+        return this.question.getAnswer();
+    };
+    return Obstacle;
+}(Phaser.Text);
+exports.Obstacle = Obstacle;
+
+/***/ }),
+/* 10 */
+/* no static exports found */
+/* all exports used */
 /*!*******************************!*\
   !*** ./src/sprites/monkey.ts ***!
   \*******************************/
@@ -105748,25 +105812,31 @@ var Monkey = function (_super) {
         _this.x = x;
         _this.y = y;
         _this.key = key;
+        _this.path = 1; // 1, 2
+        _this.y1 = _this.game.world.centerY / 4;
+        _this.y2 = _this.game.world.centerY;
+        _this.y = _this.y1;
         _this.key = _this.key;
         game.physics.arcade.enable(_this);
         _this.body.velocity.x = 300;
         return _this;
     }
-    Monkey.prototype.overcome = function () {};
+    Monkey.prototype.overcome = function () {
+        this.path = this.path === 1 ? 2 : 1;
+        this.y = this.path === 1 ? this.y1 : this.y2;
+    };
     Monkey.prototype.hit = function () {
         var _this = this;
         setTimeout(function () {
             return _this.body.velocity.x = 300;
         }, 1000);
-        console.log('hit the obstacle');
     };
     return Monkey;
 }(Phaser.Sprite);
 exports.Monkey = Monkey;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /* no static exports found */
 /* all exports used */
 /*!****************************!*\
@@ -105796,8 +105866,8 @@ var __extends = undefined && undefined.__extends || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Phaser = __webpack_require__(/*! phaser-ce */ 0);
 var WebFont = __webpack_require__(/*! webfontloader */ 4);
-var LoaderBackground = __webpack_require__(/*! ../assets/img/loader-bg.png */ 14);
-var LoaderBar = __webpack_require__(/*! ../assets/img/loader-bar.png */ 13);
+var LoaderBackground = __webpack_require__(/*! ../assets/img/loader-bg.png */ 16);
+var LoaderBar = __webpack_require__(/*! ../assets/img/loader-bar.png */ 15);
 var BootState = function (_super) {
     __extends(BootState, _super);
     function BootState() {
@@ -105833,7 +105903,7 @@ var BootState = function (_super) {
 exports.BootState = BootState;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /* no static exports found */
 /* all exports used */
 /*!****************************!*\
@@ -105863,43 +105933,47 @@ var __extends = undefined && undefined.__extends || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 /* globals __DEV__ */
 var Phaser = __webpack_require__(/*! phaser-ce */ 0);
-var monkey_1 = __webpack_require__(/*! ../sprites/monkey */ 9);
-var Obstacle_1 = __webpack_require__(/*! ../sprites/Obstacle */ 21);
+var monkey_1 = __webpack_require__(/*! ../sprites/monkey */ 10);
+var Obstacle_1 = __webpack_require__(/*! ../sprites/Obstacle */ 9);
 var GameState = function (_super) {
     __extends(GameState, _super);
     function GameState() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.obstacles = [];
+        _this.nextObstacleIndex = 0;
         return _this;
     }
     GameState.prototype.init = function () {
-        this.game.world.setBounds(0, 0, 10000, this.game.height);
+        this.game.world.setBounds(0, 0, 8000, this.game.height);
     };
     GameState.prototype.preload = function () {};
     GameState.prototype.create = function () {
         var _this = this;
         var bannerText = 'Monkey Maths by Starmaths';
-        var banner = this.add.text(this.world.centerX, this.game.height - 80, bannerText, null);
+        var banner = this.add.text(500, this.game.height - 80, bannerText, null);
         banner.font = 'Bangers';
         banner.padding.set(10, 16);
         banner.fontSize = 40;
-        banner.fill = '#77BFA3';
+        banner.fill = '#ff0000';
         banner.smoothed = false;
         banner.anchor.setTo(0.5);
-        this.monkey = new monkey_1.Monkey(this, this.world.centerX, this.world.centerY, 'monkey');
+        this.monkey = new monkey_1.Monkey(this, 100, this.world.centerY, 'monkey');
         for (var i = 1; i < 10; i += 1) {
-            var obstacle = new Obstacle_1.Obstacle(this.game, this.world.centerX + 300 * i, this.world.centerY);
+            var obstacle = new Obstacle_1.Obstacle(this.game, 800 * i, this.world.centerY);
             this.game.add.existing(obstacle);
             this.obstacles.push(obstacle);
         }
-        console.log(this.monkey);
-        console.log(this.obstacles);
         this.game.add.existing(this.monkey);
         // arrow keys pressed
         this.game.input.keyboard.onDownCallback = function (e) {
             _this.handleCursors(e);
         };
-        this.game.camera.follow(this.monkey, Phaser.Camera.FOLLOW_LOCKON, 0.1);
+        this.game.camera.follow(this.monkey);
+        this.game.camera.lerp.x = 0.1;
+        this.game.camera.deadzone = new Phaser.Rectangle(50, 100, 50, 400);
+        var zone = this.game.camera.deadzone;
+        this.game.context.fillStyle = 'rgba(255,0,0,0.6)';
+        this.game.context.fillRect(zone.x, zone.y, zone.width, zone.height);
     };
     GameState.prototype.update = function () {
         this.game.physics.arcade.collide(this.monkey, this.obstacles, this.onCollide, null, this);
@@ -105910,23 +105984,52 @@ var GameState = function (_super) {
         }
     };
     GameState.prototype.onCollide = function (obj1, obj2) {
+        this.game.camera.shake(0.01, 500);
         this.monkey.hit();
+        this.nextObstacleIndex += 1;
+        if (this.nextObstacleIndex >= this.obstacles.length - 1) {
+            // End game
+            return;
+        }
+        this.obstacles[this.nextObstacleIndex].setPath(this.monkey.path);
         obj2.destroy();
+        this.answer = '';
+    };
+    GameState.prototype.onCorrect = function () {
+        this.nextObstacleIndex += 1;
+        if (this.nextObstacleIndex >= this.obstacles.length - 1) {
+            // End game
+            return;
+        }
+        this.monkey.overcome();
+        this.obstacles[this.nextObstacleIndex].setPath(this.monkey.path);
+        this.answer = '';
+    };
+    GameState.prototype.verifyAnswer = function () {
+        if (this.answer === this.obstacles[this.nextObstacleIndex].getAnswer()) {
+            this.onCorrect();
+        }
     };
     GameState.prototype.handleCursors = function (e) {
+        if (e.keyCode === 8) {
+            // Backspace
+            this.answer = '';
+            return;
+        }
         // Key 57: 9
         // Key 48: 0
         if (e.keyCode > 57 || e.keyCode < 48) {
             return;
         }
-        console.log(e.keyCode);
+        this.answer += e.keyCode - 48;
+        this.verifyAnswer();
     };
     return GameState;
 }(Phaser.State);
 exports.GameState = GameState;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /* no static exports found */
 /* all exports used */
 /*!******************************!*\
@@ -105955,7 +106058,7 @@ var __extends = undefined && undefined.__extends || function () {
 }();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Phaser = __webpack_require__(/*! phaser-ce */ 0);
-var ImageMushroom = __webpack_require__(/*! ../assets/img/mushroom.png */ 15);
+var ImageMushroom = __webpack_require__(/*! ../assets/img/mushroom.png */ 17);
 var SplashState = function (_super) {
     __extends(SplashState, _super);
     function SplashState() {
@@ -105982,107 +106085,7 @@ var SplashState = function (_super) {
 exports.SplashState = SplashState;
 
 /***/ }),
-/* 13 */
-/* no static exports found */
-/* all exports used */
-/*!***************************************!*\
-  !*** ./src/assets/img/loader-bar.png ***!
-  \***************************************/
-/***/ (function(module, exports) {
-
-module.exports = "assets/img/loader-bar.png";
-
-/***/ }),
 /* 14 */
-/* no static exports found */
-/* all exports used */
-/*!**************************************!*\
-  !*** ./src/assets/img/loader-bg.png ***!
-  \**************************************/
-/***/ (function(module, exports) {
-
-module.exports = "assets/img/loader-bg.png";
-
-/***/ }),
-/* 15 */
-/* no static exports found */
-/* all exports used */
-/*!*************************************!*\
-  !*** ./src/assets/img/mushroom.png ***!
-  \*************************************/
-/***/ (function(module, exports) {
-
-module.exports = "assets/img/mushroom.png";
-
-/***/ }),
-/* 16 */,
-/* 17 */,
-/* 18 */,
-/* 19 */
-/* no static exports found */
-/* all exports used */
-/*!***************************!*\
-  !*** multi ./src/main.ts ***!
-  \***************************/
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(/*! /Users/stevend/coding/phaser/MonkeyMaths/src/main.ts */6);
-
-
-/***/ }),
-/* 20 */,
-/* 21 */
-/* no static exports found */
-/* all exports used */
-/*!*********************************!*\
-  !*** ./src/sprites/Obstacle.ts ***!
-  \*********************************/
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var __extends = undefined && undefined.__extends || function () {
-    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
-        d.__proto__ = b;
-    } || function (d, b) {
-        for (var p in b) {
-            if (b.hasOwnProperty(p)) d[p] = b[p];
-        }
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() {
-            this.constructor = d;
-        }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-}();
-Object.defineProperty(exports, "__esModule", { value: true });
-var Phaser = __webpack_require__(/*! phaser-ce */ 0);
-var Question_1 = __webpack_require__(/*! ../utils/Question */ 22);
-var Obstacle = function (_super) {
-    __extends(Obstacle, _super);
-    function Obstacle(game, x, y, text) {
-        if (text === void 0) {
-            text = 'hello';
-        }
-        var _this = _super.call(this, game, x, y, text, { font: '65px Arial', fill: '#ff0044', align: 'center' }) || this;
-        _this.game = game;
-        _this.x = x;
-        _this.y = y;
-        _this.text = text;
-        game.physics.arcade.enable(_this);
-        _this.question = new Question_1.Question();
-        _this.text = _this.question.getText();
-        return _this;
-    }
-    return Obstacle;
-}(Phaser.Text);
-exports.Obstacle = Obstacle;
-
-/***/ }),
-/* 22 */
 /* no static exports found */
 /* all exports used */
 /*!*******************************!*\
@@ -106107,15 +106110,66 @@ var Question = function () {
         this.operator = operator || '+';
         this.number1 = start || 10;
         this.number2 = end || 2;
-        this.result = start + end;
+        this.answer = (this.number1 + this.number2).toString();
     }
     Question.prototype.getText = function () {
         return this.number1 + " " + this.operator + " " + this.number2 + " =";
+    };
+    Question.prototype.getAnswer = function () {
+        return this.answer;
     };
     return Question;
 }();
 exports.Question = Question;
 
+/***/ }),
+/* 15 */
+/* no static exports found */
+/* all exports used */
+/*!***************************************!*\
+  !*** ./src/assets/img/loader-bar.png ***!
+  \***************************************/
+/***/ (function(module, exports) {
+
+module.exports = "assets/img/loader-bar.png";
+
+/***/ }),
+/* 16 */
+/* no static exports found */
+/* all exports used */
+/*!**************************************!*\
+  !*** ./src/assets/img/loader-bg.png ***!
+  \**************************************/
+/***/ (function(module, exports) {
+
+module.exports = "assets/img/loader-bg.png";
+
+/***/ }),
+/* 17 */
+/* no static exports found */
+/* all exports used */
+/*!*************************************!*\
+  !*** ./src/assets/img/mushroom.png ***!
+  \*************************************/
+/***/ (function(module, exports) {
+
+module.exports = "assets/img/mushroom.png";
+
+/***/ }),
+/* 18 */,
+/* 19 */,
+/* 20 */,
+/* 21 */
+/* no static exports found */
+/* all exports used */
+/*!***************************!*\
+  !*** multi ./src/main.ts ***!
+  \***************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! /Users/stevend/coding/phaser/MonkeyMaths/src/main.ts */6);
+
+
 /***/ })
-],[19]);
+],[21]);
 //# sourceMappingURL=bundle.js.map
