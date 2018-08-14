@@ -14,17 +14,15 @@ export class SplashState extends Phaser.State {
     this.centerGameObjects([this.loaderBg, this.loaderBar]);
 
     this.load.setPreloadSprite(this.loaderBar);
-    //
-    // load your assets
-    //
-    this.load.image('mushroom', ImageMushroom);
+
+    this.load.image('monkey', ImageMushroom);
   }
 
   public create(): void {
     this.state.start('Game');
   }
 
-  centerGameObjects(objects: any): void {
+  private centerGameObjects(objects: any): void {
     objects.forEach((object: any) => {
       object.anchor.setTo(0.5);
     });

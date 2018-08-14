@@ -105691,6 +105691,7 @@ window.game = new Game();
 
 "use strict";
 
+// Config class
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Config = function () {
@@ -105700,7 +105701,7 @@ var Config = function () {
         this.localStorageName = 'MonkeyMaths';
     }
     Config.prototype.getWindowSize = function () {
-        // get the smaller dimension
+        // Get the smaller dimension
         var w = window.innerWidth;
         var h = window.innerHeight;
         return w > h ? h - 150 : w - 150;
@@ -105713,9 +105714,9 @@ exports.Config = Config;
 /* 9 */
 /* no static exports found */
 /* all exports used */
-/*!*********************************!*\
-  !*** ./src/sprites/Mushroom.ts ***!
-  \*********************************/
+/*!*******************************!*\
+  !*** ./src/sprites/monkey.ts ***!
+  \*******************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -105739,24 +105740,30 @@ var __extends = undefined && undefined.__extends || function () {
 }();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Phaser = __webpack_require__(/*! phaser-ce */ 0);
-var Mushroom = function (_super) {
-    __extends(Mushroom, _super);
-    function Mushroom(game, x, y, key) {
+var Monkey = function (_super) {
+    __extends(Monkey, _super);
+    function Monkey(game, x, y, key) {
         var _this = _super.call(this, game, x, y, key) || this;
         _this.game = game;
         _this.x = x;
         _this.y = y;
         _this.key = key;
         _this.key = _this.key;
-        _this.anchor.setTo(0.5);
+        game.physics.arcade.enable(_this);
+        _this.body.velocity.x = 300;
         return _this;
     }
-    Mushroom.prototype.update = function () {
-        this.angle++;
+    Monkey.prototype.overcome = function () {};
+    Monkey.prototype.hit = function () {
+        var _this = this;
+        setTimeout(function () {
+            return _this.body.velocity.x = 300;
+        }, 1000);
+        console.log('hit the obstacle');
     };
-    return Mushroom;
+    return Monkey;
 }(Phaser.Sprite);
-exports.Mushroom = Mushroom;
+exports.Monkey = Monkey;
 
 /***/ }),
 /* 10 */
@@ -105856,16 +105863,22 @@ var __extends = undefined && undefined.__extends || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 /* globals __DEV__ */
 var Phaser = __webpack_require__(/*! phaser-ce */ 0);
-var Mushroom_1 = __webpack_require__(/*! ../sprites/Mushroom */ 9);
+var monkey_1 = __webpack_require__(/*! ../sprites/monkey */ 9);
+var Obstacle_1 = __webpack_require__(/*! ../sprites/Obstacle */ 21);
 var GameState = function (_super) {
     __extends(GameState, _super);
     function GameState() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.obstacles = [];
+        return _this;
     }
-    GameState.prototype.init = function () {};
+    GameState.prototype.init = function () {
+        this.game.world.setBounds(0, 0, 10000, this.game.height);
+    };
     GameState.prototype.preload = function () {};
     GameState.prototype.create = function () {
-        var bannerText = 'Phaser + ES6 + Webpack';
+        var _this = this;
+        var bannerText = 'Monkey Maths by Starmaths';
         var banner = this.add.text(this.world.centerX, this.game.height - 80, bannerText, null);
         banner.font = 'Bangers';
         banner.padding.set(10, 16);
@@ -105873,13 +105886,40 @@ var GameState = function (_super) {
         banner.fill = '#77BFA3';
         banner.smoothed = false;
         banner.anchor.setTo(0.5);
-        this.mushroom = new Mushroom_1.Mushroom(this, this.world.centerX, this.world.centerY, 'mushroom');
-        this.game.add.existing(this.mushroom);
+        this.monkey = new monkey_1.Monkey(this, this.world.centerX, this.world.centerY, 'monkey');
+        for (var i = 1; i < 10; i += 1) {
+            var obstacle = new Obstacle_1.Obstacle(this.game, this.world.centerX + 300 * i, this.world.centerY);
+            this.game.add.existing(obstacle);
+            this.obstacles.push(obstacle);
+        }
+        console.log(this.monkey);
+        console.log(this.obstacles);
+        this.game.add.existing(this.monkey);
+        // arrow keys pressed
+        this.game.input.keyboard.onDownCallback = function (e) {
+            _this.handleCursors(e);
+        };
+        this.game.camera.follow(this.monkey, Phaser.Camera.FOLLOW_LOCKON, 0.1);
+    };
+    GameState.prototype.update = function () {
+        this.game.physics.arcade.collide(this.monkey, this.obstacles, this.onCollide, null, this);
     };
     GameState.prototype.render = function () {
         if (true) {
-            this.game.debug.spriteInfo(this.mushroom, 32, 32);
+            this.game.debug.spriteInfo(this.monkey, 32, 32);
         }
+    };
+    GameState.prototype.onCollide = function (obj1, obj2) {
+        this.monkey.hit();
+        obj2.destroy();
+    };
+    GameState.prototype.handleCursors = function (e) {
+        // Key 57: 9
+        // Key 48: 0
+        if (e.keyCode > 57 || e.keyCode < 48) {
+            return;
+        }
+        console.log(e.keyCode);
     };
     return GameState;
 }(Phaser.State);
@@ -105927,10 +105967,7 @@ var SplashState = function (_super) {
         this.loaderBar = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBar');
         this.centerGameObjects([this.loaderBg, this.loaderBar]);
         this.load.setPreloadSprite(this.loaderBar);
-        //
-        // load your assets
-        //
-        this.load.image('mushroom', ImageMushroom);
+        this.load.image('monkey', ImageMushroom);
     };
     SplashState.prototype.create = function () {
         this.state.start('Game');
@@ -105991,6 +106028,93 @@ module.exports = "assets/img/mushroom.png";
 
 module.exports = __webpack_require__(/*! /Users/stevend/coding/phaser/MonkeyMaths/src/main.ts */6);
 
+
+/***/ }),
+/* 20 */,
+/* 21 */
+/* no static exports found */
+/* all exports used */
+/*!*********************************!*\
+  !*** ./src/sprites/Obstacle.ts ***!
+  \*********************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Phaser = __webpack_require__(/*! phaser-ce */ 0);
+var Question_1 = __webpack_require__(/*! ../utils/Question */ 22);
+var Obstacle = function (_super) {
+    __extends(Obstacle, _super);
+    function Obstacle(game, x, y, text) {
+        if (text === void 0) {
+            text = 'hello';
+        }
+        var _this = _super.call(this, game, x, y, text, { font: '65px Arial', fill: '#ff0044', align: 'center' }) || this;
+        _this.game = game;
+        _this.x = x;
+        _this.y = y;
+        _this.text = text;
+        game.physics.arcade.enable(_this);
+        _this.question = new Question_1.Question();
+        _this.text = _this.question.getText();
+        return _this;
+    }
+    return Obstacle;
+}(Phaser.Text);
+exports.Obstacle = Obstacle;
+
+/***/ }),
+/* 22 */
+/* no static exports found */
+/* all exports used */
+/*!*******************************!*\
+  !*** ./src/utils/Question.ts ***!
+  \*******************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Question
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Question = function () {
+    function Question(_a) {
+        var _b = _a === void 0 ? {} : _a,
+            _c = _b.start,
+            start = _c === void 0 ? 0 : _c,
+            _d = _b.end,
+            end = _d === void 0 ? 0 : _d,
+            _e = _b.operator,
+            operator = _e === void 0 ? '+' : _e;
+        this.operator = operator || '+';
+        this.number1 = start || 10;
+        this.number2 = end || 2;
+        this.result = start + end;
+    }
+    Question.prototype.getText = function () {
+        return this.number1 + " " + this.operator + " " + this.number2 + " =";
+    };
+    return Question;
+}();
+exports.Question = Question;
 
 /***/ })
 ],[19]);
