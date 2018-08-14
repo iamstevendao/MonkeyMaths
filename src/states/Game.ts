@@ -54,6 +54,7 @@ export class GameState extends Phaser.State {
   }
 
   private onCollide(obj1: object, obj2: any) {
+    this.game.camera.shake(0.01, 500);
     this.monkey.hit();
     this.nextObstacleIndex += 1;
     if (this.nextObstacleIndex >= this.obstacles.length - 1) {
