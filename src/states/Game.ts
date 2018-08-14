@@ -13,23 +13,23 @@ export class GameState extends Phaser.State {
   private answer: string;
 
   public init(): void {
-    this.game.world.setBounds(0, 0, 10000, this.game.height);
+    this.game.world.setBounds(0, 0, 8000, this.game.height);
   }
   public preload(): void { }
 
   public create(): void {
     const bannerText = 'Monkey Maths by Starmaths';
-    const banner = this.add.text(this.world.centerX, this.game.height - 80, bannerText, null);
+    const banner = this.add.text(500, this.game.height - 80, bannerText, null);
     banner.font = 'Bangers';
     banner.padding.set(10, 16);
     banner.fontSize = 40;
-    banner.fill = '#77BFA3';
+    banner.fill = '#ff0000';
     banner.smoothed = false;
     banner.anchor.setTo(0.5);
 
-    this.monkey = new Monkey(this, this.world.centerX, this.world.centerY, 'monkey');
+    this.monkey = new Monkey(this, 100, this.world.centerY, 'monkey');
     for (let i = 1; i < 10; i += 1) {
-      const obstacle = new Obstacle(this.game, this.world.centerX + 800 * i, this.world.centerY);
+      const obstacle = new Obstacle(this.game, 800 * i, this.world.centerY);
       this.game.add.existing(obstacle);
       this.obstacles.push(obstacle);
     }
@@ -40,7 +40,13 @@ export class GameState extends Phaser.State {
       this.handleCursors(e);
     };
 
-    this.game.camera.follow(this.monkey, Phaser.Camera.FOLLOW_LOCKON, 0.1);
+    this.game.camera.follow(this.monkey);
+    this.game.camera.lerp.x = 0.1;
+    this.game.camera.deadzone = new Phaser.Rectangle(50, 100, 50, 400);
+
+    const zone = this.game.camera.deadzone;
+    this.game.context.fillStyle = 'rgba(255,0,0,0.6)';
+    this.game.context.fillRect(zone.x, zone.y, zone.width, zone.height);
   }
 
   public update(): void {
