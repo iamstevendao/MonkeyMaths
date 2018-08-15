@@ -105745,9 +105745,9 @@ var Obstacle = function (_super) {
     __extends(Obstacle, _super);
     function Obstacle(game, x, y, text) {
         if (text === void 0) {
-            text = 'hello';
+            text = '';
         }
-        var _this = _super.call(this, game, x, y, text, { font: '65px Arial', fill: '#ff0044', align: 'center' }) || this;
+        var _this = _super.call(this, game, x, y, text) || this;
         _this.game = game;
         _this.x = x;
         _this.y = y;
@@ -105756,19 +105756,23 @@ var Obstacle = function (_super) {
         _this.y2 = _this.game.world.centerY;
         _this.y = _this.y1;
         game.physics.arcade.enable(_this);
+        _this.font = 'Bangers';
+        _this.fontSize = 40;
         _this.question = new Question_1.Question();
         _this.text = _this.question.getText();
         return _this;
     }
+    Obstacle.prototype.isCorrect = function (answer) {
+        console.log(answer);
+        console.log(this.question.getResult());
+        return this.question.getResult() === answer;
+    };
     Obstacle.prototype.setPath = function (path) {
         if (path === 1) {
             this.y = this.y1;
         } else {
             this.y = this.y2;
         }
-    };
-    Obstacle.prototype.getAnswer = function () {
-        return this.question.getAnswer();
     };
     return Obstacle;
 }(Phaser.Text);
@@ -105818,7 +105822,7 @@ var Monkey = function (_super) {
         _this.y = _this.y1;
         _this.key = _this.key;
         game.physics.arcade.enable(_this);
-        _this.body.velocity.x = 300;
+        _this.body.velocity.x = 200;
         return _this;
     }
     Monkey.prototype.overcome = function () {
@@ -105935,6 +105939,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Phaser = __webpack_require__(/*! phaser-ce */ 0);
 var monkey_1 = __webpack_require__(/*! ../sprites/monkey */ 10);
 var Obstacle_1 = __webpack_require__(/*! ../sprites/Obstacle */ 9);
+var Answer_1 = __webpack_require__(/*! ../utils/Answer */ 23);
 var GameState = function (_super) {
     __extends(GameState, _super);
     function GameState() {
@@ -105958,11 +105963,13 @@ var GameState = function (_super) {
         banner.smoothed = false;
         banner.anchor.setTo(0.5);
         this.monkey = new monkey_1.Monkey(this, 100, this.world.centerY, 'monkey');
+        this.answer = new Answer_1.Answer(this.game, this.game.width / 2, this.world.centerY);
         for (var i = 1; i < 10; i += 1) {
             var obstacle = new Obstacle_1.Obstacle(this.game, 800 * i, this.world.centerY);
             this.game.add.existing(obstacle);
             this.obstacles.push(obstacle);
         }
+        this.game.add.existing(this.answer);
         this.game.add.existing(this.monkey);
         // arrow keys pressed
         this.game.input.keyboard.onDownCallback = function (e) {
@@ -105978,24 +105985,22 @@ var GameState = function (_super) {
     GameState.prototype.update = function () {
         this.game.physics.arcade.collide(this.monkey, this.obstacles, this.onCollide, null, this);
     };
-    GameState.prototype.render = function () {
-        if (true) {
-            this.game.debug.spriteInfo(this.monkey, 32, 32);
-        }
-    };
+    GameState.prototype.render = function () {};
     GameState.prototype.onCollide = function (obj1, obj2) {
         this.game.camera.shake(0.01, 500);
         this.monkey.hit();
+        this.answer.x = this.monkey.x + 50;
         this.nextObstacleIndex += 1;
+        obj2.destroy();
         if (this.nextObstacleIndex >= this.obstacles.length - 1) {
             // End game
             return;
         }
         this.obstacles[this.nextObstacleIndex].setPath(this.monkey.path);
-        obj2.destroy();
-        this.answer = '';
+        this.answer.delete();
     };
     GameState.prototype.onCorrect = function () {
+        var _this = this;
         this.nextObstacleIndex += 1;
         if (this.nextObstacleIndex >= this.obstacles.length - 1) {
             // End game
@@ -106003,17 +106008,19 @@ var GameState = function (_super) {
         }
         this.monkey.overcome();
         this.obstacles[this.nextObstacleIndex].setPath(this.monkey.path);
-        this.answer = '';
+        setTimeout(function () {
+            return _this.answer.delete();
+        }, 1000);
     };
     GameState.prototype.verifyAnswer = function () {
-        if (this.answer === this.obstacles[this.nextObstacleIndex].getAnswer()) {
+        if (this.obstacles[this.nextObstacleIndex].isCorrect(this.answer.getText())) {
             this.onCorrect();
         }
     };
     GameState.prototype.handleCursors = function (e) {
         if (e.keyCode === 8) {
             // Backspace
-            this.answer = '';
+            this.answer.delete();
             return;
         }
         // Key 57: 9
@@ -106021,7 +106028,7 @@ var GameState = function (_super) {
         if (e.keyCode > 57 || e.keyCode < 48) {
             return;
         }
-        this.answer += e.keyCode - 48;
+        this.answer.concat((e.keyCode - 48).toString());
         this.verifyAnswer();
     };
     return GameState;
@@ -106098,25 +106105,66 @@ exports.SplashState = SplashState;
 // Question
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Question = function () {
-    function Question(_a) {
-        var _b = _a === void 0 ? {} : _a,
-            _c = _b.start,
-            start = _c === void 0 ? 0 : _c,
-            _d = _b.end,
-            end = _d === void 0 ? 0 : _d,
-            _e = _b.operator,
-            operator = _e === void 0 ? '+' : _e;
-        this.operator = operator || '+';
-        this.number1 = start || 10;
-        this.number2 = end || 2;
-        this.answer = (this.number1 + this.number2).toString();
+var operators = [{
+    sign: '+',
+    method: function method(a, b) {
+        return a + b;
     }
-    Question.prototype.getText = function () {
-        return this.number1 + " " + this.operator + " " + this.number2 + " =";
+}, {
+    sign: '-',
+    method: function method(a, b) {
+        return a - b;
+    }
+}, {
+    sign: '/',
+    method: function method(a, b) {
+        return Math.floor(a / b);
+    }
+}, {
+    sign: '*',
+    method: function method(a, b) {
+        return a * b;
+    }
+}];
+function random(to, from) {
+    if (from === void 0) {
+        from = 0;
+    }
+    return Math.floor(Math.random() * to + from);
+}
+var Question = function () {
+    function Question() {
+        this.operator = operators[random(operators.length)];
+        this.generateNumbers();
+        this.result = this.operator.method(this.number1, this.number2);
+    }
+    Question.prototype.generateNumbers = function () {
+        switch (this.operator.sign) {
+            case '+':
+                this.number1 = random(10);
+                this.number2 = random(10);
+                break;
+            case '-':
+                this.number2 = random(10);
+                this.number1 = random(20, this.number2);
+                break;
+            case '*':
+                this.number1 = random(5);
+                this.number2 = random(5);
+                break;
+            case '/':
+                this.number2 = random(5, 1);
+                this.number1 = this.number2 * random(5);
+                break;
+            default:
+                break;
+        }
     };
-    Question.prototype.getAnswer = function () {
-        return this.answer;
+    Question.prototype.getText = function () {
+        return this.number1 + " " + this.operator.sign + " " + this.number2 + " =";
+    };
+    Question.prototype.getResult = function () {
+        return this.result.toString();
     };
     return Question;
 }();
@@ -106169,6 +106217,74 @@ module.exports = "assets/img/mushroom.png";
 
 module.exports = __webpack_require__(/*! /Users/stevend/coding/phaser/MonkeyMaths/src/main.ts */6);
 
+
+/***/ }),
+/* 22 */,
+/* 23 */
+/* no static exports found */
+/* all exports used */
+/*!*****************************!*\
+  !*** ./src/utils/Answer.ts ***!
+  \*****************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Answer
+
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Answer = function (_super) {
+    __extends(Answer, _super);
+    function Answer(game, x, y, text) {
+        if (text === void 0) {
+            text = '';
+        }
+        var _this = _super.call(this, game, x, y, text) || this;
+        _this.game = game;
+        _this.x = x;
+        _this.y = y;
+        _this.text = text;
+        _this.fixedToCamera = true;
+        _this.y = _this.game.height / 2;
+        _this.x = _this.game.width / 2;
+        _this.font = 'Bangers';
+        _this.padding.set(10, 16);
+        _this.fontSize = 100;
+        _this.fill = '#ff0000';
+        _this.smoothed = false;
+        _this.anchor.setTo(0.5);
+        return _this;
+    }
+    Answer.prototype.getText = function () {
+        return this.text;
+    };
+    Answer.prototype.concat = function (character) {
+        this.text = "" + this.text + character;
+        this.visible = true;
+    };
+    Answer.prototype.delete = function () {
+        this.text = '';
+        this.visible = false;
+    };
+    return Answer;
+}(Phaser.Text);
+exports.Answer = Answer;
 
 /***/ })
 ],[21]);
