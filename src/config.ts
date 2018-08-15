@@ -1,9 +1,8 @@
-// Config class
+// Game config
 
 export class Config {
   gameWidth = this.getWindowSize();
   gameHeight = this.getWindowSize();
-  localStorageName = 'MonkeyMaths';
 
   private getWindowSize(): number {
     // Get the smaller dimension

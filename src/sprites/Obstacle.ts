@@ -1,9 +1,16 @@
+// Obstacle
+
 import * as Phaser from 'phaser-ce';
 import { Question } from '../utils/Question';
 
+/**
+ * @summary Obstacle sprite
+ */
 export class Obstacle extends Phaser.Text {
+  /**
+   * @summary Question
+   */
   public question: Question;
-  public answer: string;
   private y1: number = this.game.world.centerY / 4;
   private y2: number = this.game.world.centerY;
 
@@ -22,13 +29,21 @@ export class Obstacle extends Phaser.Text {
     this.text = this.question.getText();
   }
 
-  public isCorrect(answer): boolean {
-    console.log(answer);
-    console.log(this.question.getResult());
+  /**
+   * @summary Check if answer of user is correct or not
+   * @param {string} answer
+   *
+   * @return {boolean}
+   */
+  public isCorrect(answer: string): boolean {
     return this.question.getResult() === answer;
   }
 
-  public setPath(path): void {
+  /**
+   * @summary Set new path for the obstacle
+   * @param path
+   */
+  public setPath(path: number): void {
     if (path === 1) {
       this.y = this.y1;
     } else {
