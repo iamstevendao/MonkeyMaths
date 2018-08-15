@@ -15,7 +15,7 @@ export class Monkey extends Phaser.Sprite {
     this.y = this.y1;
     this.key = this.key;
     game.physics.arcade.enable(this);
-    this.body.velocity.x = 300;
+    this.body.velocity.x = 200;
   }
 
   public overcome(): void {

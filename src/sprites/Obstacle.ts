@@ -13,11 +13,19 @@ export class Obstacle extends Phaser.Text {
     public y: number,
     public text: string = '',
   ) {
-    super(game, x, y, text, { font: '65px Arial', fill: '#ff0044', align: 'center' });
+    super(game, x, y, text);
     this.y = this.y1;
     game.physics.arcade.enable(this);
+    this.font = 'Bangers';
+    this.fontSize = 40;
     this.question = new Question();
     this.text = this.question.getText();
+  }
+
+  public isCorrect(answer): boolean {
+    console.log(answer);
+    console.log(this.question.getResult());
+    return this.question.getResult() === answer;
   }
 
   public setPath(path): void {
@@ -26,8 +34,5 @@ export class Obstacle extends Phaser.Text {
     } else {
       this.y = this.y2;
     }
-  }
-  public getResult(): string {
-    return this.question.getResult();
   }
 }

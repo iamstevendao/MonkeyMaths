@@ -7,10 +7,10 @@ export class Answer extends Phaser.Text {
     public y: number,
     public text: string = '',
   ) {
-    super(game, x, y, text, { font: '40px Arial', fill: '#ff0044', align: 'center' });
-    game.physics.arcade.enable(this);
-    this.body.velocity.x = 300;
+    super(game, x, y, text);
+    this.fixedToCamera = true;
     this.y = this.game.height / 2;
+    this.x = this.game.width / 2;
     this.font = 'Bangers';
     this.padding.set(10, 16);
     this.fontSize = 100;

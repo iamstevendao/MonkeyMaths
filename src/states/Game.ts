@@ -84,7 +84,7 @@ export class GameState extends Phaser.State {
   }
 
   private verifyAnswer() {
-    if (this.answer.getText() === this.obstacles[this.nextObstacleIndex].getResult()) {
+    if (this.obstacles[this.nextObstacleIndex].isCorrect(this.answer.getText())) {
       this.onCorrect();
     }
   }
