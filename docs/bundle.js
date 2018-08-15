@@ -105635,6 +105635,7 @@ PIXI.canUseNewCanvasBlendModes = function () {
 
 "use strict";
 
+// Main
 
 var __extends = undefined && undefined.__extends || function () {
     var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
@@ -105665,10 +105666,7 @@ var Game = function (_super) {
     function Game() {
         var _this = this;
         var config = new config_1.Config();
-        var docElement = document.documentElement;
-        var width = docElement.clientWidth > config.gameWidth ? config.gameWidth : docElement.clientWidth;
-        var height = docElement.clientHeight > config.gameHeight ? config.gameHeight : docElement.clientHeight;
-        _this = _super.call(this, width, height, Phaser.CANVAS, 'content', null) || this;
+        _this = _super.call(this, config.gameWidth, config.gameHeight, Phaser.CANVAS, 'content', null) || this;
         _this.state.add('Boot', Boot_1.BootState, false);
         _this.state.add('Splash', Splash_1.SplashState, false);
         _this.state.add('Game', Game_1.GameState, false);
@@ -105691,14 +105689,13 @@ window.game = new Game();
 
 "use strict";
 
-// Config class
+// Game config
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Config = function () {
     function Config() {
         this.gameWidth = this.getWindowSize();
         this.gameHeight = this.getWindowSize();
-        this.localStorageName = 'MonkeyMaths';
     }
     Config.prototype.getWindowSize = function () {
         // Get the smaller dimension
@@ -105721,6 +105718,7 @@ exports.Config = Config;
 
 "use strict";
 
+// Obstacle
 
 var __extends = undefined && undefined.__extends || function () {
     var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
@@ -105741,6 +105739,9 @@ var __extends = undefined && undefined.__extends || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Phaser = __webpack_require__(/*! phaser-ce */ 0);
 var Question_1 = __webpack_require__(/*! ../utils/Question */ 14);
+/**
+ * @summary Obstacle sprite
+ */
 var Obstacle = function (_super) {
     __extends(Obstacle, _super);
     function Obstacle(game, x, y, text) {
@@ -105762,11 +105763,19 @@ var Obstacle = function (_super) {
         _this.text = _this.question.getText();
         return _this;
     }
+    /**
+     * @summary Check if answer of user is correct or not
+     * @param {string} answer
+     *
+     * @return {boolean}
+     */
     Obstacle.prototype.isCorrect = function (answer) {
-        console.log(answer);
-        console.log(this.question.getResult());
         return this.question.getResult() === answer;
     };
+    /**
+     * @summary Set new path for the obstacle
+     * @param path
+     */
     Obstacle.prototype.setPath = function (path) {
         if (path === 1) {
             this.y = this.y1;
@@ -105789,6 +105798,7 @@ exports.Obstacle = Obstacle;
 
 "use strict";
 
+// Monkey
 
 var __extends = undefined && undefined.__extends || function () {
     var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
@@ -105808,6 +105818,9 @@ var __extends = undefined && undefined.__extends || function () {
 }();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Phaser = __webpack_require__(/*! phaser-ce */ 0);
+/**
+ * @summary Monkey sprite
+ */
 var Monkey = function (_super) {
     __extends(Monkey, _super);
     function Monkey(game, x, y, key) {
@@ -105816,6 +105829,9 @@ var Monkey = function (_super) {
         _this.x = x;
         _this.y = y;
         _this.key = key;
+        /**
+         * @summary Current path of monkey, can be 1 or 2
+         */
         _this.path = 1; // 1, 2
         _this.y1 = _this.game.world.centerY / 4;
         _this.y2 = _this.game.world.centerY;
@@ -105825,14 +105841,22 @@ var Monkey = function (_super) {
         _this.body.velocity.x = 200;
         return _this;
     }
+    /**
+     * @summary Handle event when Monkey overcomes an obstacle
+     * @public
+     */
     Monkey.prototype.overcome = function () {
         this.path = this.path === 1 ? 2 : 1;
         this.y = this.path === 1 ? this.y1 : this.y2;
     };
+    /**
+     * @summary Handle collision event of monkey and obstacle
+     * @public
+     */
     Monkey.prototype.hit = function () {
         var _this = this;
         setTimeout(function () {
-            return _this.body.velocity.x = 300;
+            return _this.body.velocity.x = 200;
         }, 1000);
     };
     return Monkey;
@@ -105850,6 +105874,7 @@ exports.Monkey = Monkey;
 
 "use strict";
 
+// Boot
 
 var __extends = undefined && undefined.__extends || function () {
     var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
@@ -105872,16 +105897,25 @@ var Phaser = __webpack_require__(/*! phaser-ce */ 0);
 var WebFont = __webpack_require__(/*! webfontloader */ 4);
 var LoaderBackground = __webpack_require__(/*! ../assets/img/loader-bg.png */ 16);
 var LoaderBar = __webpack_require__(/*! ../assets/img/loader-bar.png */ 15);
+/**
+ * @summary BootState
+ */
 var BootState = function (_super) {
     __extends(BootState, _super);
     function BootState() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    /**
+     * @summary Initialize state
+     */
     BootState.prototype.init = function () {
         this.stage.backgroundColor = '#EDEEC9';
         this.fontsReady = false;
         this.fontsLoaded = this.fontsLoaded.bind(this);
     };
+    /**
+     * @summary Preload
+     */
     BootState.prototype.preload = function () {
         WebFont.load({
             google: {
@@ -105894,11 +105928,17 @@ var BootState = function (_super) {
         this.load.image('loaderBg', LoaderBackground);
         this.load.image('loaderBar', LoaderBar);
     };
+    /**
+     * @summary When the font is ready, show splash state
+     */
     BootState.prototype.render = function () {
         if (this.fontsReady) {
             this.state.start('Splash');
         }
     };
+    /**
+     * @summary Handler for the WebFont activation
+     */
     BootState.prototype.fontsLoaded = function () {
         this.fontsReady = true;
     };
@@ -105917,6 +105957,7 @@ exports.BootState = BootState;
 
 "use strict";
 
+// Main game state
 
 var __extends = undefined && undefined.__extends || function () {
     var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
@@ -105935,25 +105976,40 @@ var __extends = undefined && undefined.__extends || function () {
     };
 }();
 Object.defineProperty(exports, "__esModule", { value: true });
-/* globals __DEV__ */
 var Phaser = __webpack_require__(/*! phaser-ce */ 0);
 var monkey_1 = __webpack_require__(/*! ../sprites/monkey */ 10);
 var Obstacle_1 = __webpack_require__(/*! ../sprites/Obstacle */ 9);
 var Answer_1 = __webpack_require__(/*! ../utils/Answer */ 23);
+/**
+ * @summary Main game state
+ */
 var GameState = function (_super) {
     __extends(GameState, _super);
     function GameState() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
+        /**
+         * @summary Obstacles list, generated when game created,
+         * with the position getting updated during the game
+         */
         _this.obstacles = [];
+        /**
+         * @summary Store the next obstacle index to keep track
+         */
         _this.nextObstacleIndex = 0;
         return _this;
     }
+    /**
+     * @summary Initialize game
+     */
     GameState.prototype.init = function () {
         this.game.world.setBounds(0, 0, 8000, this.game.height);
     };
-    GameState.prototype.preload = function () {};
+    /**
+     * @summary Create game
+     */
     GameState.prototype.create = function () {
         var _this = this;
+        // Add banner (will move or remove it later)
         var bannerText = 'Monkey Maths by Starmaths';
         var banner = this.add.text(500, this.game.height - 80, bannerText, null);
         banner.font = 'Bangers';
@@ -105962,30 +106018,38 @@ var GameState = function (_super) {
         banner.fill = '#ff0000';
         banner.smoothed = false;
         banner.anchor.setTo(0.5);
+        // Setup monkey
         this.monkey = new monkey_1.Monkey(this, 100, this.world.centerY, 'monkey');
+        this.game.add.existing(this.monkey);
+        // Setup answer
         this.answer = new Answer_1.Answer(this.game, this.game.width / 2, this.world.centerY);
+        this.game.add.existing(this.answer);
+        // Initialize obstacles list, hard-coded to be 10 right now
         for (var i = 1; i < 10; i += 1) {
             var obstacle = new Obstacle_1.Obstacle(this.game, 800 * i, this.world.centerY);
             this.game.add.existing(obstacle);
             this.obstacles.push(obstacle);
         }
-        this.game.add.existing(this.answer);
-        this.game.add.existing(this.monkey);
-        // arrow keys pressed
+        // Handle key press event
         this.game.input.keyboard.onDownCallback = function (e) {
             _this.handleCursors(e);
         };
+        // Set camera to follow the monkey
         this.game.camera.follow(this.monkey);
         this.game.camera.lerp.x = 0.1;
         this.game.camera.deadzone = new Phaser.Rectangle(50, 100, 50, 400);
-        var zone = this.game.camera.deadzone;
-        this.game.context.fillStyle = 'rgba(255,0,0,0.6)';
-        this.game.context.fillRect(zone.x, zone.y, zone.width, zone.height);
     };
+    /**
+     * @summary Handle game events
+     */
     GameState.prototype.update = function () {
         this.game.physics.arcade.collide(this.monkey, this.obstacles, this.onCollide, null, this);
     };
-    GameState.prototype.render = function () {};
+    /**
+     * @summary Handle collision event (of monkey and obstacles)
+     * @param obj1
+     * @param obj2
+     */
     GameState.prototype.onCollide = function (obj1, obj2) {
         this.game.camera.shake(0.01, 500);
         this.monkey.hit();
@@ -105999,6 +106063,9 @@ var GameState = function (_super) {
         this.obstacles[this.nextObstacleIndex].setPath(this.monkey.path);
         this.answer.delete();
     };
+    /**
+     * @summary Fires when user answers correctly an obstacle
+     */
     GameState.prototype.onCorrect = function () {
         var _this = this;
         this.nextObstacleIndex += 1;
@@ -106012,11 +106079,18 @@ var GameState = function (_super) {
             return _this.answer.delete();
         }, 1000);
     };
+    /**
+     * @summary Verify the answer of user
+     */
     GameState.prototype.verifyAnswer = function () {
         if (this.obstacles[this.nextObstacleIndex].isCorrect(this.answer.getText())) {
             this.onCorrect();
         }
     };
+    /**
+     * @summary Handle keypress event
+     * @param e key press
+     */
     GameState.prototype.handleCursors = function (e) {
         if (e.keyCode === 8) {
             // Backspace
@@ -106046,6 +106120,7 @@ exports.GameState = GameState;
 
 "use strict";
 
+// Game splash
 
 var __extends = undefined && undefined.__extends || function () {
     var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
@@ -106066,12 +106141,17 @@ var __extends = undefined && undefined.__extends || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Phaser = __webpack_require__(/*! phaser-ce */ 0);
 var ImageMushroom = __webpack_require__(/*! ../assets/img/mushroom.png */ 17);
+/**
+ * @summary Splash state of the game
+ */
 var SplashState = function (_super) {
     __extends(SplashState, _super);
     function SplashState() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    SplashState.prototype.init = function () {};
+    /**
+     * @summary Preload the game
+     */
     SplashState.prototype.preload = function () {
         this.loaderBg = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBg');
         this.loaderBar = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBar');
@@ -106079,9 +106159,16 @@ var SplashState = function (_super) {
         this.load.setPreloadSprite(this.loaderBar);
         this.load.image('monkey', ImageMushroom);
     };
+    /**
+     * @summary Create state
+     */
     SplashState.prototype.create = function () {
         this.state.start('Game');
     };
+    /**
+     * @summary Center game objects initialized from preload
+     * @param objects
+     */
     SplashState.prototype.centerGameObjects = function (objects) {
         objects.forEach(function (object) {
             object.anchor.setTo(0.5);
@@ -106105,64 +106192,64 @@ exports.SplashState = SplashState;
 // Question
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var operators = [{
-    sign: '+',
-    method: function method(a, b) {
-        return a + b;
-    }
-}, {
-    sign: '-',
-    method: function method(a, b) {
-        return a - b;
-    }
-}, {
-    sign: '/',
-    method: function method(a, b) {
-        return Math.floor(a / b);
-    }
-}, {
-    sign: '*',
-    method: function method(a, b) {
-        return a * b;
-    }
-}];
-function random(to, from) {
-    if (from === void 0) {
-        from = 0;
-    }
-    return Math.floor(Math.random() * to + from);
-}
+var Helpers_1 = __webpack_require__(/*! ./Helpers */ 24);
+/**
+ * @summary Question class
+ */
 var Question = function () {
+    /**
+     * @summary Constructor, take no argument
+     */
     function Question() {
-        this.operator = operators[random(operators.length)];
+        // Random an operator
+        var operatorIndex = Helpers_1.Helpers.random(Helpers_1.Helpers.operators.length);
+        this.operator = Helpers_1.Helpers.operators[operatorIndex];
+        // Generate the first and second number
         this.generateNumbers();
+        // Calculate the result
         this.result = this.operator.method(this.number1, this.number2);
     }
+    /**
+     * @summary Generate 2 numbers for the question based on the operator
+     * @private
+     */
     Question.prototype.generateNumbers = function () {
         switch (this.operator.sign) {
             case '+':
-                this.number1 = random(10);
-                this.number2 = random(10);
+                this.number1 = Helpers_1.Helpers.random(10);
+                this.number2 = Helpers_1.Helpers.random(10);
                 break;
             case '-':
-                this.number2 = random(10);
-                this.number1 = random(20, this.number2);
+                this.number2 = Helpers_1.Helpers.random(10);
+                this.number1 = Helpers_1.Helpers.random(20, this.number2);
                 break;
             case '*':
-                this.number1 = random(5);
-                this.number2 = random(5);
+                this.number1 = Helpers_1.Helpers.random(5);
+                this.number2 = Helpers_1.Helpers.random(5);
                 break;
             case '/':
-                this.number2 = random(5, 1);
-                this.number1 = this.number2 * random(5);
+                this.number2 = Helpers_1.Helpers.random(5, 1);
+                this.number1 = this.number2 * Helpers_1.Helpers.random(5);
                 break;
             default:
                 break;
         }
     };
+    /**
+     * @summary Get question text
+     * @public
+     *
+     * @return {string}
+     */
     Question.prototype.getText = function () {
-        return this.number1 + " " + this.operator.sign + " " + this.number2 + " =";
+        return this.number1 + " " + this.operator.sign + " " + this.number2;
     };
+    /**
+     * @summary Get result
+     * @public
+     *
+     * @return {string}
+     */
     Question.prototype.getResult = function () {
         return this.result.toString();
     };
@@ -106249,8 +106336,18 @@ var __extends = undefined && undefined.__extends || function () {
     };
 }();
 Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * @summary The answer from the user
+ */
 var Answer = function (_super) {
     __extends(Answer, _super);
+    /**
+     *
+     * @param {Phaser.Game} game
+     * @param {number} x
+     * @param {number} y
+     * @param {string} [text]
+     */
     function Answer(game, x, y, text) {
         if (text === void 0) {
             text = '';
@@ -106260,6 +106357,7 @@ var Answer = function (_super) {
         _this.x = x;
         _this.y = y;
         _this.text = text;
+        // Set style
         _this.fixedToCamera = true;
         _this.y = _this.game.height / 2;
         _this.x = _this.game.width / 2;
@@ -106271,13 +106369,26 @@ var Answer = function (_super) {
         _this.anchor.setTo(0.5);
         return _this;
     }
+    /**
+     * @summary Return answer
+     * @public
+     *
+     * @return {string}
+     */
     Answer.prototype.getText = function () {
         return this.text;
     };
+    /**
+     * @summary Concat a character (number) to the current answer
+     * @param {string} character
+     */
     Answer.prototype.concat = function (character) {
         this.text = "" + this.text + character;
         this.visible = true;
     };
+    /**
+     * @summary Delete current answer
+     */
     Answer.prototype.delete = function () {
         this.text = '';
         this.visible = false;
@@ -106285,6 +106396,66 @@ var Answer = function (_super) {
     return Answer;
 }(Phaser.Text);
 exports.Answer = Answer;
+
+/***/ }),
+/* 24 */
+/* no static exports found */
+/* all exports used */
+/*!******************************!*\
+  !*** ./src/utils/Helpers.ts ***!
+  \******************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Helpers
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * @summary Helpers class
+ */
+var Helpers = function () {
+    function Helpers() {}
+    /**
+     * @summary Short-hand function to get a quick random number
+     * @param {number} to
+     * @param {number} [from=0]
+     *
+     * @return {number}
+     */
+    Helpers.random = function (to, from) {
+        if (from === void 0) {
+            from = 0;
+        }
+        return Math.floor(Math.random() * to + from);
+    };
+    /**
+     * @summary List of operators using in the questions
+     */
+    Helpers.operators = [{
+        sign: '+',
+        method: function method(a, b) {
+            return a + b;
+        }
+    }, {
+        sign: '-',
+        method: function method(a, b) {
+            return a - b;
+        }
+    }, {
+        sign: '/',
+        method: function method(a, b) {
+            return Math.floor(a / b);
+        }
+    }, {
+        sign: '*',
+        method: function method(a, b) {
+            return a * b;
+        }
+    }];
+    return Helpers;
+}();
+exports.Helpers = Helpers;
 
 /***/ })
 ],[21]);
