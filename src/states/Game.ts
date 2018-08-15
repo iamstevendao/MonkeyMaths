@@ -2,15 +2,14 @@
 import * as Phaser from 'phaser-ce';
 import { Monkey } from '../sprites/monkey';
 import { Obstacle } from '../sprites/Obstacle';
-
-declare var __DEV__: boolean;
+import { Answer } from '../utils/Answer';
 
 export class GameState extends Phaser.State {
 
   public monkey: Monkey;
   public obstacles: Obstacle[] = [];
   private nextObstacleIndex: number = 0;
-  private answer: string;
+  private answer: Answer;
 
   public init(): void {
     this.game.world.setBounds(0, 0, 8000, this.game.height);
@@ -28,12 +27,15 @@ export class GameState extends Phaser.State {
     banner.anchor.setTo(0.5);
 
     this.monkey = new Monkey(this, 100, this.world.centerY, 'monkey');
+    this.answer = new Answer(this.game, this.game.width / 2, this.world.centerY);
+
     for (let i = 1; i < 10; i += 1) {
       const obstacle = new Obstacle(this.game, 800 * i, this.world.centerY);
       this.game.add.existing(obstacle);
       this.obstacles.push(obstacle);
     }
 
+    this.game.add.existing(this.answer);
     this.game.add.existing(this.monkey);
     // arrow keys pressed
     this.game.input.keyboard.onDownCallback = (e) => {
@@ -54,22 +56,20 @@ export class GameState extends Phaser.State {
   }
 
   public render(): void {
-    if (__DEV__) {
-      this.game.debug.spriteInfo(this.monkey, 32, 32);
-    }
   }
 
   private onCollide(obj1: object, obj2: any) {
     this.game.camera.shake(0.01, 500);
     this.monkey.hit();
+    this.answer.x = this.monkey.x + 50;
     this.nextObstacleIndex += 1;
+    obj2.destroy();
     if (this.nextObstacleIndex >= this.obstacles.length - 1) {
       // End game
       return;
     }
     this.obstacles[this.nextObstacleIndex].setPath(this.monkey.path);
-    obj2.destroy();
-    this.answer = '';
+    this.answer.delete();
   }
 
   private onCorrect() {
@@ -80,11 +80,11 @@ export class GameState extends Phaser.State {
     }
     this.monkey.overcome();
     this.obstacles[this.nextObstacleIndex].setPath(this.monkey.path);
-    this.answer = '';
+    setTimeout(() => this.answer.delete(), 1000);
   }
 
   private verifyAnswer() {
-    if (this.answer === this.obstacles[this.nextObstacleIndex].getAnswer()) {
+    if (this.answer.getText() === this.obstacles[this.nextObstacleIndex].getResult()) {
       this.onCorrect();
     }
   }
@@ -92,7 +92,7 @@ export class GameState extends Phaser.State {
   private handleCursors(e): void {
     if (e.keyCode === 8) {
       // Backspace
-      this.answer = '';
+      this.answer.delete();
       return;
     }
     // Key 57: 9
@@ -100,7 +100,7 @@ export class GameState extends Phaser.State {
     if (e.keyCode > 57 || e.keyCode < 48) {
       return;
     }
-    this.answer += (e.keyCode - 48);
+    this.answer.concat((e.keyCode - 48).toString());
     this.verifyAnswer();
   }
 }

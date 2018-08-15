@@ -11,7 +11,7 @@ export class Obstacle extends Phaser.Text {
     public game: any,
     public x: number,
     public y: number,
-    public text: string = 'hello',
+    public text: string = '',
   ) {
     super(game, x, y, text, { font: '65px Arial', fill: '#ff0044', align: 'center' });
     this.y = this.y1;
@@ -27,7 +27,7 @@ export class Obstacle extends Phaser.Text {
       this.y = this.y2;
     }
   }
-  public getAnswer(): string {
-    return this.question.getAnswer();
+  public getResult(): string {
+    return this.question.getResult();
   }
 }
