@@ -2,6 +2,7 @@
 
 import * as Phaser from 'phaser-ce';
 import { Question } from '../utils/Question';
+import { Helpers } from '../utils/Helpers';
 
 /**
  * @summary Obstacle sprite
@@ -11,8 +12,7 @@ export class Obstacle extends Phaser.Text {
    * @summary Question
    */
   public question: Question;
-  private y1: number = this.game.world.centerY / 4;
-  private y2: number = this.game.world.centerY;
+  private route: number = 1;
 
   constructor(
     public game: any,
@@ -21,8 +21,16 @@ export class Obstacle extends Phaser.Text {
     public text: string = '',
   ) {
     super(game, x, y, text);
-    this.y = this.y1;
-    game.physics.arcade.enable(this);
+    this.initialize();
+    this.updateY();
+  }
+
+  /**
+   * @summary Initialize attributes of the obstacle
+   * @private
+   */
+  private initialize(): void {
+    this.game.physics.arcade.enable(this);
     this.font = 'Bangers';
     this.fontSize = 40;
     this.question = new Question();
@@ -40,14 +48,19 @@ export class Obstacle extends Phaser.Text {
   }
 
   /**
-   * @summary Set new path for the obstacle
-   * @param path
+   * @summary Update route for the obstacle
+   * @public
    */
-  public setPath(path: number): void {
-    if (path === 1) {
-      this.y = this.y1;
-    } else {
-      this.y = this.y2;
-    }
+  public setRoute(route): void {
+    this.route = route;
+    this.updateY();
+  }
+
+  /**
+   * @summary Update Y based on current route
+   * @private
+   */
+  private updateY(): void {
+    this.y = Helpers.getYByRoute(this.game, this.route);
   }
 }

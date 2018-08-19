@@ -43,10 +43,8 @@ export class GameState extends Phaser.State {
     const bannerText = 'Monkey Maths by Starmaths';
     const banner = this.add.text(500, this.game.height - 80, bannerText, null);
     banner.font = 'Bangers';
-    banner.padding.set(10, 16);
     banner.fontSize = 40;
     banner.fill = '#ff0000';
-    banner.smoothed = false;
     banner.anchor.setTo(0.5);
 
     // Setup monkey
@@ -97,7 +95,7 @@ export class GameState extends Phaser.State {
       // End game
       return;
     }
-    this.obstacles[this.nextObstacleIndex].setPath(this.monkey.path);
+    this.obstacles[this.nextObstacleIndex].setRoute(this.monkey.route);
     this.answer.delete();
   }
 
@@ -111,8 +109,8 @@ export class GameState extends Phaser.State {
       return;
     }
     this.monkey.overcome();
-    this.obstacles[this.nextObstacleIndex].setPath(this.monkey.path);
-    setTimeout(() => this.answer.delete(), 1000);
+    this.obstacles[this.nextObstacleIndex].setRoute(this.monkey.route);
+    setTimeout(() => this.answer.delete(), 800);
   }
 
   /**

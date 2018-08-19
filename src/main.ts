@@ -6,7 +6,7 @@ import * as Phaser from 'phaser-ce';
 import { BootState } from './states/Boot';
 import { SplashState } from './states/Splash';
 import { GameState } from './states/Game';
-import { Config } from './config';
+import { Config } from './utils/Config';
 
 class Game extends Phaser.Game {
   constructor() {

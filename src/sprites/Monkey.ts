@@ -1,6 +1,8 @@
 // Monkey
 
 import * as Phaser from 'phaser-ce';
+import { Constants } from '../utils/Constants';
+import { Helpers } from '../utils/Helpers';
 
 /**
  * @summary Monkey sprite
@@ -9,9 +11,7 @@ export class Monkey extends Phaser.Sprite {
   /**
    * @summary Current path of monkey, can be 1 or 2
    */
-  public path: number = 1; // 1, 2
-  private y1: number = this.game.world.centerY / 4;
-  private y2: number = this.game.world.centerY;
+  public route: number = 1;
 
   constructor(
     public game: any,
@@ -20,9 +20,16 @@ export class Monkey extends Phaser.Sprite {
     public key: string | Phaser.RenderTexture | Phaser.BitmapData | PIXI.Texture,
   ) {
     super(game, x, y, key);
-    this.y = this.y1;
-    this.key = this.key;
-    game.physics.arcade.enable(this);
+    this.initialize();
+    this.updateY();
+  }
+
+  /**
+   * @summary Initialize attributes of monkey
+   * @private
+   */
+  private initialize(): void {
+    this.game.physics.arcade.enable(this);
     this.body.velocity.x = 200;
   }
 
@@ -31,8 +38,33 @@ export class Monkey extends Phaser.Sprite {
    * @public
    */
   public overcome(): void {
-    this.path = this.path === 1 ? 2 : 1;
-    this.y = this.path === 1 ? this.y1 : this.y2;
+    this.route = this.route === 1 ? 2 : 1;
+    this.updateY();
+    this.updateSpeed();
+  }
+
+  /**
+   * @summary Update Y based on current route
+   * @private
+   */
+  private updateY(): void {
+    this.y = Helpers.getYByRoute(this.game, this.route);
+  }
+
+  /**
+   * @summary Update monkey speed
+   * @private
+   *
+   * @param {Boolean} [increasing=true]
+   */
+  private updateSpeed(increasing: boolean = true): void {
+    let newVelocity = this.body.velocity.x + Constants.VELOCITY_GAP * (increasing ? 1 : -1);
+    if (newVelocity > Constants.VELOCITY_MAX) {
+      newVelocity = Constants.VELOCITY_MAX;
+    } else if (newVelocity < Constants.VELOCITY_MIN) {
+      newVelocity = Constants.VELOCITY_MIN;
+    }
+    this.body.velocity.x = newVelocity;
   }
 
   /**
@@ -40,6 +72,6 @@ export class Monkey extends Phaser.Sprite {
    * @public
    */
   public hit(): void {
-    setTimeout(() => this.body.velocity.x = 200, 1000);
+    setTimeout(() => this.updateSpeed(false), 800);
   }
 }

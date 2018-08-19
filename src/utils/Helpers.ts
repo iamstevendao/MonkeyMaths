@@ -31,4 +31,12 @@ export abstract class Helpers {
     sign: '*',
     method: (a, b) => (a * b),
   }];
+
+  public static getYByRoute(game: any, index: number): number {
+    let y = game.world.centerY / 4;
+    if (index === 2) {
+      y = game.world.centerY / 2;
+    }
+    return y;
+  }
 }
