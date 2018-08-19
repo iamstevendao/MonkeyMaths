@@ -26,7 +26,6 @@ export class Answer extends Phaser.Text {
     this.padding.set(10, 16);
     this.fontSize = 100;
     this.fill = '#ff0000';
-    this.smoothed = false;
     this.anchor.setTo(0.5);
   }
 

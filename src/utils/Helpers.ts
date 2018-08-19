@@ -33,9 +33,9 @@ export abstract class Helpers {
   }];
 
   public static getYByRoute(game: any, index: number): number {
-    let y = game.world.centerY / 4;
+    let y = 200;
     if (index === 2) {
-      y = game.world.centerY / 2;
+      y = 400;
     }
     return y;
   }

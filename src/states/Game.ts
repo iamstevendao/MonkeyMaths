@@ -4,6 +4,7 @@ import * as Phaser from 'phaser-ce';
 import { Monkey } from '../sprites/monkey';
 import { Obstacle } from '../sprites/Obstacle';
 import { Answer } from '../utils/Answer';
+import { Track } from '../utils/Track';
 
 /**
  * @summary Main game state
@@ -27,6 +28,22 @@ export class GameState extends Phaser.State {
    * @summary Answer from user
    */
   private answer: Answer;
+  /**
+   * @summary Banner starmaths
+   */
+  private banner: object;
+  /**
+   * @summary Score
+   */
+  private score: Phaser.Text;
+  /**
+   * @summary Level
+   */
+  private level: Phaser.Text;
+  /**
+   * @summary Tracking
+   */
+  private track: Track;
 
   /**
    * @summary Initialize game
@@ -39,13 +56,15 @@ export class GameState extends Phaser.State {
    * @summary Create game
    */
   public create(): void {
-    // Add banner (will move or remove it later)
-    const bannerText = 'Monkey Maths by Starmaths';
-    const banner = this.add.text(500, this.game.height - 80, bannerText, null);
-    banner.font = 'Bangers';
-    banner.fontSize = 40;
-    banner.fill = '#ff0000';
-    banner.anchor.setTo(0.5);
+    this.initializeObjects();
+    this.initializeGame();
+  }
+
+  private initializeObjects(): void {
+    this.track = new Track();
+    this.initializeBanner();
+    this.initializeScore();
+    this.initializeLevel();
 
     // Setup monkey
     this.monkey = new Monkey(this, 100, this.world.centerY, 'monkey');
@@ -61,7 +80,9 @@ export class GameState extends Phaser.State {
       this.game.add.existing(obstacle);
       this.obstacles.push(obstacle);
     }
+  }
 
+  private initializeGame(): void {
     // Handle key press event
     this.game.input.keyboard.onDownCallback = (e) => {
       this.handleCursors(e);
@@ -73,11 +94,50 @@ export class GameState extends Phaser.State {
     this.game.camera.deadzone = new Phaser.Rectangle(50, 100, 50, 400);
   }
 
+  private initializeBanner(): void {
+    const bannerText = 'Monkey Maths by Starmaths';
+    this.banner = this.add.text(this.game.width / 2, this.game.height - 80, bannerText, null);
+    this.attachStyle(this.banner);
+  }
+
+  private initializeScore(): void {
+    this.score = this.add.text(this.game.width / 4, 80, '', null);
+    this.attachStyle(this.score);
+  }
+
+  private initializeLevel(): void {
+    this.level = this.add.text(this.game.width * 3 / 4, 80, '', null);
+    this.attachStyle(this.level);
+  }
+
+  private refreshTrack(): void {
+    this.score.setText(`Score: ${this.track.getScore()}`);
+    this.level.setText(`Level: ${this.track.getLevel()}`);
+  }
+
+  private attachStyle(obj): void {
+    Object.assign(obj, {
+      font: 'Bangers',
+      fontSize: 40,
+      padding: {
+        x: 20,
+        y: 20,
+      },
+      fill: '#ff0000',
+      fixedToCamera: true,
+      anchor: {
+        x: 0.5,
+        y: 0.5,
+      },
+    });
+  }
+
   /**
    * @summary Handle game events
    */
   public update(): void {
     this.game.physics.arcade.collide(this.monkey, this.obstacles, this.onCollide, null, this);
+    this.refreshTrack();
   }
 
   /**
@@ -86,6 +146,7 @@ export class GameState extends Phaser.State {
    * @param obj2
    */
   private onCollide(obj1: object, obj2: any): void {
+    this.track.onIncorrect();
     this.game.camera.shake(0.01, 500);
     this.monkey.hit();
     this.answer.x = this.monkey.x + 50;
@@ -103,6 +164,7 @@ export class GameState extends Phaser.State {
    * @summary Fires when user answers correctly an obstacle
    */
   private onCorrect(): void {
+    this.track.onCorrect();
     this.nextObstacleIndex += 1;
     if (this.nextObstacleIndex >= this.obstacles.length - 1) {
       // End game
