@@ -40,7 +40,7 @@ export class Track {
     } else {
       this.chain += 1;
     }
-    this.updateMechanism();
+    this.updateMechanism(true);
   }
 
   /**
@@ -54,7 +54,7 @@ export class Track {
     } else {
       this.chain -= 1;
     }
-    this.updateMechanism();
+    this.updateMechanism(false);
   }
 
   private reduceLevel(): void {
@@ -68,17 +68,25 @@ export class Track {
    * @summary Update game mechanism
    * @private
    */
-  private updateMechanism(): void {
+  private updateMechanism(isCorrect: Boolean): void {
+    let addingScore = isCorrect ? 1 : - 1;
+    // If chain is more than 1, add it along with adding score
+    if (this.chain >= 1) {
+      addingScore += this.chain - 1;
+    }
+
     if (this.chain <= -2) {
       this.reduceLevel();
+    } else if (this.chain >= 2) {
+      this.level += 1;
+    }
+
+    // If score cant be reduce anymore
+    if (this.score <= 0 && addingScore < 0) {
       return;
     }
 
-    if (this.chain >= 2) {
-      this.level += 1;
-      this.score = this.chain - 1;
-      return;
-    }
-    this.score += 1;
+    // Otherwise add to the score
+    this.score += addingScore;
   }
 }
