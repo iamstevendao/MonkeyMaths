@@ -117,8 +117,8 @@ export class GameState extends Phaser.State {
 
   private attachStyle(obj): void {
     Object.assign(obj, {
-      font: 'Bangers',
-      fontSize: 40,
+      font: 'Press Start 2P',
+      fontSize: 25,
       padding: {
         x: 20,
         y: 20,

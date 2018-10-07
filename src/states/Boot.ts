@@ -29,7 +29,7 @@ export class BootState extends Phaser.State {
   public preload(): void {
     WebFont.load({
       google: {
-        families: ['Bangers'],
+        families: ['Press Start 2P'],
       },
       active: this.fontsLoaded,
     });
