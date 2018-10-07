@@ -10,5 +10,5 @@ export abstract class Constants {
   public static VELOCITY_MIN = 150;
   public static FONT_MAIN = 'Press Start 2P';
   public static FONT_SIZE_MD = 18;
-  public static FONT_SIZE_LG = 25;
+  public static FONT_SIZE_LG = 30;
 }

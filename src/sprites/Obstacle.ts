@@ -33,7 +33,7 @@ export class Obstacle extends Phaser.Text {
   private initialize(): void {
     this.game.physics.arcade.enable(this);
     this.font = Constants.FONT_MAIN;
-    this.fontSize = 30;
+    this.fontSize = Constants.FONT_SIZE_MD;
     this.padding.setTo(20, 20);
     this.question = new Question();
     this.text = this.question.getText();
