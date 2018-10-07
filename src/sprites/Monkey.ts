@@ -69,6 +69,7 @@ export class Monkey extends Phaser.Sprite {
     } else if (newVelocity < Constants.VELOCITY_MIN) {
       newVelocity = Constants.VELOCITY_MIN;
     }
+    console.log('updating speed: ', this.body.velocity.x, newVelocity);
     this.body.velocity.x = newVelocity;
   }
 

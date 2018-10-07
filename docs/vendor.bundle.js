@@ -150,13 +150,14 @@
 /******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 27);
+/******/ 	return __webpack_require__(__webpack_require__.s = 30);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */,
 /* 1 */,
-/* 2 */
+/* 2 */,
+/* 3 */
 /* no static exports found */
 /* all exports used */
 /*!***********************************!*\
@@ -188,7 +189,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /* no static exports found */
 /* all exports used */
 /*!******************************************!*\
@@ -196,11 +197,11 @@ module.exports = g;
   \******************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["PIXI"] = __webpack_require__(/*! -!./pixi.js */ 25);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../webpack/buildin/global.js */ 2)))
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["PIXI"] = __webpack_require__(/*! -!./pixi.js */ 28);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../webpack/buildin/global.js */ 3)))
 
 /***/ }),
-/* 4 */
+/* 5 */
 /* no static exports found */
 /* all exports used */
 /*!****************************************!*\
@@ -208,11 +209,11 @@ module.exports = g;
   \****************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["p2"] = __webpack_require__(/*! -!./p2.js */ 23);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../webpack/buildin/global.js */ 2)))
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["p2"] = __webpack_require__(/*! -!./p2.js */ 26);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../webpack/buildin/global.js */ 3)))
 
 /***/ }),
-/* 5 */
+/* 6 */
 /* no static exports found */
 /* all exports used */
 /*!******************************************!*\
@@ -241,7 +242,8 @@ g,0<d.length&&(d=za[d[0]])&&(a.c[e]=d))}a.c[e]||(d=za[e])&&(a.c[e]=d);for(d=0;d<
 
 
 /***/ }),
-/* 6 */
+/* 7 */,
+/* 8 */
 /* no static exports found */
 /* all exports used */
 /*!******************************!*\
@@ -436,8 +438,8 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 7 */,
-/* 8 */
+/* 9 */,
+/* 10 */
 /* no static exports found */
 /* all exports used */
 /*!**************************************************!*\
@@ -445,12 +447,10 @@ process.umask = function() { return 0; };
   \**************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Phaser"] = __webpack_require__(/*! -!./phaser-split.js */ 24);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../webpack/buildin/global.js */ 2)))
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Phaser"] = __webpack_require__(/*! -!./phaser-split.js */ 27);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../webpack/buildin/global.js */ 3)))
 
 /***/ }),
-/* 9 */,
-/* 10 */,
 /* 11 */,
 /* 12 */,
 /* 13 */,
@@ -463,7 +463,10 @@ process.umask = function() { return 0; };
 /* 20 */,
 /* 21 */,
 /* 22 */,
-/* 23 */
+/* 23 */,
+/* 24 */,
+/* 25 */,
+/* 26 */
 /* no static exports found */
 /* all exports used */
 /*!****************************************!*\
@@ -14111,7 +14114,7 @@ World.prototype.raycast = function(result, ray){
 });
 
 /***/ }),
-/* 24 */
+/* 27 */
 /* no static exports found */
 /* all exports used */
 /*!**************************************************!*\
@@ -98549,10 +98552,10 @@ PIXI.canUseNewCanvasBlendModes = function () {
 * "What matters in this life is not what we do but what we do for others, the legacy we leave and the imprint we make." - Eric Meyer
 */
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../process/browser.js */ 6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../process/browser.js */ 8)))
 
 /***/ }),
-/* 25 */
+/* 28 */
 /* no static exports found */
 /* all exports used */
 /*!******************************************!*\
@@ -106133,8 +106136,8 @@ PIXI.TextureUvs = function()
 }).call(this);
 
 /***/ }),
-/* 26 */,
-/* 27 */
+/* 29 */,
+/* 30 */
 /* no static exports found */
 /* all exports used */
 /*!******************************************!*\
@@ -106142,10 +106145,10 @@ PIXI.TextureUvs = function()
   \******************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! pixi */3);
-__webpack_require__(/*! p2 */4);
-__webpack_require__(/*! phaser */8);
-module.exports = __webpack_require__(/*! webfontloader */5);
+__webpack_require__(/*! pixi */4);
+__webpack_require__(/*! p2 */5);
+__webpack_require__(/*! phaser */10);
+module.exports = __webpack_require__(/*! webfontloader */6);
 
 
 /***/ })

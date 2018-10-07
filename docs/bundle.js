@@ -2,6 +2,36 @@ webpackJsonp([0],[
 /* 0 */
 /* no static exports found */
 /* all exports used */
+/*!********************************!*\
+  !*** ./src/utils/Constants.ts ***!
+  \********************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Constants
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * @summary Constants class
+ */
+var Constants = function () {
+    function Constants() {}
+    Constants.VELOCITY_GAP = 10;
+    Constants.VELOCITY_INI = 200;
+    Constants.VELOCITY_MAX = 300;
+    Constants.VELOCITY_MIN = 150;
+    Constants.FONT_MAIN = 'Press Start 2P';
+    Constants.FONT_SIZE_MD = 18;
+    Constants.FONT_SIZE_LG = 30;
+    return Constants;
+}();
+exports.Constants = Constants;
+
+/***/ }),
+/* 1 */
+/* no static exports found */
+/* all exports used */
 /*!*************************************!*\
   !*** ./~/phaser-ce/build/phaser.js ***!
   \*************************************/
@@ -105617,10 +105647,10 @@ PIXI.canUseNewCanvasBlendModes = function () {
 * "What matters in this life is not what we do but what we do for others, the legacy we leave and the imprint we make." - Eric Meyer
 */
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../process/browser.js */ 6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../process/browser.js */ 8)))
 
 /***/ }),
-/* 1 */
+/* 2 */
 /* no static exports found */
 /* all exports used */
 /*!******************************!*\
@@ -105687,12 +105717,36 @@ var Helpers = function () {
 exports.Helpers = Helpers;
 
 /***/ }),
-/* 2 */,
 /* 3 */,
 /* 4 */,
 /* 5 */,
 /* 6 */,
 /* 7 */
+/* no static exports found */
+/* all exports used */
+/*!*****************************!*\
+  !*** ./src/utils/Global.ts ***!
+  \*****************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Global
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * @summary Global class
+ */
+var Global = function () {
+    function Global() {}
+    Global.score = 0;
+    return Global;
+}();
+exports.Global = Global;
+
+/***/ }),
+/* 8 */,
+/* 9 */
 /* no static exports found */
 /* all exports used */
 /*!*********************!*\
@@ -105721,24 +105775,26 @@ var __extends = undefined && undefined.__extends || function () {
     };
 }();
 Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(/*! pixi */ 3);
-__webpack_require__(/*! p2 */ 4);
-var Phaser = __webpack_require__(/*! phaser-ce */ 0);
-var Boot_1 = __webpack_require__(/*! ./states/Boot */ 11);
-var Preload_1 = __webpack_require__(/*! ./states/Preload */ 13);
-var Splash_1 = __webpack_require__(/*! ./states/Splash */ 14);
-var Game_1 = __webpack_require__(/*! ./states/Game */ 12);
-var Config_1 = __webpack_require__(/*! ./utils/Config */ 16);
+__webpack_require__(/*! pixi */ 4);
+__webpack_require__(/*! p2 */ 5);
+var Phaser = __webpack_require__(/*! phaser-ce */ 1);
+var Boot_1 = __webpack_require__(/*! ./states/Boot */ 13);
+var Preload_1 = __webpack_require__(/*! ./states/Preload */ 15);
+var Splash_1 = __webpack_require__(/*! ./states/Splash */ 17);
+var Game_1 = __webpack_require__(/*! ./states/Game */ 14);
+var Score_1 = __webpack_require__(/*! ./states/Score */ 16);
+var Config_1 = __webpack_require__(/*! ./utils/Config */ 19);
 var Game = function (_super) {
     __extends(Game, _super);
     function Game() {
         var _this = this;
         var config = new Config_1.Config();
         _this = _super.call(this, config.gameWidth, config.gameHeight, Phaser.CANVAS, 'content', null) || this;
-        _this.state.add('Boot', Boot_1.BootState, false);
-        _this.state.add('Preload', Preload_1.PreloadState, false);
-        _this.state.add('Splash', Splash_1.SplashState, false);
-        _this.state.add('Game', Game_1.GameState, false);
+        _this.state.add('Boot', Boot_1.BootState);
+        _this.state.add('Preload', Preload_1.PreloadState);
+        _this.state.add('Splash', Splash_1.SplashState);
+        _this.state.add('Score', Score_1.ScoreState);
+        _this.state.add('Game', Game_1.GameState);
         _this.state.start('Boot');
         return _this;
     }
@@ -105747,8 +105803,8 @@ var Game = function (_super) {
 window.game = new Game();
 
 /***/ }),
-/* 8 */,
-/* 9 */
+/* 10 */,
+/* 11 */
 /* no static exports found */
 /* all exports used */
 /*!*********************************!*\
@@ -105777,9 +105833,10 @@ var __extends = undefined && undefined.__extends || function () {
     };
 }();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Phaser = __webpack_require__(/*! phaser-ce */ 0);
-var Question_1 = __webpack_require__(/*! ../utils/Question */ 18);
-var Helpers_1 = __webpack_require__(/*! ../utils/Helpers */ 1);
+var Phaser = __webpack_require__(/*! phaser-ce */ 1);
+var Question_1 = __webpack_require__(/*! ../utils/Question */ 20);
+var Helpers_1 = __webpack_require__(/*! ../utils/Helpers */ 2);
+var Constants_1 = __webpack_require__(/*! ../utils/Constants */ 0);
 /**
  * @summary Obstacle sprite
  */
@@ -105805,8 +105862,8 @@ var Obstacle = function (_super) {
      */
     Obstacle.prototype.initialize = function () {
         this.game.physics.arcade.enable(this);
-        this.font = 'Press Start 2P';
-        this.fontSize = 30;
+        this.font = Constants_1.Constants.FONT_MAIN;
+        this.fontSize = Constants_1.Constants.FONT_SIZE_MD;
         this.padding.setTo(20, 20);
         this.question = new Question_1.Question();
         this.text = this.question.getText();
@@ -105840,7 +105897,7 @@ var Obstacle = function (_super) {
 exports.Obstacle = Obstacle;
 
 /***/ }),
-/* 10 */
+/* 12 */
 /* no static exports found */
 /* all exports used */
 /*!*******************************!*\
@@ -105869,9 +105926,9 @@ var __extends = undefined && undefined.__extends || function () {
     };
 }();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Phaser = __webpack_require__(/*! phaser-ce */ 0);
-var Constants_1 = __webpack_require__(/*! ../utils/Constants */ 17);
-var Helpers_1 = __webpack_require__(/*! ../utils/Helpers */ 1);
+var Phaser = __webpack_require__(/*! phaser-ce */ 1);
+var Constants_1 = __webpack_require__(/*! ../utils/Constants */ 0);
+var Helpers_1 = __webpack_require__(/*! ../utils/Helpers */ 2);
 /**
  * @summary Monkey sprite
  */
@@ -105939,6 +105996,7 @@ var Monkey = function (_super) {
         } else if (newVelocity < Constants_1.Constants.VELOCITY_MIN) {
             newVelocity = Constants_1.Constants.VELOCITY_MIN;
         }
+        console.log('updating speed: ', this.body.velocity.x, newVelocity);
         this.body.velocity.x = newVelocity;
     };
     /**
@@ -105956,7 +106014,7 @@ var Monkey = function (_super) {
 exports.Monkey = Monkey;
 
 /***/ }),
-/* 11 */
+/* 13 */
 /* no static exports found */
 /* all exports used */
 /*!****************************!*\
@@ -105985,9 +106043,10 @@ var __extends = undefined && undefined.__extends || function () {
     };
 }();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Phaser = __webpack_require__(/*! phaser-ce */ 0);
-var WebFont = __webpack_require__(/*! webfontloader */ 5);
-var Background = __webpack_require__(/*! ../assets/img/background.png */ 20);
+var Phaser = __webpack_require__(/*! phaser-ce */ 1);
+var WebFont = __webpack_require__(/*! webfontloader */ 6);
+var Background = __webpack_require__(/*! ../assets/img/background.png */ 22);
+var Constants_1 = __webpack_require__(/*! ../utils/Constants */ 0);
 /**
  * @summary BootState
  */
@@ -106007,7 +106066,7 @@ var BootState = function (_super) {
     BootState.prototype.preload = function () {
         WebFont.load({
             google: {
-                families: ['Press Start 2P']
+                families: [Constants_1.Constants.FONT_MAIN]
             },
             active: this.fontsLoaded
         });
@@ -106032,7 +106091,7 @@ var BootState = function (_super) {
 exports.BootState = BootState;
 
 /***/ }),
-/* 12 */
+/* 14 */
 /* no static exports found */
 /* all exports used */
 /*!****************************!*\
@@ -106061,11 +106120,13 @@ var __extends = undefined && undefined.__extends || function () {
     };
 }();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Phaser = __webpack_require__(/*! phaser-ce */ 0);
-var monkey_1 = __webpack_require__(/*! ../sprites/monkey */ 10);
-var Obstacle_1 = __webpack_require__(/*! ../sprites/Obstacle */ 9);
-var Answer_1 = __webpack_require__(/*! ../utils/Answer */ 15);
-var Track_1 = __webpack_require__(/*! ../utils/Track */ 19);
+var Phaser = __webpack_require__(/*! phaser-ce */ 1);
+var monkey_1 = __webpack_require__(/*! ../sprites/monkey */ 12);
+var Obstacle_1 = __webpack_require__(/*! ../sprites/Obstacle */ 11);
+var Answer_1 = __webpack_require__(/*! ../utils/Answer */ 18);
+var Notification_1 = __webpack_require__(/*! ../utils/Notification */ 32);
+var Track_1 = __webpack_require__(/*! ../utils/Track */ 21);
+var Constants_1 = __webpack_require__(/*! ../utils/Constants */ 0);
 /**
  * @summary Main game state
  */
@@ -106084,6 +106145,12 @@ var GameState = function (_super) {
         _this.nextObstacleIndex = 0;
         return _this;
     }
+    GameState.prototype.preload = function () {
+        var background = this.game.add.sprite(0, 0, 'background');
+        background.fixedToCamera = true;
+        background.width = this.game.width;
+        background.height = this.game.height;
+    };
     /**
      * @summary Initialize game
      */
@@ -106108,9 +106175,13 @@ var GameState = function (_super) {
         // Setup answer
         this.answer = new Answer_1.Answer(this.game, this.game.width / 2, this.world.centerY);
         this.game.add.existing(this.answer);
+        // Setup answer
+        this.notification = new Notification_1.Notification(this.game, this.game.width / 2 - 100, this.world.centerY);
+        this.game.add.existing(this.notification);
         // Initialize obstacles list, hard-coded to be 10 right now
         for (var i = 1; i < 10; i += 1) {
             var obstacle = new Obstacle_1.Obstacle(this.game, 800 * i, this.world.centerY);
+            Object.assign(obstacle, { originalIndex: i });
             this.game.add.existing(obstacle);
             this.obstacles.push(obstacle);
         }
@@ -106145,8 +106216,8 @@ var GameState = function (_super) {
     };
     GameState.prototype.attachStyle = function (obj) {
         Object.assign(obj, {
-            font: 'Press Start 2P',
-            fontSize: 25,
+            font: Constants_1.Constants.FONT_MAIN,
+            fontSize: Constants_1.Constants.FONT_SIZE_MD,
             padding: {
                 x: 20,
                 y: 20
@@ -106163,8 +106234,16 @@ var GameState = function (_super) {
      * @summary Handle game events
      */
     GameState.prototype.update = function () {
-        this.game.physics.arcade.collide(this.monkey, this.obstacles, this.onCollide, null, this);
+        this.game.physics.arcade.collide(this.monkey, this.obstacles, this.onCollide, this.onPreCollide, this);
         this.refreshTrack();
+    };
+    GameState.prototype.onPreCollide = function (obj1, obj2) {
+        if (obj2.originalIndex <= this.nextObstacleIndex) {
+            obj2.destroy();
+            this.notification.show(Notification_1.Notification.SO_CLOSE);
+            return false;
+        }
+        return true;
     };
     /**
      * @summary Handle collision event (of monkey and obstacles)
@@ -106192,18 +106271,22 @@ var GameState = function (_super) {
         var _this = this;
         this.track.onCorrect();
         this.nextObstacleIndex += 1;
+        this.monkey.overcome();
         if (this.nextObstacleIndex >= this.obstacles.length - 1) {
             // End game
             return this.endGame();
         }
-        this.monkey.overcome();
         this.obstacles[this.nextObstacleIndex].setRoute(this.monkey.route);
         setTimeout(function () {
             return _this.answer.delete();
         }, 800);
     };
     GameState.prototype.endGame = function () {
-        this.game.destroy();
+        var _this = this;
+        setTimeout(function () {
+            _this.world.setBounds(0, 0, _this.game.width, _this.game.height);
+            _this.state.start('Score');
+        }, 2000);
     };
     /**
      * @summary Verify the answer of user
@@ -106236,7 +106319,7 @@ var GameState = function (_super) {
 exports.GameState = GameState;
 
 /***/ }),
-/* 13 */
+/* 15 */
 /* no static exports found */
 /* all exports used */
 /*!*******************************!*\
@@ -106265,9 +106348,12 @@ var __extends = undefined && undefined.__extends || function () {
     };
 }();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Phaser = __webpack_require__(/*! phaser-ce */ 0);
-var ImageMushroom = __webpack_require__(/*! ../assets/img/mushroom.png */ 22);
-var ImageBtnPlay = __webpack_require__(/*! ../assets/img/btnPlay.png */ 21);
+var Phaser = __webpack_require__(/*! phaser-ce */ 1);
+var ImageMushroom = __webpack_require__(/*! ../assets/img/mushroom.png */ 25);
+var ImageBtnPlay = __webpack_require__(/*! ../assets/img/btnPlay.png */ 24);
+var ImageBtnRestart = __webpack_require__(/*! ../assets/img/btnRestart.png */ 31);
+var ImageBtnHome = __webpack_require__(/*! ../assets/img/btnHome.png */ 23);
+var Constants_1 = __webpack_require__(/*! ../utils/Constants */ 0);
 /**
  * @summary PreloadState
  */
@@ -106288,18 +106374,19 @@ var PreloadState = function (_super) {
     PreloadState.prototype.preload = function () {
         var centerX = this.game.world.centerX;
         var centerY = this.game.world.centerY;
-        this.background = this.game.add.sprite(centerX, centerY, 'background');
-        this.background.anchor.setTo(0.5, 0.5);
+        this.background = this.game.add.sprite(0, 0, 'background');
         this.background.width = this.game.width;
         this.background.height = this.game.height;
         this.loadText = this.add.text(centerX, centerY, 'loading ', {
-            font: 'Press Start 2P',
-            fontSize: 25,
+            font: Constants_1.Constants.FONT_MAIN,
+            fontSize: Constants_1.Constants.FONT_SIZE_MD,
             fill: '#ff0000'
         });
         this.loadText.anchor.setTo(0.5, 0.5);
         this.load.image('monkey', ImageMushroom);
         this.load.image('btnPlay', ImageBtnPlay);
+        this.load.image('btnRestart', ImageBtnRestart);
+        this.load.image('btnHome', ImageBtnHome);
     };
     /**
      * @summary When the font is ready, show splash state
@@ -106315,7 +106402,78 @@ var PreloadState = function (_super) {
 exports.PreloadState = PreloadState;
 
 /***/ }),
-/* 14 */
+/* 16 */
+/* no static exports found */
+/* all exports used */
+/*!*****************************!*\
+  !*** ./src/states/Score.ts ***!
+  \*****************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Game score
+
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Phaser = __webpack_require__(/*! phaser-ce */ 1);
+var Constants_1 = __webpack_require__(/*! ../utils/Constants */ 0);
+var Global_1 = __webpack_require__(/*! ../utils/Global */ 7);
+/**
+ * @summary Score state of the game
+ */
+var ScoreState = function (_super) {
+    __extends(ScoreState, _super);
+    function ScoreState() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    ScoreState.prototype.preload = function () {
+        var centerX = this.game.world.centerX;
+        var centerY = this.game.world.centerY;
+        var background = this.game.add.sprite(centerX, centerY, 'background');
+        background.anchor.setTo(0.5, 0.5);
+        background.width = this.game.width;
+        background.height = this.game.height;
+        var btnRestart = this.game.add.button(centerX - 100, centerY, 'btnRestart', this.handleRestart, this);
+        btnRestart.width = 100;
+        btnRestart.height = 100;
+        btnRestart.anchor.setTo(0.5, 0.5);
+        var btnHome = this.game.add.button(centerX + 100, centerY, 'btnHome', this.handleHome, this);
+        btnHome.width = 100;
+        btnHome.height = 100;
+        btnHome.anchor.setTo(0.5, 0.5);
+        var banner = this.game.add.text(centerX, centerY - 200, "Score: " + Global_1.Global.score, null);
+        banner.fontSize = Constants_1.Constants.FONT_SIZE_MD;
+        banner.font = Constants_1.Constants.FONT_MAIN;
+        banner.anchor.setTo(0.5, 0.5);
+    };
+    ScoreState.prototype.handleRestart = function () {
+        this.state.start('Game');
+    };
+    ScoreState.prototype.handleHome = function () {
+        this.state.start('Splash');
+    };
+    return ScoreState;
+}(Phaser.State);
+exports.ScoreState = ScoreState;
+
+/***/ }),
+/* 17 */
 /* no static exports found */
 /* all exports used */
 /*!******************************!*\
@@ -106344,7 +106502,8 @@ var __extends = undefined && undefined.__extends || function () {
     };
 }();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Phaser = __webpack_require__(/*! phaser-ce */ 0);
+var Phaser = __webpack_require__(/*! phaser-ce */ 1);
+var Constants_1 = __webpack_require__(/*! ../utils/Constants */ 0);
 /**
  * @summary Splash state of the game
  */
@@ -106353,23 +106512,20 @@ var SplashState = function (_super) {
     function SplashState() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    /**
-     * @summary Preload the game
-     */
     SplashState.prototype.preload = function () {
         var centerX = this.game.world.centerX;
         var centerY = this.game.world.centerY;
-        this.background = this.game.add.sprite(centerX, centerY, 'background');
-        this.background.anchor.setTo(0.5, 0.5);
-        this.background.width = this.game.width;
-        this.background.height = this.game.height;
-        this.btnPlay = this.game.add.button(centerX, centerY, 'btnPlay', this.handlePlay, this);
-        this.btnPlay.anchor.setTo(0.5, 0.5);
+        var background = this.game.add.sprite(centerX, centerY, 'background');
+        background.anchor.setTo(0.5, 0.5);
+        background.width = this.game.width;
+        background.height = this.game.height;
+        var btnPlay = this.game.add.button(centerX, centerY, 'btnPlay', this.handlePlay, this);
+        btnPlay.anchor.setTo(0.5, 0.5);
         var bannerText = 'Monkey Maths by Starmaths';
-        this.banner = this.add.text(this.game.width / 2, this.game.height - 80, bannerText, null);
-        this.banner.fontSize = 25;
-        this.banner.font = 'Press Start 2P';
-        this.banner.anchor.setTo(0.5, 0.5);
+        var banner = this.add.text(this.game.width / 2, this.game.height - 80, bannerText, null);
+        banner.fontSize = Constants_1.Constants.FONT_SIZE_MD;
+        banner.font = Constants_1.Constants.FONT_MAIN;
+        banner.anchor.setTo(0.5, 0.5);
     };
     SplashState.prototype.handlePlay = function () {
         this.state.start('Game');
@@ -106379,7 +106535,7 @@ var SplashState = function (_super) {
 exports.SplashState = SplashState;
 
 /***/ }),
-/* 15 */
+/* 18 */
 /* no static exports found */
 /* all exports used */
 /*!*****************************!*\
@@ -106408,6 +106564,7 @@ var __extends = undefined && undefined.__extends || function () {
     };
 }();
 Object.defineProperty(exports, "__esModule", { value: true });
+var Constants_1 = __webpack_require__(/*! ./Constants */ 0);
 /**
  * @summary The answer from the user
  */
@@ -106433,9 +106590,9 @@ var Answer = function (_super) {
         _this.fixedToCamera = true;
         _this.y = _this.game.height / 2;
         _this.x = _this.game.width / 2;
-        _this.font = 'Press Start 2P';
+        _this.font = Constants_1.Constants.FONT_MAIN;
         _this.padding.set(10, 16);
-        _this.fontSize = 50;
+        _this.fontSize = Constants_1.Constants.FONT_SIZE_LG;
         _this.fill = '#ff0000';
         _this.anchor.setTo(0.5);
         return _this;
@@ -106469,7 +106626,7 @@ var Answer = function (_super) {
 exports.Answer = Answer;
 
 /***/ }),
-/* 16 */
+/* 19 */
 /* no static exports found */
 /* all exports used */
 /*!*****************************!*\
@@ -106498,34 +106655,7 @@ var Config = function () {
 exports.Config = Config;
 
 /***/ }),
-/* 17 */
-/* no static exports found */
-/* all exports used */
-/*!********************************!*\
-  !*** ./src/utils/Constants.ts ***!
-  \********************************/
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// Constants
-
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * @summary Constants class
- */
-var Constants = function () {
-    function Constants() {}
-    Constants.VELOCITY_GAP = 10;
-    Constants.VELOCITY_INI = 200;
-    Constants.VELOCITY_MAX = 300;
-    Constants.VELOCITY_MIN = 150;
-    return Constants;
-}();
-exports.Constants = Constants;
-
-/***/ }),
-/* 18 */
+/* 20 */
 /* no static exports found */
 /* all exports used */
 /*!*******************************!*\
@@ -106538,7 +106668,7 @@ exports.Constants = Constants;
 // Question
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Helpers_1 = __webpack_require__(/*! ./Helpers */ 1);
+var Helpers_1 = __webpack_require__(/*! ./Helpers */ 2);
 /**
  * @summary Question class
  */
@@ -106604,7 +106734,7 @@ var Question = function () {
 exports.Question = Question;
 
 /***/ }),
-/* 19 */
+/* 21 */
 /* no static exports found */
 /* all exports used */
 /*!****************************!*\
@@ -106617,6 +106747,7 @@ exports.Question = Question;
 // Track
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var Global_1 = __webpack_require__(/*! ./Global */ 7);
 /**
  * @summary Track
  */
@@ -106624,7 +106755,6 @@ var Track = function () {
     function Track() {
         this.numOfCorrect = 0;
         this.numOfIncorrect = 0;
-        this.score = 0;
         this.level = 1;
         this.chain = 0;
     }
@@ -106632,7 +106762,7 @@ var Track = function () {
      * @summary Getter and setter
      */
     Track.prototype.getScore = function () {
-        return this.score;
+        return Global_1.Global.score;
     };
     Track.prototype.getLevel = function () {
         return this.level;
@@ -106691,18 +106821,18 @@ var Track = function () {
             this.level += 1;
         }
         // If score cant be reduce anymore
-        if (this.score <= 0 && addingScore < 0) {
+        if (Global_1.Global.score <= 0 && addingScore < 0) {
             return;
         }
         // Otherwise add to the score
-        this.score += addingScore;
+        Global_1.Global.score += addingScore;
     };
     return Track;
 }();
 exports.Track = Track;
 
 /***/ }),
-/* 20 */
+/* 22 */
 /* no static exports found */
 /* all exports used */
 /*!***************************************!*\
@@ -106713,7 +106843,18 @@ exports.Track = Track;
 module.exports = "assets/img/background.png";
 
 /***/ }),
-/* 21 */
+/* 23 */
+/* no static exports found */
+/* all exports used */
+/*!************************************!*\
+  !*** ./src/assets/img/btnHome.png ***!
+  \************************************/
+/***/ (function(module, exports) {
+
+module.exports = "assets/img/btnHome.png";
+
+/***/ }),
+/* 24 */
 /* no static exports found */
 /* all exports used */
 /*!************************************!*\
@@ -106724,7 +106865,7 @@ module.exports = "assets/img/background.png";
 module.exports = "assets/img/btnPlay.png";
 
 /***/ }),
-/* 22 */
+/* 25 */
 /* no static exports found */
 /* all exports used */
 /*!*************************************!*\
@@ -106735,10 +106876,10 @@ module.exports = "assets/img/btnPlay.png";
 module.exports = "assets/img/mushroom.png";
 
 /***/ }),
-/* 23 */,
-/* 24 */,
-/* 25 */,
-/* 26 */
+/* 26 */,
+/* 27 */,
+/* 28 */,
+/* 29 */
 /* no static exports found */
 /* all exports used */
 /*!***************************!*\
@@ -106746,9 +106887,119 @@ module.exports = "assets/img/mushroom.png";
   \***************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/stevend/coding/phaser/MonkeyMaths/src/main.ts */7);
+module.exports = __webpack_require__(/*! /Users/stevend/coding/phaser/MonkeyMaths/src/main.ts */9);
 
+
+/***/ }),
+/* 30 */,
+/* 31 */
+/* no static exports found */
+/* all exports used */
+/*!***************************************!*\
+  !*** ./src/assets/img/btnRestart.png ***!
+  \***************************************/
+/***/ (function(module, exports) {
+
+module.exports = "assets/img/btnRestart.png";
+
+/***/ }),
+/* 32 */
+/* no static exports found */
+/* all exports used */
+/*!***********************************!*\
+  !*** ./src/utils/Notification.ts ***!
+  \***********************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Notification
+
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Constants_1 = __webpack_require__(/*! ./Constants */ 0);
+/**
+ * @summary The notification to the user
+ */
+var Notification = function (_super) {
+    __extends(Notification, _super);
+    /**
+     *
+     * @param {Phaser.Game} game
+     * @param {number} x
+     * @param {number} y
+     * @param {string} [text]
+     */
+    function Notification(game, x, y, text) {
+        if (text === void 0) {
+            text = '';
+        }
+        var _this = _super.call(this, game, x, y, text) || this;
+        _this.game = game;
+        _this.x = x;
+        _this.y = y;
+        _this.text = text;
+        _this.streakText = ['', '2 in a row', '3 in a row', '4 in a row', '5 in a row', '6 in a row', '7 in a row', '8 in a row', '9 in a row', '10 in a rowwwww'];
+        // Set style
+        _this.fixedToCamera = true;
+        _this.y = _this.game.height / 2 - 100;
+        _this.x = _this.game.width / 2;
+        _this.font = Constants_1.Constants.FONT_MAIN;
+        _this.padding.set(10, 16);
+        _this.fontSize = Constants_1.Constants.FONT_SIZE_LG;
+        _this.fill = '#ff0000';
+        _this.anchor.setTo(0.5);
+        return _this;
+    }
+    /**
+     * @summary Return answer
+     * @public
+     *
+     * @return {string}
+     */
+    Notification.prototype.show = function (type, chain) {
+        var _this = this;
+        switch (type) {
+            case Notification.SO_CLOSE:
+                this.text = 'So closeeeeee';
+                this.fill = '#00ff00';
+                break;
+            case Notification.STREAK:
+                if (chain > 2) {
+                    this.text = this.streakText[chain];
+                    this.fill = '#00ff00';
+                } else if (chain < -2) {
+                    this.text = 'Try harder !!!!';
+                    this.fill = '#ff0000';
+                }
+                break;
+        }
+        this.visible = true;
+        setTimeout(function () {
+            _this.visible = false;
+        }, 500);
+    };
+    Notification.SO_CLOSE = 'so-close';
+    Notification.STREAK = 'streak';
+    return Notification;
+}(Phaser.Text);
+exports.Notification = Notification;
 
 /***/ })
-],[26]);
+],[29]);
 //# sourceMappingURL=bundle.js.map

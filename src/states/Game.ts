@@ -4,6 +4,7 @@ import * as Phaser from 'phaser-ce';
 import { Monkey } from '../sprites/monkey';
 import { Obstacle } from '../sprites/Obstacle';
 import { Answer } from '../utils/Answer';
+import { Notification } from '../utils/Notification';
 import { Track } from '../utils/Track';
 import { Constants } from '../utils/Constants';
 
@@ -29,6 +30,10 @@ export class GameState extends Phaser.State {
    * @summary Answer from user
    */
   private answer: Answer;
+  /**
+   * @summary Notification to the user
+   */
+  private notification: Notification;
   /**
    * @summary Banner starmaths
    */
@@ -81,6 +86,10 @@ export class GameState extends Phaser.State {
     // Setup answer
     this.answer = new Answer(this.game, this.game.width / 2, this.world.centerY);
     this.game.add.existing(this.answer);
+
+    // Setup answer
+    this.notification = new Notification(this.game, this.game.width / 2 - 100, this.world.centerY);
+    this.game.add.existing(this.notification);
 
     // Initialize obstacles list, hard-coded to be 10 right now
     for (let i = 1; i < 10; i += 1) {
@@ -145,10 +154,19 @@ export class GameState extends Phaser.State {
    * @summary Handle game events
    */
   public update(): void {
-    this.game.physics.arcade.collide(this.monkey, this.obstacles, this.onCollide, null, this);
+    this.game.physics.arcade.collide(
+      this.monkey, this.obstacles, this.onCollide, this.onPreCollide, this);
     this.refreshTrack();
   }
 
+  private onPreCollide(obj1: object, obj2: any): boolean {
+    if (obj2.originalIndex <= this.nextObstacleIndex) {
+      obj2.destroy();
+      this.notification.show(Notification.SO_CLOSE);
+      return false;
+    }
+    return true;
+  }
   /**
    * @summary Handle collision event (of monkey and obstacles)
    * @param obj1
