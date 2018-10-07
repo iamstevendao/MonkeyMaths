@@ -154,7 +154,7 @@ export class GameState extends Phaser.State {
     obj2.destroy();
     if (this.nextObstacleIndex >= this.obstacles.length - 1) {
       // End game
-      return;
+      return this.endGame();
     }
     this.obstacles[this.nextObstacleIndex].setRoute(this.monkey.route);
     this.answer.delete();
@@ -168,11 +168,15 @@ export class GameState extends Phaser.State {
     this.nextObstacleIndex += 1;
     if (this.nextObstacleIndex >= this.obstacles.length - 1) {
       // End game
-      return;
+      return this.endGame();
     }
     this.monkey.overcome();
     this.obstacles[this.nextObstacleIndex].setRoute(this.monkey.route);
     setTimeout(() => this.answer.delete(), 800);
+  }
+
+  private endGame(): void {
+    this.game.destroy();
   }
 
   /**

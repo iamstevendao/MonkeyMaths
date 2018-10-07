@@ -2,8 +2,7 @@
 
 import * as Phaser from 'phaser-ce';
 import * as WebFont from 'webfontloader';
-import * as LoaderBackground from '../assets/img/loader-bg.png';
-import * as LoaderBar from '../assets/img/loader-bar.png';
+import * as Background from '../assets/img/background.png';
 
 /**
  * @summary BootState
@@ -13,10 +12,8 @@ export class BootState extends Phaser.State {
    * @summary Check if the font is fully loaded
    */
   public fontsReady: boolean;
+  public loadText: Phaser.Text;
 
-  /**
-   * @summary Initialize state
-   */
   public init(): void {
     this.stage.backgroundColor = '#EDEEC9';
     this.fontsReady = false;
@@ -34,15 +31,7 @@ export class BootState extends Phaser.State {
       active: this.fontsLoaded,
     });
 
-    const text = this.add.text(
-      this.world.centerX,
-      this.world.centerY,
-      'loading fonts',
-      { font: '16px Arial', fill: '#dddddd', align: 'center' });
-    text.anchor.setTo(0.5, 0.5);
-
-    this.load.image('loaderBg', LoaderBackground);
-    this.load.image('loaderBar', LoaderBar);
+    this.load.image('background', Background);
   }
 
   /**
@@ -50,7 +39,7 @@ export class BootState extends Phaser.State {
    */
   public render(): void {
     if (this.fontsReady) {
-      this.state.start('Splash');
+      this.state.start('Preload');
     }
   }
 

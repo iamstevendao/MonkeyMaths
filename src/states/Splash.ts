@@ -1,7 +1,6 @@
 // Game splash
 
 import * as Phaser from 'phaser-ce';
-import * as ImageMushroom from '../assets/img/mushroom.png';
 
 /**
  * @summary Splash state of the game
@@ -11,39 +10,38 @@ export class SplashState extends Phaser.State {
   /**
    * @summary Loader for background
    */
-  public loaderBg: any;
+  public background: any;
   /**
-   * @summary Loader for loading bar
+   * @summary Play button
    */
-  public loaderBar: any;
-
+  public btnPlay: any;
+  /**
+   * @summary Banner
+   */
+  public banner: any;
   /**
    * @summary Preload the game
    */
   public preload(): void {
-    this.loaderBg = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBg');
-    this.loaderBar = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBar');
-    this.centerGameObjects([this.loaderBg, this.loaderBar]);
+    const centerX = this.game.world.centerX;
+    const centerY = this.game.world.centerY;
 
-    this.load.setPreloadSprite(this.loaderBar);
+    this.background = this.game.add.sprite(centerX, centerY, 'background');
+    this.background.anchor.setTo(0.5, 0.5);
+    this.background.width = this.game.width;
+    this.background.height = this.game.height;
 
-    this.load.image('monkey', ImageMushroom);
+    this.btnPlay = this.game.add.button(centerX, centerY, 'btnPlay', this.handlePlay, this);
+    this.btnPlay.anchor.setTo(0.5, 0.5);
+
+    const bannerText = 'Monkey Maths by Starmaths';
+    this.banner = this.add.text(this.game.width / 2, this.game.height - 80, bannerText, null);
+    this.banner.fontSize = 25;
+    this.banner.font = 'Press Start 2P';
+    this.banner.anchor.setTo(0.5, 0.5);
   }
 
-  /**
-   * @summary Create state
-   */
-  public create(): void {
+  private handlePlay() {
     this.state.start('Game');
-  }
-
-  /**
-   * @summary Center game objects initialized from preload
-   * @param objects
-   */
-  private centerGameObjects(objects: any): void {
-    objects.forEach((object: any) => {
-      object.anchor.setTo(0.5);
-    });
   }
 }
