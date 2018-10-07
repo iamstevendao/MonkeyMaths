@@ -1,6 +1,7 @@
 // Game splash
 
 import * as Phaser from 'phaser-ce';
+import { Constants } from '../utils/Constants';
 
 /**
  * @summary Splash state of the game
@@ -36,8 +37,8 @@ export class SplashState extends Phaser.State {
 
     const bannerText = 'Monkey Maths by Starmaths';
     this.banner = this.add.text(this.game.width / 2, this.game.height - 80, bannerText, null);
-    this.banner.fontSize = 25;
-    this.banner.font = 'Press Start 2P';
+    this.banner.fontSize = Constants.FONT_SIZE_MD;
+    this.banner.font = Constants.FONT_MAIN;
     this.banner.anchor.setTo(0.5, 0.5);
   }
 

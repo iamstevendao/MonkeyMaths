@@ -1,5 +1,6 @@
 // Answer
 
+import { Constants } from './Constants';
 /**
  * @summary The answer from the user
  */
@@ -22,9 +23,9 @@ export class Answer extends Phaser.Text {
     this.fixedToCamera = true;
     this.y = this.game.height / 2;
     this.x = this.game.width / 2;
-    this.font = 'Press Start 2P';
+    this.font = Constants.FONT_MAIN;
     this.padding.set(10, 16);
-    this.fontSize = 50;
+    this.fontSize = Constants.FONT_SIZE_LG;
     this.fill = '#ff0000';
     this.anchor.setTo(0.5);
   }

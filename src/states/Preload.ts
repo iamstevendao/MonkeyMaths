@@ -3,6 +3,7 @@
 import * as Phaser from 'phaser-ce';
 import * as ImageMushroom from '../assets/img/mushroom.png';
 import * as ImageBtnPlay from '../assets/img/btnPlay.png';
+import { Constants } from '../utils/Constants';
 
 /**
  * @summary PreloadState
@@ -36,14 +37,13 @@ export class PreloadState extends Phaser.State {
     const centerX = this.game.world.centerX;
     const centerY = this.game.world.centerY;
 
-    this.background = this.game.add.sprite(centerX, centerY, 'background');
-    this.background.anchor.setTo(0.5, 0.5);
+    this.background = this.game.add.sprite(0, 0, 'background');
     this.background.width = this.game.width;
     this.background.height = this.game.height;
 
     this.loadText = this.add.text(centerX, centerY, 'loading ', {
-      font: 'Press Start 2P',
-      fontSize: 25,
+      font: Constants.FONT_MAIN,
+      fontSize: Constants.FONT_SIZE_MD,
       fill: '#ff0000',
     });
     this.loadText.anchor.setTo(0.5, 0.5);

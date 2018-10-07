@@ -3,6 +3,7 @@
 import * as Phaser from 'phaser-ce';
 import * as WebFont from 'webfontloader';
 import * as Background from '../assets/img/background.png';
+import { Constants } from '../utils/Constants';
 
 /**
  * @summary BootState
@@ -26,7 +27,7 @@ export class BootState extends Phaser.State {
   public preload(): void {
     WebFont.load({
       google: {
-        families: ['Press Start 2P'],
+        families: [Constants.FONT_MAIN],
       },
       active: this.fontsLoaded,
     });

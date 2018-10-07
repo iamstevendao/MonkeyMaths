@@ -3,6 +3,7 @@
 import * as Phaser from 'phaser-ce';
 import { Question } from '../utils/Question';
 import { Helpers } from '../utils/Helpers';
+import { Constants } from '../utils/Constants';
 
 /**
  * @summary Obstacle sprite
@@ -31,7 +32,7 @@ export class Obstacle extends Phaser.Text {
    */
   private initialize(): void {
     this.game.physics.arcade.enable(this);
-    this.font = 'Press Start 2P';
+    this.font = Constants.FONT_MAIN;
     this.fontSize = 30;
     this.padding.setTo(20, 20);
     this.question = new Question();

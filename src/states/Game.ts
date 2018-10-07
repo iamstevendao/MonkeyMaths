@@ -5,6 +5,7 @@ import { Monkey } from '../sprites/monkey';
 import { Obstacle } from '../sprites/Obstacle';
 import { Answer } from '../utils/Answer';
 import { Track } from '../utils/Track';
+import { Constants } from '../utils/Constants';
 
 /**
  * @summary Main game state
@@ -44,6 +45,13 @@ export class GameState extends Phaser.State {
    * @summary Tracking
    */
   private track: Track;
+
+  public preload(): void {
+    const background = this.game.add.sprite(0, 0, 'background');
+    background.fixedToCamera = true;
+    background.width = this.game.width;
+    background.height = this.game.height;
+  }
 
   /**
    * @summary Initialize game
@@ -117,8 +125,8 @@ export class GameState extends Phaser.State {
 
   private attachStyle(obj): void {
     Object.assign(obj, {
-      font: 'Press Start 2P',
-      fontSize: 25,
+      font: Constants.FONT_MAIN,
+      fontSize: Constants.FONT_SIZE_MD,
       padding: {
         x: 20,
         y: 20,
