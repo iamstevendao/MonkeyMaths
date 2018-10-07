@@ -3,6 +3,8 @@
 import * as Phaser from 'phaser-ce';
 import * as ImageMushroom from '../assets/img/mushroom.png';
 import * as ImageBtnPlay from '../assets/img/btnPlay.png';
+import * as ImageBtnRestart from '../assets/img/btnRestart.png';
+import * as ImageBtnHome from '../assets/img/btnHome.png';
 import { Constants } from '../utils/Constants';
 
 /**
@@ -50,6 +52,8 @@ export class PreloadState extends Phaser.State {
 
     this.load.image('monkey', ImageMushroom);
     this.load.image('btnPlay', ImageBtnPlay);
+    this.load.image('btnRestart', ImageBtnRestart);
+    this.load.image('btnHome', ImageBtnHome);
   }
 
   /**

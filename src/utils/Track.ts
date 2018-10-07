@@ -1,12 +1,13 @@
 // Track
 
+import { Global } from './Global';
+
 /**
  * @summary Track
  */
 export class Track {
   private numOfCorrect: number = 0;
   private numOfIncorrect: number = 0;
-  private score: number = 0;
   private level: number = 1;
   private chain: number = 0;
 
@@ -14,7 +15,7 @@ export class Track {
    * @summary Getter and setter
    */
   public getScore(): number {
-    return this.score;
+    return Global.score;
   }
 
   public getLevel(): number {
@@ -82,11 +83,11 @@ export class Track {
     }
 
     // If score cant be reduce anymore
-    if (this.score <= 0 && addingScore < 0) {
+    if (Global.score <= 0 && addingScore < 0) {
       return;
     }
 
     // Otherwise add to the score
-    this.score += addingScore;
+    Global.score += addingScore;
   }
 }

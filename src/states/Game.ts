@@ -85,6 +85,7 @@ export class GameState extends Phaser.State {
     // Initialize obstacles list, hard-coded to be 10 right now
     for (let i = 1; i < 10; i += 1) {
       const obstacle = new Obstacle(this.game, 800 * i, this.world.centerY);
+      Object.assign(obstacle, { originalIndex: i });
       this.game.add.existing(obstacle);
       this.obstacles.push(obstacle);
     }
@@ -174,17 +175,22 @@ export class GameState extends Phaser.State {
   private onCorrect(): void {
     this.track.onCorrect();
     this.nextObstacleIndex += 1;
+    this.monkey.overcome();
     if (this.nextObstacleIndex >= this.obstacles.length - 1) {
       // End game
       return this.endGame();
     }
-    this.monkey.overcome();
     this.obstacles[this.nextObstacleIndex].setRoute(this.monkey.route);
     setTimeout(() => this.answer.delete(), 800);
   }
 
   private endGame(): void {
-    this.game.destroy();
+    setTimeout(
+      () => {
+        this.world.setBounds(0, 0, this.game.width, this.game.height);
+        this.state.start('Score');
+      },
+      2000);
   }
 
   /**
