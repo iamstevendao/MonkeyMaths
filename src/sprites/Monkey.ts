@@ -48,7 +48,12 @@ export class Monkey extends Phaser.Sprite {
    * @private
    */
   private updateY(): void {
-    this.y = Helpers.getYByRoute(this.game, this.route);
+    const newY = Helpers.getYByRoute(this.game, this.route);
+    const distance = newY - this.y;
+    const velocityY = (distance > 0 ? 2 : -2) * this.body.velocity.x;
+    const timeOut = Math.abs((distance * 1000) / velocityY);
+    this.body.velocity.y = velocityY;
+    setTimeout(() => { this.body.velocity.y = 0; }, timeOut);
   }
 
   /**
