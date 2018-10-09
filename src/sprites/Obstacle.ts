@@ -4,15 +4,18 @@ import * as Phaser from 'phaser-ce';
 import { Question } from '../utils/Question';
 import { Helpers } from '../utils/Helpers';
 import { Constants } from '../utils/Constants';
+import { Config } from '../utils/Config';
 
 /**
  * @summary Obstacle sprite
  */
-export class Obstacle extends Phaser.Text {
+export class Obstacle extends Phaser.Sprite {
   /**
    * @summary Question
    */
   public question: Question;
+
+  private questionText: Phaser.Text;
   private route: number = 1;
 
   constructor(
@@ -21,8 +24,8 @@ export class Obstacle extends Phaser.Text {
     public y: number,
     public text: string = '',
   ) {
-    super(game, x, y, text);
-    this.initialize();
+    super(game, x, y, 'obstacle');
+    this.initialize(x, y, text);
     this.updateY();
   }
 
@@ -30,13 +33,18 @@ export class Obstacle extends Phaser.Text {
    * @summary Initialize attributes of the obstacle
    * @private
    */
-  private initialize(): void {
+  private initialize(x: number, y: number, text: string): void {
     this.game.physics.arcade.enable(this);
-    this.font = Constants.FONT_MAIN;
-    this.fontSize = Constants.FONT_SIZE_MD;
-    this.padding.setTo(20, 20);
+    const ratio = Config.routeHeight / this.height;
     this.question = new Question();
-    this.text = this.question.getText();
+    this.questionText = this.game.add.text(10, 10, text);
+    this.questionText.font = Constants.FONT_MAIN;
+    this.questionText.fontSize = Constants.FONT_SIZE_MD + 10;
+
+    this.scale.setTo(ratio, ratio);
+
+    this.addChild(this.questionText);
+    this.questionText.text = this.question.getText();
   }
 
   /**

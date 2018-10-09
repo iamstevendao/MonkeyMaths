@@ -18,9 +18,8 @@ export class Monkey extends Phaser.Sprite {
     public game: any,
     public x: number,
     public y: number,
-    public key: string | Phaser.RenderTexture | Phaser.BitmapData | PIXI.Texture,
   ) {
-    super(game, x, y, key);
+    super(game, x, y, 'monkey');
     this.initialize();
     this.updateY();
   }

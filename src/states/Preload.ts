@@ -5,6 +5,7 @@ import * as ImageMonkey from '../assets/img/monkey.png';
 import * as ImageBtnPlay from '../assets/img/btnPlay.png';
 import * as ImageBtnRestart from '../assets/img/btnRestart.png';
 import * as ImageBtnHome from '../assets/img/btnHome.png';
+import * as ImageObstacle from '../assets/img/obstacle.png';
 import { Constants } from '../utils/Constants';
 
 /**
@@ -54,6 +55,7 @@ export class PreloadState extends Phaser.State {
     this.load.image('btnPlay', ImageBtnPlay);
     this.load.image('btnRestart', ImageBtnRestart);
     this.load.image('btnHome', ImageBtnHome);
+    this.load.image('obstacle', ImageObstacle);
   }
 
   /**

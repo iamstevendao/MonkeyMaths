@@ -81,7 +81,7 @@ export class GameState extends Phaser.State {
     this.initializeLevel();
 
     // Setup monkey
-    this.monkey = new Monkey(this, 100, this.world.centerY, 'monkey');
+    this.monkey = new Monkey(this, 100, this.world.centerY);
     this.game.add.existing(this.monkey);
 
     // Setup answer
