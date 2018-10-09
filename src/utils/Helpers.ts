@@ -1,5 +1,7 @@
 // Helpers
 
+import { Config } from './Config';
+
 /**
  * @summary Helpers class
  */
@@ -32,11 +34,7 @@ export abstract class Helpers {
     method: (a, b) => (a * b),
   }];
 
-  public static getYByRoute(game: any, index: number): number {
-    let y = 200;
-    if (index === 2) {
-      y = 400;
-    }
-    return y;
+  public static getYByRoute(index: number): number {
+    return index === 1 ? Config.routeOneY : Config.routeTwoY;
   }
 }

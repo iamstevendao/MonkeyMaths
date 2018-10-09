@@ -12,8 +12,8 @@ import { Config } from './utils/Config';
 
 class Game extends Phaser.Game {
   constructor() {
-    const config = new Config();
-    super(config.gameWidth, config.gameHeight, Phaser.CANVAS, 'content', null);
+    new Config();
+    super(Config.gameWidth, Config.gameHeight, Phaser.CANVAS, 'content', null);
 
     this.state.add('Boot', BootState);
     this.state.add('Preload', PreloadState);

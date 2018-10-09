@@ -7,6 +7,7 @@ import { Answer } from '../utils/Answer';
 import { Notification } from '../utils/Notification';
 import { Track } from '../utils/Track';
 import { Constants } from '../utils/Constants';
+import { Config } from '../utils/Config';
 
 /**
  * @summary Main game state
@@ -119,12 +120,12 @@ export class GameState extends Phaser.State {
   }
 
   private initializeScore(): void {
-    this.score = this.add.text(this.game.width / 4, 80, '', null);
+    this.score = this.add.text(this.game.width / 4, Config.bannerY, '', null);
     this.attachStyle(this.score);
   }
 
   private initializeLevel(): void {
-    this.level = this.add.text(this.game.width * 3 / 4, 80, '', null);
+    this.level = this.add.text(this.game.width * 3 / 4, Config.bannerY, '', null);
     this.attachStyle(this.level);
   }
 

@@ -63,6 +63,6 @@ export class Obstacle extends Phaser.Text {
    * @private
    */
   private updateY(): void {
-    this.y = Helpers.getYByRoute(this.game, this.route);
+    this.y = Helpers.getYByRoute(this.route);
   }
 }

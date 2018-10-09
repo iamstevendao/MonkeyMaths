@@ -3,6 +3,7 @@
 import * as Phaser from 'phaser-ce';
 import { Constants } from '../utils/Constants';
 import { Helpers } from '../utils/Helpers';
+import { Config } from '../utils/Config';
 
 /**
  * @summary Monkey sprite
@@ -31,6 +32,8 @@ export class Monkey extends Phaser.Sprite {
   private initialize(): void {
     this.game.physics.arcade.enable(this);
     this.body.velocity.x = 200;
+    const ratio = Config.routeHeight / this.height;
+    this.scale.setTo(ratio, ratio);
   }
 
   /**
@@ -48,7 +51,7 @@ export class Monkey extends Phaser.Sprite {
    * @private
    */
   private updateY(): void {
-    const newY = Helpers.getYByRoute(this.game, this.route);
+    const newY = Helpers.getYByRoute(this.route);
     const distance = newY - this.y;
     const velocityY = (distance > 0 ? 2 : -2) * this.body.velocity.x;
     const timeOut = Math.abs((distance * 1000) / velocityY);
@@ -69,7 +72,6 @@ export class Monkey extends Phaser.Sprite {
     } else if (newVelocity < Constants.VELOCITY_MIN) {
       newVelocity = Constants.VELOCITY_MIN;
     }
-    console.log('updating speed: ', this.body.velocity.x, newVelocity);
     this.body.velocity.x = newVelocity;
   }
 
