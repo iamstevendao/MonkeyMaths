@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 // Phaser webpack config
 const phaserModule = path.join(__dirname, '/node_modules/phaser-ce/');
@@ -18,11 +19,10 @@ module.exports = {
       path.resolve(__dirname, 'src/main.ts'),
     ],
     vendor: ['pixi', 'p2', 'phaser', 'webfontloader'],
-
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    publicPath: './dist/',
+    publicPath: './',
     filename: 'bundle.js',
   },
   plugins: [
@@ -35,15 +35,41 @@ module.exports = {
         comments: false,
       },
     }),
+    new HtmlWebpackPlugin({
+      template: 'src/index.html',
+    }),
     new webpack.optimize.CommonsChunkPlugin({ name: 'vendor'/* chunkName= */, filename: 'vendor.bundle.js'/* filename= */ }),
   ],
   module: {
     rules: [
+      {
+        test: /\.ts$/,
+        use: [{
+          loader: 'awesome-typescript-loader',
+          options: {
+            useBabel: true,
+            useCache: true,
+          },
+        }],
+      },
       { test: /\.js$/, use: ['babel-loader'], include: path.join(__dirname, 'src') },
-      { test: /\.ts?$/, use: 'ts-loader', exclude: /node_modules/ },
       { test: /pixi\.js/, use: ['expose-loader?PIXI'] },
       { test: /phaser-split\.js$/, use: ['expose-loader?Phaser'] },
       { test: /p2\.js/, use: ['expose-loader?p2'] },
+      { test: /\.html$/, use: ['html-loader'] },
+      {
+        test: /\.(gif|png|jpe?g|svg)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'assets/img',
+              publicPath: 'assets/img',
+            },
+          },
+        ],
+      },
     ],
   },
   node: {
@@ -52,10 +78,13 @@ module.exports = {
     tls: 'empty',
   },
   resolve: {
+    extensions: ['.ts', '.js'],
+    modules: ['node_modules', 'src'],
     alias: {
       phaser,
       pixi,
       p2,
+      src: path.resolve('./src'),
     },
   },
 };

@@ -5,7 +5,6 @@
   "author": "iamstevendao <iamstevendao@gmail.com>",
   "main": "index.js",
   "scripts": {
-    "start": "webpack --progress",
     "dev": "webpack --progress",
     "deploy": "webpack --config webpack.production.config.js"
   },
