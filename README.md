@@ -1,6 +1,8 @@
 # Monkey Maths by [Starmaths](http://starmathsonline.com.au/)
 #### A game project created by Phaser CE, Typescript and Webpack.
 
+[![CircleCI](https://circleci.com/gh/iamstevendao/MonkeyMaths/tree/master.svg?style=svg)](https://circleci.com/gh/iamstevendao/MonkeyMaths/tree/master)
+
 ### Checkout [Demo](https://iamstevendao.github.io/MonkeyMaths/).
 
 ## Setup development
