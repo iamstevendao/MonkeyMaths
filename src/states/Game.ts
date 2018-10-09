@@ -1,7 +1,7 @@
 // Main game state
 
 import * as Phaser from 'phaser-ce';
-import { Monkey } from '../sprites/monkey';
+import { Monkey } from '../sprites/Monkey';
 import { Obstacle } from '../sprites/Obstacle';
 import { Answer } from '../utils/Answer';
 import { Notification } from '../utils/Notification';
