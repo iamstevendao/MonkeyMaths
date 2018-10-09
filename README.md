@@ -9,7 +9,7 @@
 $ npm install
 
 # Run dev, open browser with localhost:3000 by default
-$ npm start
+$ npm run dev
 
 ```
 
