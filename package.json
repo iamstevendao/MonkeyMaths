@@ -27,7 +27,7 @@
     "tslint": "^5.11.0",
     "tslint-config-airbnb": "^5.9.2",
     "typescript": "2.4.1",
-    "webpack": "^2.6.1"
+    "webpack": "2.6.1"
   },
   "dependencies": {
     "phaser-ce": "^2.8.0",
