@@ -105663,6 +105663,7 @@ PIXI.canUseNewCanvasBlendModes = function () {
 // Helpers
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var Config_1 = __webpack_require__(/*! ./Config */ 19);
 /**
  * @summary Helpers class
  */
@@ -105681,12 +105682,8 @@ var Helpers = function () {
         }
         return Math.floor(Math.random() * to + from);
     };
-    Helpers.getYByRoute = function (game, index) {
-        var y = 200;
-        if (index === 2) {
-            y = 400;
-        }
-        return y;
+    Helpers.getYByRoute = function (index) {
+        return index === 1 ? Config_1.Config.routeOneY : Config_1.Config.routeTwoY;
     };
     /**
      * @summary List of operators using in the questions
@@ -105788,8 +105785,8 @@ var Game = function (_super) {
     __extends(Game, _super);
     function Game() {
         var _this = this;
-        var config = new Config_1.Config();
-        _this = _super.call(this, config.gameWidth, config.gameHeight, Phaser.CANVAS, 'content', null) || this;
+        new Config_1.Config();
+        _this = _super.call(this, Config_1.Config.gameWidth, Config_1.Config.gameHeight, Phaser.CANVAS, 'content', null) || this;
         _this.state.add('Boot', Boot_1.BootState);
         _this.state.add('Preload', Preload_1.PreloadState);
         _this.state.add('Splash', Splash_1.SplashState);
@@ -105834,9 +105831,10 @@ var __extends = undefined && undefined.__extends || function () {
 }();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Phaser = __webpack_require__(/*! phaser-ce */ 1);
-var Question_1 = __webpack_require__(/*! ../utils/Question */ 20);
+var Question_1 = __webpack_require__(/*! ../utils/Question */ 21);
 var Helpers_1 = __webpack_require__(/*! ../utils/Helpers */ 2);
 var Constants_1 = __webpack_require__(/*! ../utils/Constants */ 0);
+var Config_1 = __webpack_require__(/*! ../utils/Config */ 19);
 /**
  * @summary Obstacle sprite
  */
@@ -105846,13 +105844,13 @@ var Obstacle = function (_super) {
         if (text === void 0) {
             text = '';
         }
-        var _this = _super.call(this, game, x, y, text) || this;
+        var _this = _super.call(this, game, x, y, 'obstacle') || this;
         _this.game = game;
         _this.x = x;
         _this.y = y;
         _this.text = text;
         _this.route = 1;
-        _this.initialize();
+        _this.initialize(x, y, text);
         _this.updateY();
         return _this;
     }
@@ -105860,13 +105858,16 @@ var Obstacle = function (_super) {
      * @summary Initialize attributes of the obstacle
      * @private
      */
-    Obstacle.prototype.initialize = function () {
+    Obstacle.prototype.initialize = function (x, y, text) {
         this.game.physics.arcade.enable(this);
-        this.font = Constants_1.Constants.FONT_MAIN;
-        this.fontSize = Constants_1.Constants.FONT_SIZE_MD;
-        this.padding.setTo(20, 20);
+        var ratio = Config_1.Config.routeHeight / this.height;
         this.question = new Question_1.Question();
-        this.text = this.question.getText();
+        this.questionText = this.game.add.text(10, 10, text);
+        this.questionText.font = Constants_1.Constants.FONT_MAIN;
+        this.questionText.fontSize = Constants_1.Constants.FONT_SIZE_MD + 10;
+        this.scale.setTo(ratio, ratio);
+        this.addChild(this.questionText);
+        this.questionText.text = this.question.getText();
     };
     /**
      * @summary Check if answer of user is correct or not
@@ -105890,10 +105891,10 @@ var Obstacle = function (_super) {
      * @private
      */
     Obstacle.prototype.updateY = function () {
-        this.y = Helpers_1.Helpers.getYByRoute(this.game, this.route);
+        this.y = Helpers_1.Helpers.getYByRoute(this.route);
     };
     return Obstacle;
-}(Phaser.Text);
+}(Phaser.Sprite);
 exports.Obstacle = Obstacle;
 
 /***/ }),
@@ -105929,17 +105930,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Phaser = __webpack_require__(/*! phaser-ce */ 1);
 var Constants_1 = __webpack_require__(/*! ../utils/Constants */ 0);
 var Helpers_1 = __webpack_require__(/*! ../utils/Helpers */ 2);
+var Config_1 = __webpack_require__(/*! ../utils/Config */ 19);
 /**
  * @summary Monkey sprite
  */
 var Monkey = function (_super) {
     __extends(Monkey, _super);
-    function Monkey(game, x, y, key) {
-        var _this = _super.call(this, game, x, y, key) || this;
+    function Monkey(game, x, y) {
+        var _this = _super.call(this, game, x, y, 'monkey') || this;
         _this.game = game;
         _this.x = x;
         _this.y = y;
-        _this.key = key;
         /**
          * @summary Current path of monkey, can be 1 or 2
          */
@@ -105955,6 +105956,8 @@ var Monkey = function (_super) {
     Monkey.prototype.initialize = function () {
         this.game.physics.arcade.enable(this);
         this.body.velocity.x = 200;
+        var ratio = Config_1.Config.routeHeight / this.height;
+        this.scale.setTo(ratio, ratio);
     };
     /**
      * @summary Handle event when Monkey overcomes an obstacle
@@ -105971,7 +105974,7 @@ var Monkey = function (_super) {
      */
     Monkey.prototype.updateY = function () {
         var _this = this;
-        var newY = Helpers_1.Helpers.getYByRoute(this.game, this.route);
+        var newY = Helpers_1.Helpers.getYByRoute(this.route);
         var distance = newY - this.y;
         var velocityY = (distance > 0 ? 2 : -2) * this.body.velocity.x;
         var timeOut = Math.abs(distance * 1000 / velocityY);
@@ -105996,7 +105999,6 @@ var Monkey = function (_super) {
         } else if (newVelocity < Constants_1.Constants.VELOCITY_MIN) {
             newVelocity = Constants_1.Constants.VELOCITY_MIN;
         }
-        console.log('updating speed: ', this.body.velocity.x, newVelocity);
         this.body.velocity.x = newVelocity;
     };
     /**
@@ -106045,7 +106047,7 @@ var __extends = undefined && undefined.__extends || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Phaser = __webpack_require__(/*! phaser-ce */ 1);
 var WebFont = __webpack_require__(/*! webfontloader */ 6);
-var Background = __webpack_require__(/*! ../assets/img/background.png */ 22);
+var Background = __webpack_require__(/*! ../assets/img/background.png */ 23);
 var Constants_1 = __webpack_require__(/*! ../utils/Constants */ 0);
 /**
  * @summary BootState
@@ -106124,9 +106126,10 @@ var Phaser = __webpack_require__(/*! phaser-ce */ 1);
 var monkey_1 = __webpack_require__(/*! ../sprites/monkey */ 12);
 var Obstacle_1 = __webpack_require__(/*! ../sprites/Obstacle */ 11);
 var Answer_1 = __webpack_require__(/*! ../utils/Answer */ 18);
-var Notification_1 = __webpack_require__(/*! ../utils/Notification */ 32);
-var Track_1 = __webpack_require__(/*! ../utils/Track */ 21);
+var Notification_1 = __webpack_require__(/*! ../utils/Notification */ 20);
+var Track_1 = __webpack_require__(/*! ../utils/Track */ 22);
 var Constants_1 = __webpack_require__(/*! ../utils/Constants */ 0);
+var Config_1 = __webpack_require__(/*! ../utils/Config */ 19);
 /**
  * @summary Main game state
  */
@@ -106170,7 +106173,7 @@ var GameState = function (_super) {
         this.initializeScore();
         this.initializeLevel();
         // Setup monkey
-        this.monkey = new monkey_1.Monkey(this, 100, this.world.centerY, 'monkey');
+        this.monkey = new monkey_1.Monkey(this, 100, this.world.centerY);
         this.game.add.existing(this.monkey);
         // Setup answer
         this.answer = new Answer_1.Answer(this.game, this.game.width / 2, this.world.centerY);
@@ -106203,11 +106206,11 @@ var GameState = function (_super) {
         this.attachStyle(this.banner);
     };
     GameState.prototype.initializeScore = function () {
-        this.score = this.add.text(this.game.width / 4, 80, '', null);
+        this.score = this.add.text(this.game.width / 4, Config_1.Config.bannerY, '', null);
         this.attachStyle(this.score);
     };
     GameState.prototype.initializeLevel = function () {
-        this.level = this.add.text(this.game.width * 3 / 4, 80, '', null);
+        this.level = this.add.text(this.game.width * 3 / 4, Config_1.Config.bannerY, '', null);
         this.attachStyle(this.level);
     };
     GameState.prototype.refreshTrack = function () {
@@ -106349,10 +106352,11 @@ var __extends = undefined && undefined.__extends || function () {
 }();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Phaser = __webpack_require__(/*! phaser-ce */ 1);
-var ImageMushroom = __webpack_require__(/*! ../assets/img/mushroom.png */ 25);
-var ImageBtnPlay = __webpack_require__(/*! ../assets/img/btnPlay.png */ 24);
-var ImageBtnRestart = __webpack_require__(/*! ../assets/img/btnRestart.png */ 31);
-var ImageBtnHome = __webpack_require__(/*! ../assets/img/btnHome.png */ 23);
+var ImageMonkey = __webpack_require__(/*! ../assets/img/monkey.png */ 27);
+var ImageBtnPlay = __webpack_require__(/*! ../assets/img/btnPlay.png */ 25);
+var ImageBtnRestart = __webpack_require__(/*! ../assets/img/btnRestart.png */ 26);
+var ImageBtnHome = __webpack_require__(/*! ../assets/img/btnHome.png */ 24);
+var ImageObstacle = __webpack_require__(/*! ../assets/img/obstacle.png */ 33);
 var Constants_1 = __webpack_require__(/*! ../utils/Constants */ 0);
 /**
  * @summary PreloadState
@@ -106383,10 +106387,11 @@ var PreloadState = function (_super) {
             fill: '#ff0000'
         });
         this.loadText.anchor.setTo(0.5, 0.5);
-        this.load.image('monkey', ImageMushroom);
+        this.load.image('monkey', ImageMonkey);
         this.load.image('btnPlay', ImageBtnPlay);
         this.load.image('btnRestart', ImageBtnRestart);
         this.load.image('btnHome', ImageBtnHome);
+        this.load.image('obstacle', ImageObstacle);
     };
     /**
      * @summary When the font is ready, show splash state
@@ -106641,14 +106646,22 @@ exports.Answer = Answer;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Config = function () {
     function Config() {
-        this.gameWidth = this.getWindowSize();
-        this.gameHeight = this.getWindowSize();
-    }
-    Config.prototype.getWindowSize = function () {
         // Get the smaller dimension
-        var w = window.innerWidth;
-        var h = window.innerHeight;
-        return w > h ? h - 150 : w - 150;
+        var widthWindow = window.innerWidth;
+        var heightWindow = window.innerHeight - 150;
+        var widthToCalculate = widthWindow / 1.6;
+        Config.gameHeight = widthToCalculate > heightWindow ? heightWindow : widthToCalculate;
+        Config.gameWidth = Config.gameHeight * 1.6;
+        this.calculateRoute();
+        this.calculateBanner();
+    }
+    Config.prototype.calculateBanner = function () {
+        Config.bannerY = 50;
+    };
+    Config.prototype.calculateRoute = function () {
+        Config.routeHeight = Math.floor(Config.gameHeight / 10 * 3) - 50;
+        Config.routeOneY = Config.gameHeight / 10 * 2;
+        Config.routeTwoY = Config.gameHeight / 10 * 5;
     };
     return Config;
 }();
@@ -106656,6 +106669,104 @@ exports.Config = Config;
 
 /***/ }),
 /* 20 */
+/* no static exports found */
+/* all exports used */
+/*!***********************************!*\
+  !*** ./src/utils/Notification.ts ***!
+  \***********************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Notification
+
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Constants_1 = __webpack_require__(/*! ./Constants */ 0);
+/**
+ * @summary The notification to the user
+ */
+var Notification = function (_super) {
+    __extends(Notification, _super);
+    /**
+     *
+     * @param {Phaser.Game} game
+     * @param {number} x
+     * @param {number} y
+     * @param {string} [text]
+     */
+    function Notification(game, x, y, text) {
+        if (text === void 0) {
+            text = '';
+        }
+        var _this = _super.call(this, game, x, y, text) || this;
+        _this.game = game;
+        _this.x = x;
+        _this.y = y;
+        _this.text = text;
+        _this.streakText = ['', '2 in a row', '3 in a row', '4 in a row', '5 in a row', '6 in a row', '7 in a row', '8 in a row', '9 in a row', '10 in a rowwwww'];
+        // Set style
+        _this.fixedToCamera = true;
+        _this.y = _this.game.height / 2 - 100;
+        _this.x = _this.game.width / 2;
+        _this.font = Constants_1.Constants.FONT_MAIN;
+        _this.padding.set(10, 16);
+        _this.fontSize = Constants_1.Constants.FONT_SIZE_LG;
+        _this.fill = '#ff0000';
+        _this.anchor.setTo(0.5);
+        return _this;
+    }
+    /**
+     * @summary Return answer
+     * @public
+     *
+     * @return {string}
+     */
+    Notification.prototype.show = function (type, chain) {
+        var _this = this;
+        switch (type) {
+            case Notification.SO_CLOSE:
+                this.text = 'So closeeeeee';
+                this.fill = '#00ff00';
+                break;
+            case Notification.STREAK:
+                if (chain > 2) {
+                    this.text = this.streakText[chain];
+                    this.fill = '#00ff00';
+                } else if (chain < -2) {
+                    this.text = 'Try harder !!!!';
+                    this.fill = '#ff0000';
+                }
+                break;
+        }
+        this.visible = true;
+        setTimeout(function () {
+            _this.visible = false;
+        }, 500);
+    };
+    Notification.SO_CLOSE = 'so-close';
+    Notification.STREAK = 'streak';
+    return Notification;
+}(Phaser.Text);
+exports.Notification = Notification;
+
+/***/ }),
+/* 21 */
 /* no static exports found */
 /* all exports used */
 /*!*******************************!*\
@@ -106734,7 +106845,7 @@ var Question = function () {
 exports.Question = Question;
 
 /***/ }),
-/* 21 */
+/* 22 */
 /* no static exports found */
 /* all exports used */
 /*!****************************!*\
@@ -106832,7 +106943,7 @@ var Track = function () {
 exports.Track = Track;
 
 /***/ }),
-/* 22 */
+/* 23 */
 /* no static exports found */
 /* all exports used */
 /*!***************************************!*\
@@ -106843,7 +106954,7 @@ exports.Track = Track;
 module.exports = "assets/img/background.png";
 
 /***/ }),
-/* 23 */
+/* 24 */
 /* no static exports found */
 /* all exports used */
 /*!************************************!*\
@@ -106854,7 +106965,7 @@ module.exports = "assets/img/background.png";
 module.exports = "assets/img/btnHome.png";
 
 /***/ }),
-/* 24 */
+/* 25 */
 /* no static exports found */
 /* all exports used */
 /*!************************************!*\
@@ -106865,21 +106976,32 @@ module.exports = "assets/img/btnHome.png";
 module.exports = "assets/img/btnPlay.png";
 
 /***/ }),
-/* 25 */
+/* 26 */
 /* no static exports found */
 /* all exports used */
-/*!*************************************!*\
-  !*** ./src/assets/img/mushroom.png ***!
-  \*************************************/
+/*!***************************************!*\
+  !*** ./src/assets/img/btnRestart.png ***!
+  \***************************************/
 /***/ (function(module, exports) {
 
-module.exports = "assets/img/mushroom.png";
+module.exports = "assets/img/btnRestart.png";
 
 /***/ }),
-/* 26 */,
-/* 27 */,
+/* 27 */
+/* no static exports found */
+/* all exports used */
+/*!***********************************!*\
+  !*** ./src/assets/img/monkey.png ***!
+  \***********************************/
+/***/ (function(module, exports) {
+
+module.exports = "assets/img/monkey.png";
+
+/***/ }),
 /* 28 */,
-/* 29 */
+/* 29 */,
+/* 30 */,
+/* 31 */
 /* no static exports found */
 /* all exports used */
 /*!***************************!*\
@@ -106891,115 +107013,17 @@ module.exports = __webpack_require__(/*! /Users/stevend/coding/phaser/MonkeyMath
 
 
 /***/ }),
-/* 30 */,
-/* 31 */
+/* 32 */,
+/* 33 */
 /* no static exports found */
 /* all exports used */
-/*!***************************************!*\
-  !*** ./src/assets/img/btnRestart.png ***!
-  \***************************************/
+/*!*************************************!*\
+  !*** ./src/assets/img/obstacle.png ***!
+  \*************************************/
 /***/ (function(module, exports) {
 
-module.exports = "assets/img/btnRestart.png";
-
-/***/ }),
-/* 32 */
-/* no static exports found */
-/* all exports used */
-/*!***********************************!*\
-  !*** ./src/utils/Notification.ts ***!
-  \***********************************/
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// Notification
-
-var __extends = undefined && undefined.__extends || function () {
-    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
-        d.__proto__ = b;
-    } || function (d, b) {
-        for (var p in b) {
-            if (b.hasOwnProperty(p)) d[p] = b[p];
-        }
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() {
-            this.constructor = d;
-        }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-}();
-Object.defineProperty(exports, "__esModule", { value: true });
-var Constants_1 = __webpack_require__(/*! ./Constants */ 0);
-/**
- * @summary The notification to the user
- */
-var Notification = function (_super) {
-    __extends(Notification, _super);
-    /**
-     *
-     * @param {Phaser.Game} game
-     * @param {number} x
-     * @param {number} y
-     * @param {string} [text]
-     */
-    function Notification(game, x, y, text) {
-        if (text === void 0) {
-            text = '';
-        }
-        var _this = _super.call(this, game, x, y, text) || this;
-        _this.game = game;
-        _this.x = x;
-        _this.y = y;
-        _this.text = text;
-        _this.streakText = ['', '2 in a row', '3 in a row', '4 in a row', '5 in a row', '6 in a row', '7 in a row', '8 in a row', '9 in a row', '10 in a rowwwww'];
-        // Set style
-        _this.fixedToCamera = true;
-        _this.y = _this.game.height / 2 - 100;
-        _this.x = _this.game.width / 2;
-        _this.font = Constants_1.Constants.FONT_MAIN;
-        _this.padding.set(10, 16);
-        _this.fontSize = Constants_1.Constants.FONT_SIZE_LG;
-        _this.fill = '#ff0000';
-        _this.anchor.setTo(0.5);
-        return _this;
-    }
-    /**
-     * @summary Return answer
-     * @public
-     *
-     * @return {string}
-     */
-    Notification.prototype.show = function (type, chain) {
-        var _this = this;
-        switch (type) {
-            case Notification.SO_CLOSE:
-                this.text = 'So closeeeeee';
-                this.fill = '#00ff00';
-                break;
-            case Notification.STREAK:
-                if (chain > 2) {
-                    this.text = this.streakText[chain];
-                    this.fill = '#00ff00';
-                } else if (chain < -2) {
-                    this.text = 'Try harder !!!!';
-                    this.fill = '#ff0000';
-                }
-                break;
-        }
-        this.visible = true;
-        setTimeout(function () {
-            _this.visible = false;
-        }, 500);
-    };
-    Notification.SO_CLOSE = 'so-close';
-    Notification.STREAK = 'streak';
-    return Notification;
-}(Phaser.Text);
-exports.Notification = Notification;
+module.exports = "assets/img/obstacle.png";
 
 /***/ })
-],[29]);
+],[31]);
 //# sourceMappingURL=bundle.js.map

@@ -150,7 +150,7 @@
 /******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 30);
+/******/ 	return __webpack_require__(__webpack_require__.s = 32);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -197,7 +197,7 @@ module.exports = g;
   \******************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["PIXI"] = __webpack_require__(/*! -!./pixi.js */ 28);
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["PIXI"] = __webpack_require__(/*! -!./pixi.js */ 30);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../webpack/buildin/global.js */ 3)))
 
 /***/ }),
@@ -209,7 +209,7 @@ module.exports = g;
   \****************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["p2"] = __webpack_require__(/*! -!./p2.js */ 26);
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["p2"] = __webpack_require__(/*! -!./p2.js */ 28);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../webpack/buildin/global.js */ 3)))
 
 /***/ }),
@@ -447,7 +447,7 @@ process.umask = function() { return 0; };
   \**************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Phaser"] = __webpack_require__(/*! -!./phaser-split.js */ 27);
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Phaser"] = __webpack_require__(/*! -!./phaser-split.js */ 29);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../webpack/buildin/global.js */ 3)))
 
 /***/ }),
@@ -466,7 +466,9 @@ process.umask = function() { return 0; };
 /* 23 */,
 /* 24 */,
 /* 25 */,
-/* 26 */
+/* 26 */,
+/* 27 */,
+/* 28 */
 /* no static exports found */
 /* all exports used */
 /*!****************************************!*\
@@ -14114,7 +14116,7 @@ World.prototype.raycast = function(result, ray){
 });
 
 /***/ }),
-/* 27 */
+/* 29 */
 /* no static exports found */
 /* all exports used */
 /*!**************************************************!*\
@@ -98555,7 +98557,7 @@ PIXI.canUseNewCanvasBlendModes = function () {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../process/browser.js */ 8)))
 
 /***/ }),
-/* 28 */
+/* 30 */
 /* no static exports found */
 /* all exports used */
 /*!******************************************!*\
@@ -106136,8 +106138,8 @@ PIXI.TextureUvs = function()
 }).call(this);
 
 /***/ }),
-/* 29 */,
-/* 30 */
+/* 31 */,
+/* 32 */
 /* no static exports found */
 /* all exports used */
 /*!******************************************!*\
