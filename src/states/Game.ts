@@ -115,7 +115,7 @@ export class GameState extends Phaser.State {
 
   private initializeBanner(): void {
     const bannerText = 'Monkey Maths by Starmaths';
-    this.banner = this.add.text(this.game.width / 2, this.game.height - 80, bannerText, null);
+    this.banner = this.add.text(this.game.width / 2, this.game.height - 60, bannerText, null);
     this.attachStyle(this.banner);
   }
 

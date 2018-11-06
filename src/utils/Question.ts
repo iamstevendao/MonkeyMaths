@@ -1,6 +1,7 @@
 // Question
 
 import { Helpers } from './Helpers';
+import { Global } from './Global';
 
 /**
  * @summary Question class
@@ -28,8 +29,12 @@ export class Question {
    */
   constructor() {
     // Random an operator
-    const operatorIndex = Helpers.random(Helpers.operators.length);
-    this.operator = Helpers.operators[operatorIndex];
+    if (Global.type === 'combination') {
+      const operatorIndex = Helpers.random(Helpers.operators.length);
+      this.operator = Helpers.operators[operatorIndex];
+    } else {
+      this.operator = Helpers.operators.find(op => op.name === Global.type);
+    }
 
     // Generate the first and second number
     this.generateNumbers();

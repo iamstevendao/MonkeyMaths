@@ -2,6 +2,7 @@
 
 import * as Phaser from 'phaser-ce';
 import { Constants } from '../utils/Constants';
+import { Global } from '../utils/Global';
 
 /**
  * @summary Menu state of the game
@@ -51,7 +52,8 @@ export class MenuState extends Phaser.State {
     banner.anchor.setTo(0.5, 0.5);
   }
 
-  private play(type: String) {
+  private play(type: string) {
+    Global.type = type;
     this.state.start('Game');
   }
 }

@@ -22,15 +22,19 @@ export abstract class Helpers {
    */
   public static operators = [{
     sign: '+',
+    name: 'plus',
     method: (a, b) => (a + b),
   }, {
     sign: '-',
+    name: 'minus',
     method: (a, b) => (a - b),
   }, {
     sign: '/',
+    name: 'divide',
     method: (a, b) => Math.floor(a / b),
   }, {
     sign: '*',
+    name: 'times',
     method: (a, b) => (a * b),
   }];
 
