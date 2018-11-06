@@ -8,6 +8,7 @@ import { BootState } from './states/Boot';
 import { PreloadState } from './states/Preload';
 import { SplashState } from './states/Splash';
 import { GameState } from './states/Game';
+import { MenuState } from './states/Menu';
 import { ScoreState } from './states/Score';
 import { Config } from './utils/Config';
 
@@ -19,6 +20,7 @@ class Game extends Phaser.Game {
     this.state.add('Boot', BootState);
     this.state.add('Preload', PreloadState);
     this.state.add('Splash', SplashState);
+    this.state.add('Menu', MenuState);
     this.state.add('Score', ScoreState);
     this.state.add('Game', GameState);
 

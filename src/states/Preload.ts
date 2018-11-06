@@ -6,6 +6,11 @@ import * as ImageBtnPlay from '../assets/img/btnPlay.png';
 import * as ImageBtnRestart from '../assets/img/btnRestart.png';
 import * as ImageBtnHome from '../assets/img/btnHome.png';
 import * as ImageObstacle from '../assets/img/obstacle.png';
+import * as ImageDivide from '../assets/img/imgDivide.png';
+import * as ImageMinus from '../assets/img/imgMinus.png';
+import * as ImageTimes from '../assets/img/imgTimes.png';
+import * as ImagePlus from '../assets/img/imgPlus.png';
+import * as ImageCombination from '../assets/img/imgCombination.png';
 import { Constants } from '../utils/Constants';
 
 /**
@@ -55,6 +60,11 @@ export class PreloadState extends Phaser.State {
     this.load.image('btnPlay', ImageBtnPlay);
     this.load.image('btnRestart', ImageBtnRestart);
     this.load.image('btnHome', ImageBtnHome);
+    this.load.image('btnPlus', ImagePlus);
+    this.load.image('btnMinus', ImageMinus);
+    this.load.image('btnTimes', ImageTimes);
+    this.load.image('btnDivide', ImageDivide);
+    this.load.image('btnCombination', ImageCombination);
     this.load.image('obstacle', ImageObstacle);
   }
 
