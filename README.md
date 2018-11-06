@@ -3,7 +3,7 @@
 
 [![CircleCI](https://circleci.com/gh/iamstevendao/MonkeyMaths/tree/master.svg?style=svg)](https://circleci.com/gh/iamstevendao/MonkeyMaths/tree/master)
 
-### Checkout [Demo](https://iamstevendao.github.io/MonkeyMaths/).
+### Checkout [Demo](https://projects.iamstevendao.com/monkeymaths/).
 
 ## Setup development
 ```bash
