@@ -8,8 +8,7 @@ import { Global } from './Global';
 export class Track {
   private numOfCorrect: number = 0;
   private numOfIncorrect: number = 0;
-  private level: number = 1;
-  private chain: number = 0;
+  private lastTen: number[] = [];
 
   /**
    * @summary Getter and setter
@@ -19,7 +18,15 @@ export class Track {
   }
 
   public getLevel(): number {
-    return this.level;
+    return Global.level;
+  }
+
+  public getDifficulty(): number {
+    return Global.difficulty;
+  }
+
+  public getLastTen(): number[] {
+    return this.lastTen;
   }
 
   public getNumOfCorrect(): number {
@@ -30,18 +37,50 @@ export class Track {
     return this.numOfIncorrect;
   }
 
+  private increaseScore(score: number): void {
+    if (Global.score === 0 && score < 0) {
+      return;
+    }
+    Global.score += score;
+  }
+
   /**
    * @summary Handle the event where user puts a correct answer
    * @public
    */
   public onCorrect(): void {
+    this.pushToLastTen(1);
     this.numOfCorrect += 1;
-    if (this.chain < 0) {
-      this.chain = 1;
-    } else {
-      this.chain += 1;
-    }
     this.updateMechanism(true);
+  }
+
+  /**
+   * Push current result (1 or 0) to last ten question
+   * @param number 1 or 0
+   */
+  private pushToLastTen(number): void {
+    this.lastTen.push(number);
+    if (this.lastTen.length > 10) {
+      this.lastTen.unshift();
+    }
+  }
+
+  /**
+   * Get the percentage of correctness in the last 10 questions
+   */
+  private getPercentageOfLastTen(): number {
+    // If last 4 questions are wrong
+    if (this.lastTen.slice(-4).join('') === '0000') {
+      return 0;
+    }
+    // If last 8 questions are correct
+    if (this.lastTen.slice(-8).join('') === '11111111') {
+      return 1;
+    }
+    if (this.lastTen.length < 10) {
+      return -1;
+    }
+    return this.lastTen.reduce((prv, crr) => prv + (crr || 0), 0) / 10;
   }
 
   /**
@@ -49,20 +88,45 @@ export class Track {
    * @public
    */
   public onIncorrect(): void {
+    this.pushToLastTen(0);
     this.numOfIncorrect += 1;
-    if (this.chain > 0) {
-      this.chain = -1;
-    } else {
-      this.chain -= 1;
-    }
     this.updateMechanism(false);
   }
 
-  private reduceLevel(): void {
-    if (this.level <= 1) {
+  private increaseDifficulty(): void {
+    // Bonus score
+    this.increaseScore((Global.level * 10) * Global.difficulty);
+
+    // IF difficulty is maximum
+    if (Global.difficulty === 5) {
+      return this.increaseLevel();
+    }
+    Global.difficulty += 1;
+  }
+
+  private reduceDifficulty(): void {
+    // IF difficulty is minimum
+    if (Global.difficulty === 1) {
+      return this.reduceLevel();
+    }
+    Global.difficulty -= 1;
+  }
+
+  private increaseLevel(): void {
+    // Maximum level
+    if (Global.level === 6) {
       return;
     }
-    this.level -= 1;
+    Global.level += 1;
+    Global.difficulty = 1;
+  }
+
+  private reduceLevel(): void {
+    if (Global.level <= 1) {
+      return;
+    }
+    Global.level -= 1;
+    Global.difficulty = 5;
   }
 
   /**
@@ -70,24 +134,19 @@ export class Track {
    * @private
    */
   private updateMechanism(isCorrect: Boolean): void {
-    let addingScore = isCorrect ? 1 : - 1;
-    // If chain is more than 1, add it along with adding score
-    if (this.chain >= 1) {
-      addingScore += this.chain - 1;
+    const percentage = this.getPercentageOfLastTen();
+
+    // If percentage is not enough to calculate
+    if (percentage < 0) {
+      return this.increaseScore(isCorrect ? 1 : -1);
     }
 
-    if (this.chain <= -2) {
-      this.reduceLevel();
-    } else if (this.chain >= 2) {
-      this.level += 1;
+    if (percentage >= 0.8) {
+      return this.increaseDifficulty();
     }
 
-    // If score cant be reduce anymore
-    if (Global.score <= 0 && addingScore < 0) {
-      return;
+    if (percentage <= 0.4) {
+      return this.reduceDifficulty();
     }
-
-    // Otherwise add to the score
-    Global.score += addingScore;
   }
 }

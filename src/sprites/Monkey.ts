@@ -30,7 +30,7 @@ export class Monkey extends Phaser.Sprite {
    */
   private initialize(): void {
     this.game.physics.arcade.enable(this);
-    this.body.velocity.x = 200;
+    this.updateSpeed();
     const ratio = Config.routeHeight / this.height;
     this.scale.setTo(ratio, ratio);
   }
@@ -60,18 +60,10 @@ export class Monkey extends Phaser.Sprite {
 
   /**
    * @summary Update monkey speed
-   * @private
-   *
-   * @param {Boolean} [increasing=true]
    */
-  private updateSpeed(increasing: boolean = true): void {
-    let newVelocity = this.body.velocity.x + Constants.VELOCITY_GAP * (increasing ? 1 : -1);
-    if (newVelocity > Constants.VELOCITY_MAX) {
-      newVelocity = Constants.VELOCITY_MAX;
-    } else if (newVelocity < Constants.VELOCITY_MIN) {
-      newVelocity = Constants.VELOCITY_MIN;
-    }
-    this.body.velocity.x = newVelocity;
+  private updateSpeed(): void {
+    const questionsPerMins = Helpers.getSpeed();
+    this.body.velocity.x = (Constants.DISTANCE_OBSTACLES * questionsPerMins) / 60;
   }
 
   /**
@@ -79,6 +71,6 @@ export class Monkey extends Phaser.Sprite {
    * @public
    */
   public hit(): void {
-    setTimeout(() => this.updateSpeed(false), 800);
+    setTimeout(() => this.updateSpeed(), 800);
   }
 }

@@ -2,6 +2,8 @@
 
 import { Helpers } from './Helpers';
 import { Global } from './Global';
+import { Config } from './Config';
+import { Constants } from './Constants';
 
 /**
  * @summary Question class
@@ -48,26 +50,36 @@ export class Question {
    * @private
    */
   private generateNumbers(): void {
+    const { x: [xFrom, xTo], y: [yFrom, yTo] } = this.getXAndY();
+
     switch (this.operator.sign) {
       case '+':
-        this.number1 = Helpers.random(10);
-        this.number2 = Helpers.random(10);
+        this.number1 = Helpers.random(xTo, xFrom);
+        this.number2 = Helpers.random(yTo, yFrom);
         break;
       case '-':
-        this.number2 = Helpers.random(10);
-        this.number1 = Helpers.random(20, this.number2);
+        this.number2 = Helpers.random(xTo, xFrom);
+        this.number1 = Helpers.random(xTo + yTo, this.number2);
         break;
       case '*':
-        this.number1 = Helpers.random(5);
-        this.number2 = Helpers.random(5);
+        this.number1 = Helpers.random(xTo, xFrom);
+        this.number2 = Helpers.random(yTo, yFrom);
         break;
       case '/':
-        this.number2 = Helpers.random(5, 1);
-        this.number1 = this.number2 * Helpers.random(5);
+        this.number2 = Helpers.random(yTo, yFrom);
+        this.number1 = this.number2 * Helpers.random(xTo, xFrom);
         break;
       default:
         break;
     }
+  }
+
+  /**
+   * Get X and Y of the question based on current difficulty and level
+   */
+  private getXAndY(): { x: [number, number], y: [number, number]} {
+    const part = this.operator === '+' || this.operator === '-' ? 'addition' : 'multiplication';
+    return Constants.RANGES[Global.level + 1][part][Helpers.getRange()];
   }
 
   /**
