@@ -8,6 +8,8 @@ import { Notification } from '../utils/Notification';
 import { Track } from '../utils/Track';
 import { Constants } from '../utils/Constants';
 import { Config } from '../utils/Config';
+import { Global } from '../utils/Global';
+import { Helpers } from '../utils/Helpers';
 
 /**
  * @summary Main game state
@@ -42,11 +44,23 @@ export class GameState extends Phaser.State {
   /**
    * @summary Score
    */
-  private score: Phaser.Text;
+  private scoreText: Phaser.Text;
   /**
    * @summary Level
    */
-  private level: Phaser.Text;
+  private levelText: Phaser.Text;
+  /**
+   * @summary Difficulty
+   */
+  private difficultyText: Phaser.Text;
+  /**
+   * @summary Speed
+   */
+  private speedText: Phaser.Text;
+  /**
+   * @summary last ten answer
+   */
+  private lastTenText: Phaser.Text;
   /**
    * @summary Tracking
    */
@@ -76,9 +90,7 @@ export class GameState extends Phaser.State {
 
   private initializeObjects(): void {
     this.track = new Track();
-    this.initializeBanner();
-    this.initializeScore();
-    this.initializeLevel();
+    this.initializeText();
 
     // Setup monkey
     this.monkey = new Monkey(this, 100, this.world.centerY);
@@ -94,7 +106,9 @@ export class GameState extends Phaser.State {
 
     // Initialize obstacles list, hard-coded to be 10 right now
     for (let i = 1; i < 10; i += 1) {
-      const obstacle = new Obstacle(this.game, 800 * i, this.world.centerY);
+      const obstacle = new Obstacle(
+        this.game, Constants.DISTANCE_OBSTACLES * i, this.world.centerY,
+      );
       Object.assign(obstacle, { originalIndex: i });
       this.game.add.existing(obstacle);
       this.obstacles.push(obstacle);
@@ -113,28 +127,51 @@ export class GameState extends Phaser.State {
     this.game.camera.deadzone = new Phaser.Rectangle(50, 100, 50, 400);
   }
 
-  private initializeBanner(): void {
-    const bannerText = 'Monkey Maths by Starmaths';
-    this.banner = this.add.text(this.game.width / 2, this.game.height - 60, bannerText, null);
-    this.attachStyle(this.banner);
+  private initializeText(): void {
+    this.initializeScoreText();
+    this.initializeLevelText();
+    this.initializeSpeedText();
+    this.initializeDifficultyText();
+    this.initializeLastTenText();
   }
 
-  private initializeScore(): void {
-    this.score = this.add.text(this.game.width / 4, Config.bannerY, '', null);
-    this.attachStyle(this.score);
+  private initializeScoreText(): void {
+    this.scoreText = this.add.text(this.game.width / 4, Config.bannerY, '', null);
+    this.attachStyle(this.scoreText);
   }
 
-  private initializeLevel(): void {
-    this.level = this.add.text(this.game.width * 3 / 4, Config.bannerY, '', null);
-    this.attachStyle(this.level);
+  private initializeLevelText(): void {
+    this.levelText = this.add.text(this.game.width * 3 / 4, Config.bannerY, '', null);
+    this.attachStyle(this.levelText);
+  }
+
+  private initializeDifficultyText(): void {
+    this.difficultyText = this.add.text(this.game.width / 4, this.game.height - 20, '', null);
+    this.attachStyle(this.difficultyText);
+  }
+
+  private initializeSpeedText(): void {
+    this.speedText = this.add.text(this.game.width * 3 / 4, this.game.height - 20, '', null);
+    this.attachStyle(this.speedText);
+  }
+
+  private initializeLastTenText(): void {
+    this.lastTenText = this.add.text(this.game.width / 2, this.game.height - 50, '', null);
+    this.attachStyle(this.lastTenText, {
+      fill: '#fff',
+    });
   }
 
   private refreshTrack(): void {
-    this.score.setText(`Score: ${this.track.getScore()}`);
-    this.level.setText(`Level: ${this.track.getLevel()}`);
+    this.scoreText.setText(`Score: ${this.track.getScore()}`);
+    this.levelText.setText(`Level: ${this.track.getLevel()}`);
+    this.difficultyText.setText(`Difficulty: ${this.track.getDifficulty()}`);
+    this.speedText.setText(`Speed: ${Helpers.getSpeed()} quiz/mins`);
+    const lastTen = this.track.getLastTen().map(x => `${x ? 'T ' : 'F '}`);
+    this.lastTenText.setText(`Last ten answer: ${lastTen}`);
   }
 
-  private attachStyle(obj): void {
+  private attachStyle(obj, customStyle = {}): void {
     Object.assign(obj, {
       font: Constants.FONT_MAIN,
       fontSize: Constants.FONT_SIZE_MD,
@@ -148,6 +185,7 @@ export class GameState extends Phaser.State {
         x: 0.5,
         y: 0.5,
       },
+      ...customStyle,
     });
   }
 
