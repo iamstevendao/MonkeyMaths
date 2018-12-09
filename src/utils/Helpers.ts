@@ -1,6 +1,8 @@
 // Helpers
 
 import { Config } from './Config';
+import { Constants } from './Constants';
+import { Global } from './Global';
 
 /**
  * @summary Helpers class
@@ -38,7 +40,25 @@ export abstract class Helpers {
     method: (a, b) => (a * b),
   }];
 
+  /**
+   * Get Y (coordinate) by route id
+   * @param index route id
+   */
   public static getYByRoute(index: number): number {
     return index === 1 ? Config.routeOneY : Config.routeTwoY;
+  }
+
+  /**
+   * Get speed (questions per mins)
+   */
+  public static getSpeed(): number {
+    return Constants.DIFFICULTY_SPEED[Global.difficulty - 1];
+  }
+
+  /**
+   * Get range (A, B or C) of current difficulty
+   */
+  public static getRange(): string {
+    return Constants.DIFFICULTY_RANGE[Global.difficulty - 1];
   }
 }
