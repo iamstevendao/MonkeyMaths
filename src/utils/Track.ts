@@ -8,6 +8,7 @@ import { Global } from './Global';
 export class Track {
   private numOfCorrect: number = 0;
   private numOfIncorrect: number = 0;
+  private lastTenText: number[] = [];
   private lastTen: number[] = [];
 
   /**
@@ -26,7 +27,7 @@ export class Track {
   }
 
   public getLastTen(): number[] {
-    return this.lastTen;
+    return this.lastTenText;
   }
 
   public getNumOfCorrect(): number {
@@ -59,9 +60,10 @@ export class Track {
    * @param number 1 or 0
    */
   private pushToLastTen(number): void {
+    this.lastTenText.push(number);
     this.lastTen.push(number);
-    if (this.lastTen.length > 10) {
-      this.lastTen.unshift();
+    if (this.lastTenText.length > 10) {
+      this.lastTenText.unshift();
     }
   }
 
@@ -102,6 +104,7 @@ export class Track {
       return this.increaseLevel();
     }
     Global.difficulty += 1;
+    this.lastTen = [];
   }
 
   private reduceDifficulty(): void {
@@ -110,6 +113,7 @@ export class Track {
       return this.reduceLevel();
     }
     Global.difficulty -= 1;
+    this.lastTen = [];
   }
 
   private increaseLevel(): void {
