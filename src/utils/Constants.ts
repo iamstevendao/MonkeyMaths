@@ -7,7 +7,7 @@ export abstract class Constants {
   public static readonly DIFFICULTY_DECREASE = 0.4;
   public static readonly DIFFICULTY_INCREASE = 0.8;
   public static readonly DIFFICULTY_RANGE = ['a', 'b', 'b', 'c', 'c'];
-  public static readonly DIFFICULTY_SPEED = [5, 7.5, 10, 15, 20];
+  public static readonly DIFFICULTY_SPEED = [10, 12.5, 15, 17.5, 20];
   public static readonly DISTANCE_OBSTACLES = 1000;
   public static readonly FONT_MAIN = 'Press Start 2P';
   public static readonly FONT_SIZE_LG = 30;

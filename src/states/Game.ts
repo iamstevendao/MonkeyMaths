@@ -77,7 +77,7 @@ export class GameState extends Phaser.State {
    * @summary Initialize game
    */
   public init(): void {
-    this.game.world.setBounds(0, 0, 8000, this.game.height);
+    this.game.world.setBounds(0, 0, 100000, this.game.height);
   }
 
   /**
@@ -104,8 +104,8 @@ export class GameState extends Phaser.State {
     this.notification = new Notification(this.game, this.game.width / 2 - 100, this.world.centerY);
     this.game.add.existing(this.notification);
 
-    // Initialize obstacles list, hard-coded to be 10 right now
-    for (let i = 1; i < 10; i += 1) {
+    // Initialize obstacles list, hard-coded to be 100 right now
+    for (let i = 1; i < 100; i += 1) {
       const obstacle = new Obstacle(
         this.game, Constants.DISTANCE_OBSTACLES * i, this.world.centerY,
       );
@@ -167,7 +167,7 @@ export class GameState extends Phaser.State {
     this.levelText.setText(`Level: ${this.track.getLevel()}`);
     this.difficultyText.setText(`Difficulty: ${this.track.getDifficulty()}`);
     this.speedText.setText(`Speed: ${Helpers.getSpeed()} quiz/mins`);
-    const lastTen = this.track.getLastTen().map(x => `${x ? 'T ' : 'F '}`);
+    const lastTen = this.track.getLastTen().map(x => `${x ? 'T' : 'F'}`).join(' ');
     this.lastTenText.setText(`Last ten answer: ${lastTen}`);
   }
 
