@@ -168,7 +168,7 @@ export class GameState extends Phaser.State {
     this.difficultyText.setText(`Difficulty: ${this.track.getDifficulty()}`);
     this.speedText.setText(`Speed: ${Helpers.getSpeed()} quiz/mins`);
     const lastTen = this.track.getLastTen().map(x => `${x ? 'T' : 'F'}`).join(' ');
-    this.lastTenText.setText(`Last ten answer: ${lastTen}`);
+    this.lastTenText.setText(`Last ten answers: ${lastTen}`);
   }
 
   private attachStyle(obj, customStyle = {}): void {
