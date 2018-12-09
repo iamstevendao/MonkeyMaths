@@ -63,7 +63,7 @@ export class Track {
     this.lastTenText.push(number);
     this.lastTen.push(number);
     if (this.lastTenText.length > 10) {
-      this.lastTenText.unshift();
+      this.lastTenText.splice(0, 1);
     }
   }
 
@@ -96,6 +96,7 @@ export class Track {
   }
 
   private increaseDifficulty(): void {
+    this.lastTen = [];
     // Bonus score
     this.increaseScore((Global.level * 10) * Global.difficulty);
 
@@ -104,16 +105,15 @@ export class Track {
       return this.increaseLevel();
     }
     Global.difficulty += 1;
-    this.lastTen = [];
   }
 
   private reduceDifficulty(): void {
+    this.lastTen = [];
     // IF difficulty is minimum
     if (Global.difficulty === 1) {
       return this.reduceLevel();
     }
     Global.difficulty -= 1;
-    this.lastTen = [];
   }
 
   private increaseLevel(): void {

@@ -62,6 +62,10 @@ export class GameState extends Phaser.State {
    */
   private lastTenText: Phaser.Text;
   /**
+   * @summary Range text
+   */
+  private rangeText: Phaser.Text;
+  /**
    * @summary Tracking
    */
   private track: Track;
@@ -133,6 +137,7 @@ export class GameState extends Phaser.State {
     this.initializeSpeedText();
     this.initializeDifficultyText();
     this.initializeLastTenText();
+    this.initializeRangeText();
   }
 
   private initializeScoreText(): void {
@@ -146,13 +151,27 @@ export class GameState extends Phaser.State {
   }
 
   private initializeDifficultyText(): void {
-    this.difficultyText = this.add.text(this.game.width / 4, this.game.height - 20, '', null);
-    this.attachStyle(this.difficultyText);
+    this.difficultyText = this.add.text(this.game.width / 5, this.game.height - 20, '', null);
+    this.attachStyle(this.difficultyText, {
+      fontSize: Constants.FONT_SIZE_SM,
+      fill: '#fff',
+    });
   }
 
   private initializeSpeedText(): void {
-    this.speedText = this.add.text(this.game.width * 3 / 4, this.game.height - 20, '', null);
-    this.attachStyle(this.speedText);
+    this.speedText = this.add.text(this.game.width * 4 / 5, this.game.height - 20, '', null);
+    this.attachStyle(this.speedText, {
+      fontSize: Constants.FONT_SIZE_SM,
+      fill: '#fff',
+    });
+  }
+
+  private initializeRangeText(): void {
+    this.rangeText = this.add.text(this.game.width * 2.5 / 5, this.game.height - 20, '', null);
+    this.attachStyle(this.rangeText, {
+      fontSize: Constants.FONT_SIZE_SM,
+      fill: '#fff',
+    });
   }
 
   private initializeLastTenText(): void {
@@ -167,6 +186,7 @@ export class GameState extends Phaser.State {
     this.levelText.setText(`Level: ${this.track.getLevel()}`);
     this.difficultyText.setText(`Difficulty: ${this.track.getDifficulty()}`);
     this.speedText.setText(`Speed: ${Helpers.getSpeed()} quiz/mins`);
+    this.rangeText.setText(`Range: ${Helpers.getRange().toUpperCase()}`);
     const lastTen = this.track.getLastTen().map(x => `${x ? 'T' : 'F'}`).join(' ');
     this.lastTenText.setText(`Last ten answers: ${lastTen}`);
   }
@@ -222,6 +242,7 @@ export class GameState extends Phaser.State {
       // End game
       return this.endGame();
     }
+    this.obstacles[this.nextObstacleIndex].updateQuestion();
     this.obstacles[this.nextObstacleIndex].setRoute(this.monkey.route);
     this.answer.delete();
   }
@@ -237,6 +258,7 @@ export class GameState extends Phaser.State {
       // End game
       return this.endGame();
     }
+    this.obstacles[this.nextObstacleIndex].updateQuestion();
     this.obstacles[this.nextObstacleIndex].setRoute(this.monkey.route);
     setTimeout(() => this.answer.delete(), 800);
   }

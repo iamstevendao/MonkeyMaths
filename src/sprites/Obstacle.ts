@@ -47,6 +47,11 @@ export class Obstacle extends Phaser.Sprite {
     this.questionText.text = this.question.getText();
   }
 
+  public updateQuestion() {
+    this.question = new Question();
+    this.questionText.text = this.question.getText();
+  }
+
   /**
    * @summary Check if answer of user is correct or not
    * @param {string} answer
