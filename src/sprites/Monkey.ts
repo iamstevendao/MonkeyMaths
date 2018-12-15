@@ -30,6 +30,8 @@ export class Monkey extends Phaser.Sprite {
    */
   private initialize(): void {
     this.game.physics.arcade.enable(this);
+    this.animations.add('walk');
+    this.animations.play('walk', 30, true);
     this.updateSpeed();
     const ratio = Config.routeHeight / this.height;
     this.scale.setTo(ratio, ratio);

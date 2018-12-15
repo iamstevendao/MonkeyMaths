@@ -100,7 +100,7 @@ export class GameState extends Phaser.State {
     this.initializeText();
 
     // Setup monkey
-    this.monkey = new Monkey(this, 100, this.world.centerY);
+    this.monkey = new Monkey(this.game, 100, Helpers.getYByRoute(1));
     this.game.add.existing(this.monkey);
 
     // Setup answer
