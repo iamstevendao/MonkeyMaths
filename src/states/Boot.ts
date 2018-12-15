@@ -2,7 +2,11 @@
 
 import * as Phaser from 'phaser-ce';
 import * as WebFont from 'webfontloader';
-import * as Background from '../assets/img/background.png';
+import * as ImgBackground1 from '../assets/img/bg1.png';
+import * as ImgBackground2 from '../assets/img/bg2.png';
+import * as ImgBackground3 from '../assets/img/bg3.png';
+import * as ImgBackground4 from '../assets/img/bg4.png';
+import * as ImgBackground5 from '../assets/img/bg5.png';
 import { Constants } from '../utils/Constants';
 
 /**
@@ -31,8 +35,11 @@ export class BootState extends Phaser.State {
       },
       active: this.fontsLoaded,
     });
+    const backgrounds = [
+      ImgBackground1, ImgBackground2, ImgBackground3, ImgBackground4, ImgBackground5,
+    ];
 
-    this.load.image('background', Background);
+    this.load.image('background', backgrounds[Math.floor(Math.random() * backgrounds.length)]);
   }
 
   /**

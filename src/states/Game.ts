@@ -15,7 +15,6 @@ import { Helpers } from '../utils/Helpers';
  * @summary Main game state
  */
 export class GameState extends Phaser.State {
-
   /**
    * @summary Monkey
    */
@@ -38,9 +37,9 @@ export class GameState extends Phaser.State {
    */
   private notification: Notification;
   /**
-   * @summary Banner starmaths
+   * @summary Background
    */
-  private banner: object;
+  private background: Phaser.TileSprite;
   /**
    * @summary Score
    */
@@ -71,10 +70,14 @@ export class GameState extends Phaser.State {
   private track: Track;
 
   public preload(): void {
-    const background = this.game.add.sprite(0, 0, 'background');
-    background.fixedToCamera = true;
-    background.width = this.game.width;
-    background.height = this.game.height;
+    this.background = this.game.add.tileSprite(
+      0, 0, Config.gameWidth, Config.gameHeight, 'background',
+    );
+    this.background.fixedToCamera = true;
+    this.background.tileScale.set(
+      this.game.width / this.game.cache.getImage('background').width,
+      this.game.height / this.game.cache.getImage('background').height,
+    );
   }
 
   /**
@@ -213,6 +216,7 @@ export class GameState extends Phaser.State {
    * @summary Handle game events
    */
   public update(): void {
+    this.background.tilePosition.x -= Global.difficulty * 2;
     this.game.physics.arcade.collide(
       this.monkey, this.obstacles, this.onCollide, this.onPreCollide, this);
     this.refreshTrack();
