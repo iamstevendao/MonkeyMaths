@@ -6,6 +6,29 @@ import { Helpers } from '../utils/Helpers';
 import { Constants } from '../utils/Constants';
 import { Config } from '../utils/Config';
 
+const obstacles = [
+  {
+    images: [
+      'obstacleBird1',
+      'obstacleBird2',
+      'obstacleBird3',
+      'obstacleBird4',
+      'obstacleBird5',
+    ],
+    coordinates: {
+      x: 65,
+      y: 180,
+    },
+  },
+];
+
+const obstacleImages = obstacles.reduce((prv, crr) => [...prv, ...crr.images], []);
+
+const getCoordinates = (obstacle) => {
+  const foundObstacle = obstacles.find(({ images }) => images.includes(obstacle));
+  return foundObstacle.coordinates;
+};
+
 /**
  * @summary Obstacle sprite
  */
@@ -24,8 +47,8 @@ export class Obstacle extends Phaser.Sprite {
     public y: number,
     public text: string = '',
   ) {
-    super(game, x, y, 'obstacle');
-    this.initialize(x, y, text);
+    super(game, x, y);
+    this.initialize(text);
     this.updateY();
   }
 
@@ -33,11 +56,14 @@ export class Obstacle extends Phaser.Sprite {
    * @summary Initialize attributes of the obstacle
    * @private
    */
-  private initialize(x: number, y: number, text: string): void {
+  private initialize(text: string): void {
+    const key = obstacleImages[Helpers.random(obstacleImages.length)];
+    this.loadTexture(key);
+    const textCoordinates = getCoordinates(key);
     this.game.physics.arcade.enable(this);
     const ratio = Config.routeHeight / this.height;
     this.question = new Question();
-    this.questionText = this.game.add.text(10, 10, text);
+    this.questionText = this.game.add.text(textCoordinates.x, textCoordinates.y, text);
     this.questionText.font = Constants.FONT_MAIN;
     this.questionText.fontSize = Constants.FONT_SIZE_MD + 10;
 

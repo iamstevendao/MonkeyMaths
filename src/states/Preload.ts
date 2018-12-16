@@ -1,16 +1,20 @@
 // Preload
 
 import * as Phaser from 'phaser-ce';
-import * as ImageMonkey from '../assets/img/monkey.png';
-import * as ImageBtnPlay from '../assets/img/btnPlay.png';
-import * as ImageBtnRestart from '../assets/img/btnRestart.png';
-import * as ImageBtnHome from '../assets/img/btnHome.png';
-import * as ImageObstacle from '../assets/img/obstacle.png';
-import * as ImageDivide from '../assets/img/imgDivide.png';
-import * as ImageMinus from '../assets/img/imgMinus.png';
-import * as ImageTimes from '../assets/img/imgTimes.png';
-import * as ImagePlus from '../assets/img/imgPlus.png';
-import * as ImageCombination from '../assets/img/imgCombination.png';
+import * as ImageMonkey from '../assets/monkey/monkey.png';
+import * as ImageBtnPlay from '../assets/buttons/btnPlay.png';
+import * as ImageBtnRestart from '../assets/buttons/btnRestart.png';
+import * as ImageBtnHome from '../assets/buttons/btnHome.png';
+import * as ImageDivide from '../assets/buttons/imgDivide.png';
+import * as ImageMinus from '../assets/buttons/imgMinus.png';
+import * as ImageTimes from '../assets/buttons/imgTimes.png';
+import * as ImagePlus from '../assets/buttons/imgPlus.png';
+import * as ImageCombination from '../assets/buttons/imgCombination.png';
+import * as ImageObstacleBird1 from '../assets/obstacles/bird1.png';
+import * as ImageObstacleBird2 from '../assets/obstacles/bird2.png';
+import * as ImageObstacleBird3 from '../assets/obstacles/bird3.png';
+import * as ImageObstacleBird4 from '../assets/obstacles/bird4.png';
+import * as ImageObstacleBird5 from '../assets/obstacles/bird5.png';
 import { Constants } from '../utils/Constants';
 
 /**
@@ -65,7 +69,11 @@ export class PreloadState extends Phaser.State {
     this.load.image('btnTimes', ImageTimes);
     this.load.image('btnDivide', ImageDivide);
     this.load.image('btnCombination', ImageCombination);
-    this.load.image('obstacle', ImageObstacle);
+    this.load.image('obstacleBird1', ImageObstacleBird1);
+    this.load.image('obstacleBird2', ImageObstacleBird2);
+    this.load.image('obstacleBird3', ImageObstacleBird3);
+    this.load.image('obstacleBird4', ImageObstacleBird4);
+    this.load.image('obstacleBird5', ImageObstacleBird5);
   }
 
   /**

@@ -2,11 +2,11 @@
 
 import * as Phaser from 'phaser-ce';
 import * as WebFont from 'webfontloader';
-import * as ImgBackground1 from '../assets/img/bg1.png';
-import * as ImgBackground2 from '../assets/img/bg2.png';
-import * as ImgBackground3 from '../assets/img/bg3.png';
-import * as ImgBackground4 from '../assets/img/bg4.png';
-import * as ImgBackground5 from '../assets/img/bg5.png';
+import * as ImgBackground1 from '../assets/background/bg1.png';
+import * as ImgBackground2 from '../assets/background/bg2.png';
+import * as ImgBackground3 from '../assets/background/bg3.png';
+import * as ImgBackground4 from '../assets/background/bg4.png';
+import * as ImgBackground5 from '../assets/background/bg5.png';
 import { Constants } from '../utils/Constants';
 
 /**
