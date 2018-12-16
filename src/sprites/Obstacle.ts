@@ -20,11 +20,47 @@ const obstacles = [
       y: 180,
     },
   },
+  {
+    images: [
+      'obstacleTreasure1',
+    ],
+    coordinates: {
+      x: 50,
+      y: 110,
+    },
+  },
+  {
+    images: [
+      'obstacleFlower1',
+    ],
+    coordinates: {
+      x: 20,
+      y: 50,
+    },
+  },
+  {
+    images: [
+      'obstacleSeahorse1',
+    ],
+    coordinates: {
+      x: 210,
+      y: 105,
+    },
+  },
+  {
+    images: [
+      'obstacleTurtle1',
+    ],
+    coordinates: {
+      x: 110,
+      y: 20,
+    },
+  },
 ];
 
 const obstacleImages = obstacles.reduce((prv, crr) => [...prv, ...crr.images], []);
 
-const getCoordinates = (obstacle) => {
+const getCoordinates = (obstacle: string) => {
   const foundObstacle = obstacles.find(({ images }) => images.includes(obstacle));
   return foundObstacle.coordinates;
 };

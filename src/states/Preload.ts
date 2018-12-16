@@ -15,6 +15,10 @@ import * as ImageObstacleBird2 from '../assets/obstacles/bird2.png';
 import * as ImageObstacleBird3 from '../assets/obstacles/bird3.png';
 import * as ImageObstacleBird4 from '../assets/obstacles/bird4.png';
 import * as ImageObstacleBird5 from '../assets/obstacles/bird5.png';
+import * as ImageObstacleFlower1 from '../assets/obstacles/flower1.png';
+import * as ImageObstacleSeahorse1 from '../assets/obstacles/seahorse1.png';
+import * as ImageObstacleTreasure1 from '../assets/obstacles/treasure1.png';
+import * as ImageObstacleTurtle1 from '../assets/obstacles/turtle1.png';
 import { Constants } from '../utils/Constants';
 
 /**
@@ -74,6 +78,10 @@ export class PreloadState extends Phaser.State {
     this.load.image('obstacleBird3', ImageObstacleBird3);
     this.load.image('obstacleBird4', ImageObstacleBird4);
     this.load.image('obstacleBird5', ImageObstacleBird5);
+    this.load.image('obstacleFlower1', ImageObstacleFlower1);
+    this.load.image('obstacleSeahorse1', ImageObstacleSeahorse1);
+    this.load.image('obstacleTreasure1', ImageObstacleTreasure1);
+    this.load.image('obstacleTurtle1', ImageObstacleTurtle1);
   }
 
   /**
