@@ -56,7 +56,7 @@ export class PreloadState extends Phaser.State {
     });
     this.loadText.anchor.setTo(0.5, 0.5);
 
-    this.load.spritesheet('monkey', `../${ImageMonkey.toString()}`, 360, 545, 34);
+    this.load.spritesheet('monkey', ImageMonkey.toString(), 360, 545, 34);
     this.load.image('btnPlay', ImageBtnPlay);
     this.load.image('btnRestart', ImageBtnRestart);
     this.load.image('btnHome', ImageBtnHome);
