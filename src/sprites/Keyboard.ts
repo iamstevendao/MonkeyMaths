@@ -39,7 +39,8 @@ export class Keyboard extends Phaser.Group {
       this.add(button);
     });
     this.game.add.group(this);
-    this.position.set(...this.getPosition(position));
+    const point = this.getPosition(position);
+    this.position.set(point.x, point.y);
   }
 
   private getCoordinates(index: number): { x: number, y: number } {
@@ -49,11 +50,11 @@ export class Keyboard extends Phaser.Group {
     };
   }
 
-  private getPosition(position: string): [number, number] {
+  private getPosition(position: string): { x: number, y: number} {
     switch (position) {
       case 'right':
       default:
-        return [Config.gameWidth - Constants.KEYBOARD_WIDTH, 100];
+        return { x: Config.gameWidth - Constants.KEYBOARD_WIDTH, y: 100 };
     }
   }
 }
