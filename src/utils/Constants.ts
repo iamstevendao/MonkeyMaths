@@ -205,4 +205,6 @@ export abstract class Constants {
       },
     },
   ];
+  public static readonly SCREEN_RATIO = 2;
+  public static readonly KEYBOARD_WIDTH = 150;
 }

@@ -10,6 +10,7 @@ import { Constants } from '../utils/Constants';
 import { Config } from '../utils/Config';
 import { Global } from '../utils/Global';
 import { Helpers } from '../utils/Helpers';
+import { Keyboard } from '../sprites/Keyboard';
 
 /**
  * @summary Main game state
@@ -40,6 +41,10 @@ export class GameState extends Phaser.State {
    * @summary Background
    */
   private background: Phaser.TileSprite;
+  /**
+   * @summary Keyboard
+   */
+  private keyboard: Keyboard;
   /**
    * @summary Score
    */
@@ -124,14 +129,20 @@ export class GameState extends Phaser.State {
 
   private initializeGame(): void {
     // Handle key press event
-    this.game.input.keyboard.onDownCallback = (e) => {
-      this.handleCursors(e);
+    this.game.input.keyboard.onDownCallback = ({ keyCode }) => {
+      this.handleCursors({ keyCode });
     };
 
     // Set camera to follow the monkey
     this.game.camera.follow(this.monkey);
     this.game.camera.lerp.x = 0.1;
     this.game.camera.deadzone = new Phaser.Rectangle(50, 100, 50, 400);
+
+    // Initialize keyboard
+    this.keyboard = new Keyboard(this.game);
+    this.keyboard.onKeyPress = (key) => {
+      this.handleCursors({ key });
+    };
   }
 
   private initializeText(): void {
@@ -289,18 +300,29 @@ export class GameState extends Phaser.State {
    * @summary Handle keypress event
    * @param e key press
    */
-  private handleCursors(e): void {
-    if (e.keyCode === 8) {
+  private handleCursors({ key = '', keyCode = 0 }): void {
+    if (key === 'delete') {
       // Backspace
       this.answer.delete();
       return;
     }
-    // Key 57: 9
-    // Key 48: 0
-    if (e.keyCode > 57 || e.keyCode < 48) {
-      return;
+
+    let input = key;
+    if (!input) {
+      if (keyCode === 8) {
+        // Backspace
+        this.answer.delete();
+        return;
+      }
+      // Key 57: 9
+      // Key 48: 0
+      if (keyCode > 57 || keyCode < 48) {
+        return;
+      }
+
+      input = (keyCode - 48).toString();
     }
-    this.answer.concat((e.keyCode - 48).toString());
+    this.answer.concat(input);
     this.verifyAnswer();
   }
 }

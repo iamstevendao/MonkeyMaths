@@ -19,6 +19,17 @@ import * as ImageObstacleFlower1 from '../assets/obstacles/flower1.png';
 import * as ImageObstacleSeahorse1 from '../assets/obstacles/seahorse1.png';
 import * as ImageObstacleTreasure1 from '../assets/obstacles/treasure1.png';
 import * as ImageObstacleTurtle1 from '../assets/obstacles/turtle1.png';
+import * as ImageKey1 from '../assets/keys/1.png';
+import * as ImageKey2 from '../assets/keys/2.png';
+import * as ImageKey3 from '../assets/keys/3.png';
+import * as ImageKey4 from '../assets/keys/4.png';
+import * as ImageKey5 from '../assets/keys/5.png';
+import * as ImageKey6 from '../assets/keys/6.png';
+import * as ImageKey7 from '../assets/keys/7.png';
+import * as ImageKey8 from '../assets/keys/8.png';
+import * as ImageKey9 from '../assets/keys/9.png';
+import * as ImageKey0 from '../assets/keys/0.png';
+import * as ImageKeyDelete from '../assets/keys/delete.png';
 import { Constants } from '../utils/Constants';
 
 /**
@@ -82,6 +93,17 @@ export class PreloadState extends Phaser.State {
     this.load.image('obstacleSeahorse1', ImageObstacleSeahorse1);
     this.load.image('obstacleTreasure1', ImageObstacleTreasure1);
     this.load.image('obstacleTurtle1', ImageObstacleTurtle1);
+    this.load.image('key1', ImageKey1);
+    this.load.image('key2', ImageKey2);
+    this.load.image('key3', ImageKey3);
+    this.load.image('key4', ImageKey4);
+    this.load.image('key5', ImageKey5);
+    this.load.image('key6', ImageKey6);
+    this.load.image('key7', ImageKey7);
+    this.load.image('key8', ImageKey8);
+    this.load.image('key9', ImageKey9);
+    this.load.image('key0', ImageKey0);
+    this.load.image('keyDelete', ImageKeyDelete);
   }
 
   /**
