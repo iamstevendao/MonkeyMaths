@@ -112,7 +112,7 @@ export class GameState extends Phaser.State {
     this.answer = new Answer(this.game, this.game.width / 2, this.world.centerY);
     this.game.add.existing(this.answer);
 
-    // Setup answer
+    // Setup notification
     this.notification = new Notification(this.game, this.game.width / 2 - 100, this.world.centerY);
     this.game.add.existing(this.notification);
 
@@ -205,7 +205,7 @@ export class GameState extends Phaser.State {
     this.lastTenText.setText(`Last ten answers: ${lastTen}`);
   }
 
-  private attachStyle(obj, customStyle = {}): void {
+  private attachStyle(obj: object, customStyle = {}): void {
     Object.assign(obj, {
       font: Constants.FONT_MAIN,
       fontSize: Constants.FONT_SIZE_MD,
@@ -278,6 +278,9 @@ export class GameState extends Phaser.State {
     setTimeout(() => this.answer.delete(), 800);
   }
 
+  /**
+   * @summary End game, show SCORE screen
+   */
   private endGame(): void {
     setTimeout(
       () => {
